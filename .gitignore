@@ -1,0 +1,42 @@
+# Global Gitignore for Camascotas
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+config/secrets/*.key
+
+# PHP / Backend
+backend-php/vendor/
+backend-php/composer.lock
+backend-php/logs/*.log
+
+# Node / Frontend
+node_modules/
+dist/
+.angular/
+.npm/
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Packages
+*.zip
+*.tar.gz
+*.rar
+api.zip
