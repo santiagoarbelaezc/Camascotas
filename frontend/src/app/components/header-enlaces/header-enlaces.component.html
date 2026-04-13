@@ -1,0 +1,11 @@
+<section class="section">
+  <div class="box group" *ngFor="let item of items">
+    <img [src]="item.img" [alt]="item.title" />
+    <div class="content opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 flex flex-col items-center">
+      <!-- Logo en cada imagen -->
+      <img src="assets/icons/logo-camascotas-small.png" alt="Camascotas Logo" style="width: 90px; height: auto;" class="mb-3 filter drop-shadow-md brightness-0 invert opacity-95 flex-shrink-0">
+      <h3>{{ item.title }}</h3>
+      <a class="btn mt-2" [routerLink]="item.link">Ver más</a>
+    </div>
+  </div>
+</section>

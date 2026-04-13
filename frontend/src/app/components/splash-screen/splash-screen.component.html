@@ -1,0 +1,29 @@
+@if (visible) {
+  <div class="splash" [class.hiding]="hiding">
+    <div class="splash-container">
+      
+      <!-- Video Ajustado -->
+      <div class="video-wrapper">
+        <!-- Uso de [muted]="true" asegura la autoreproducción en navegadores restrictivos -->
+        <video 
+          #splashVideo
+          class="splash-video" 
+          autoplay 
+          [muted]="true" 
+          playsinline 
+          loop 
+          oncanplay="this.play(); this.muted=true;">
+          <source src="assets/videos/video-camascotas.mp4" type="video/mp4" />
+          Tu navegador no soporta el video.
+        </video>
+      </div>
+
+      <!-- Logo inferior elegante -->
+      <div class="splash-logo">
+        <img src="assets/icons/logo-camascotas-small.png" alt="Camascotas Logo" />
+        <p class="splash-tagline">MOBILIARIO PARA TUS MASCOTAS</p>
+      </div>
+
+    </div>
+  </div>
+}

@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+
+  --steel-blue: #5B8FA8;
+  --cream: #F5F0E8;
+}
+
+body {
+  @apply bg-cream text-neutral-dark font-sans;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply uppercase tracking-wider text-steel-blue font-bold;
+}
+
+.btn-primary {
+  @apply bg-steel-blue text-white px-6 py-2 rounded-lg hover:opacity-90 transition-all duration-300;
+}
+
+.glass-card {
+  @apply bg-white/30 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-xl;
+}

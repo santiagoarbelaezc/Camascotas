@@ -1,0 +1,190 @@
+/* ======================================================
+   HERO SECTION
+   ====================================================== */
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 40px 24px;
+  gap: 30px;
+  max-width: 1550px;
+  margin: 50px auto;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* ── TEXTO ── */
+.hero-content {
+  flex: 1 1 500px;
+  text-align: left;
+}
+
+.hero-content h1 {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+
+.hero-content h1 span {
+  background: linear-gradient(135deg, #5B8FA8 0%, #3a6b82 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-content .subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 28px;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  text-transform: none;
+}
+
+.hero-content h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333333;
+}
+
+/* ── BOTÓN ── */
+.btn-hero {
+  display: inline-block;
+  padding: 12px 32px;
+  border: 2px solid #333333;
+  text-decoration: none;
+  font-size: 1rem;
+  color: #333333;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.btn-hero:hover {
+  background-color: #5B8FA8;
+  border-color: #5B8FA8;
+  color: #fff;
+}
+
+/* ======================================================
+   CARRUSEL
+   ====================================================== */
+.hero-carousel {
+  flex: 1 1 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5B8FA8;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  width: 400%; /* 4 imágenes */
+  height: 100%;
+  animation: slide 16s infinite;
+}
+
+.carousel img {
+  width: 25%; /* Cada imagen ocupa 1/4 del ancho total = 100% visible */
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+@keyframes slide {
+  0%   { transform: translateX(0%); }
+  20%  { transform: translateX(0%); }        /* pausa imagen 1 */
+  25%  { transform: translateX(-25%); }
+  45%  { transform: translateX(-25%); }      /* pausa imagen 2 */
+  50%  { transform: translateX(-50%); }
+  70%  { transform: translateX(-50%); }      /* pausa imagen 3 */
+  75%  { transform: translateX(-75%); }
+  95%  { transform: translateX(-75%); }      /* pausa imagen 4 */
+  100% { transform: translateX(0%); }
+}
+
+/* ======================================================
+   RESPONSIVE
+   ====================================================== */
+@media screen and (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 16px;
+    margin: 30px auto;
+    gap: 20px;
+  }
+
+  .hero-content {
+    flex: 1 1 100%;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .hero-content .subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+
+  .hero-content h2 {
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+
+  .btn-hero {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
+
+  .hero-carousel {
+    flex: 1 1 100%;
+    height: 320px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .hero {
+    padding: 20px 12px;
+    margin: 20px auto;
+    gap: 16px;
+  }
+
+  .hero-content h1 {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+
+  .hero-content .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .hero-content h2 {
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+  }
+
+  .hero-carousel {
+    height: 220px;
+  }
+}

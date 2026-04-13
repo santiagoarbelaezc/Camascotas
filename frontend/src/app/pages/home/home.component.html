@@ -1,0 +1,33 @@
+<app-header-enlaces></app-header-enlaces>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl">Categorías de Confort</h2>
+        <div class="w-24 h-1 bg-steel-blue mx-auto mt-4"></div>
+        <p class="mt-6 text-gray-600 max-w-2xl mx-auto italic">
+            Descubre nuestra variedad de diseños pensados para cada rincón de tu hogar y cada necesidad de tu mejor amigo.
+        </p>
+    </div>
+    <app-menu-categorias></app-menu-categorias>
+</section>
+
+<section class="bg-white/50 backdrop-blur-sm py-20 border-y border-steel-blue/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <h2 class="text-3xl">Nuestros Favoritos</h2>
+                <p class="text-gray-500 mt-2">Los más deseados por los peluditos.</p>
+            </div>
+            <a routerLink="/productos" class="text-steel-blue font-bold uppercase text-sm tracking-widest hover:underline hover:underline-offset-8 transition-all">
+                Ver todos los productos &rarr;
+            </a>
+        </div>
+        <app-grid-productos></app-grid-productos>
+    </div>
+</section>
+
+<app-nosotros></app-nosotros>
+
+<section class="py-20 bg-neutral-light/30">
+    <app-mision-vision></app-mision-vision>
+</section>

@@ -1,0 +1,52 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+    @for (producto of productos; track producto.id) {
+        <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col">
+            <!-- Image Container -->
+            <div class="relative aspect-square overflow-hidden bg-gray-50">
+                <img [src]="producto.imagen" [alt]="producto.nombre" 
+                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                
+                <!-- Badge -->
+                <div class="absolute top-4 left-4">
+                    <span class="bg-steel-blue/90 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold">
+                        {{ producto.tipo }}
+                    </span>
+                </div>
+
+                <!-- Hover Overlay -->
+                <div class="absolute inset-0 bg-neutral-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <button class="bg-white text-neutral-dark p-4 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:bg-steel-blue hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-8 flex-grow flex flex-col">
+                <div class="mb-4">
+                    <h3 class="text-xl text-neutral-dark normal-case tracking-tight group-hover:text-steel-blue transition-colors">
+                        {{ producto.nombre }}
+                    </h3>
+                    <p class="text-gray-400 text-sm mt-2 line-clamp-2 italic">
+                        "{{ producto.descripcion }}"
+                    </p>
+                </div>
+                
+                <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-6">
+                    <span class="text-2xl font-bold text-steel-blue">
+                        {{ producto.precio | currency:'USD':'symbol':'1.0-0' }}
+                    </span>
+                    <button class="text-neutral-dark font-bold text-xs uppercase tracking-widest hover:text-steel-blue transition-colors flex items-center gap-2">
+                        Añadir 
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

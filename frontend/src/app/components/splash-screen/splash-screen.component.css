@@ -1,0 +1,110 @@
+/* ======================================================
+   SPLASH SCREEN - Elegante y Centrado
+   ====================================================== */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5F0E8; /* Fondo crema de la paleta */
+  overflow: hidden;
+  animation: splashFadeIn 0.6s ease forwards;
+}
+
+.splash.hiding {
+  animation: splashFadeOut 0.5s ease forwards;
+}
+
+.splash-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem; /* Separación entre el video y el logo */
+  width: 100%;
+  max-width: 1000px; /* Restringe todo el bloque */
+  padding: 2rem;
+}
+
+/* ── VIDEO AJUSTADO ── */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px; /* Tamaño máximo más controlado */
+  aspect-ratio: 16/9; /* Mantiene la proporción */
+  border-radius: 16px; /* Bordes suaves */
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); /* Sombra elegante */
+  background-color: #000; /* Fondo negro mientra carga */
+  animation: videoEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.splash-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Llena el contenedor respetando su relación de aspecto */
+}
+
+/* ── LOGO INFERIOR ── */
+.splash-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: logoEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+/* Forzar que este logo sea oscuro invirtiendo el .png claro */
+.splash-logo img {
+  width: clamp(220px, 25vw, 300px);
+  object-fit: contain;
+  filter: brightness(0) invert(0.2); /* Lo vuelve oscuro para contrastar con el fondo crema */
+}
+
+.splash-tagline {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.35em;
+  color: #5B8FA8;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ======================================================
+   ANIMACIONES
+   ====================================================== */
+@keyframes splashFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes splashFadeOut {
+  from { opacity: 1; transform: scale(1); filter: blur(0px); }
+  to   { opacity: 0; transform: scale(1.05); filter: blur(8px); pointer-events: none; }
+}
+
+@keyframes videoEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes logoEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
