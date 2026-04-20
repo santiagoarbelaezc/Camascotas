@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductosService, Producto } from '../../services/productos.service';
+import { ProductoSeleccionadoService } from '../../services/producto-seleccionado.service';
 
 @Component({
   selector: 'app-productos-list',
@@ -16,7 +17,9 @@ export class ProductosListComponent implements OnInit {
 
   constructor(
     private productosService: ProductosService,
-    private route: ActivatedRoute
+    private productoSeleccionadoService: ProductoSeleccionadoService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +36,19 @@ export class ProductosListComponent implements OnInit {
         });
       }, 300);
     });
+  }
+
+  verProducto(prod: Producto): void {
+    // Paso A: Guardar en el servicio
+    this.productoSeleccionadoService.setProducto(prod);
+
+    // Generar slug amigable
+    const slug = prod.nombre.toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/[^\w-]+/g, '');
+
+    // Paso B: Navegar instantáneamente
+    this.router.navigate(['/producto', prod.id, slug]);
   }
 
   formatearPrecio(precio: number): string {

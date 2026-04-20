@@ -5,7 +5,9 @@
   </div>
 
   <div *ngIf="!cargando && productos.length > 0" class="productos-grid">
-    <div *ngFor="let prod of productos" class="producto-card">
+    <div *ngFor="let prod of productos" 
+         class="producto-card cursor-pointer" 
+         (click)="verProducto(prod)">
       <div class="image-wrapper">
         <img [src]="prod.imagen" [alt]="prod.nombre" loading="lazy">
         <div class="badge" *ngIf="prod.id % 3 === 0">Nuevo</div>
