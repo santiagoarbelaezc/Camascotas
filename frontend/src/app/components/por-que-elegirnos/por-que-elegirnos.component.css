@@ -1,0 +1,99 @@
+.pqe-section {
+  padding: 80px 20px;
+  background-color: #F8F9FA;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.pqe-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pqe-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.pqe-eyebrow {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #5B8FA8;
+  margin-bottom: 10px;
+}
+
+.pqe-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2C3E50;
+  margin-bottom: 15px;
+}
+
+.pqe-subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.pqe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.pqe-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.pqe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+}
+
+.pqe-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(91, 143, 168, 0.1);
+  color: #5B8FA8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 25px;
+}
+
+.pqe-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.pqe-card h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 15px;
+}
+
+.pqe-card p {
+  color: #6c757d;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .pqe-section {
+    padding: 60px 20px;
+  }
+  
+  .pqe-title {
+    font-size: 2rem;
+  }
+}

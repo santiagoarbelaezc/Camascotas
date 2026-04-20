@@ -1,0 +1,153 @@
+.productos-page {
+  background-color: #F5F0E8;
+  min-height: 100vh;
+  padding-top: 140px; /* Espacio para que el navbar fijo no lo solape */
+}
+
+.productos-layout {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  gap: 40px;
+  position: relative;
+}
+
+/* Desktop Sidebar */
+.sidebar-container {
+  width: 300px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 150px; /* Un poco más que el padding-top para dejar aire */
+  height: fit-content;
+  z-index: 10;
+  transition: transform 0.3s ease;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+}
+
+.hero-productos {
+  margin-bottom: 40px;
+}
+
+.hero-productos h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #2C3E50;
+  margin-bottom: 10px;
+}
+
+.hero-productos p {
+  font-size: 1.1rem;
+  color: #64748b;
+}
+
+/* Mobile Toggle */
+.menu-toggle-categorias {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #5B8FA8;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 100px;
+  box-shadow: 0 10px 20px rgba(91, 143, 168, 0.4);
+  border: none;
+  z-index: 50;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.menu-toggle-categorias svg {
+  width: 20px;
+  height: 20px;
+}
+
+.mobile-only {
+  display: none;
+}
+
+/* Overlay */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+}
+
+/* Mobile Styles */
+@media (max-width: 1024px) {
+  .productos-page {
+    padding-top: 80px; /* Navbar más pequeño en móvil */
+  }
+
+  .productos-layout {
+    flex-direction: column;
+    padding-top: 20px;
+  }
+
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 85%;
+    max-width: 350px;
+    height: 100vh;
+    background: white;
+    padding: 20px;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+    z-index: 100;
+    transition: left 0.4s cubic-bezier(0.8, 0, 0.2, 1);
+    overflow-y: auto;
+  }
+
+  .sidebar-container.menu-visible {
+    left: 0;
+  }
+
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .sidebar-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .close-drawer {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+  }
+
+  .close-drawer svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .menu-toggle-categorias {
+    display: flex;
+  }
+
+  .mobile-only {
+    display: flex;
+  }
+  
+  .hero-productos h1 {
+    font-size: 2.2rem;
+  }
+}
