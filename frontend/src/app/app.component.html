@@ -1,12 +1,24 @@
 <app-splash-screen></app-splash-screen>
-<div class="min-h-screen flex flex-col bg-cream">
-  <app-header-index></app-header-index>
+<app-loading *ngIf="isPageLoading"></app-loading>
+
+<div class="min-h-screen flex flex-col transition-colors duration-500" [class.opacity-0]="isPageLoading">
+  <!-- Header: Oculto en modo asistente y LOGIN -->
+  <app-navbar class="hidden md:block" *ngIf="!isAssistantMode && !isLoginPage"></app-navbar>
   
-  <main class="flex-grow">
+  <main class="flex-grow" [class.pb-24]="!isAssistantMode && !isLoginPage" [class.md:pb-0]="isAssistantMode || isLoginPage">
     <router-outlet></router-outlet>
   </main>
 
-  <app-footer></app-footer>
-  <app-whatsapp></app-whatsapp>
+  <!-- Footer: Oculto en modo asistente y LOGIN -->
+  <app-footer *ngIf="!isAssistantMode && !isLoginPage"></app-footer>
+  
+  <!-- WhatsApp: Oculto en modo asistente y LOGIN -->
+  <app-whatsapp class="hidden md:block" *ngIf="!isAssistantMode && !isLoginPage"></app-whatsapp>
+
+  <!-- Bottom Navigation: Visible solo en Mobile y NO en login -->
+  <app-bottom-nav 
+    *ngIf="!isLoginPage" 
+    [isAssistantMode]="isAssistantMode">
+  </app-bottom-nav>
 </div>
 

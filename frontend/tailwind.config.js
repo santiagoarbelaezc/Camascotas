@@ -6,15 +6,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        'brand-lima': '#B1D616',
+        'brand-turquesa': '#00B3BC',
+        'brand-petrol': '#004153',
+        'brand-white': '#FFFFFF',
         'steel-blue': '#5B8FA8',
         'cream': '#F5F0E8',
-        'warm-white': '#F5F0E8',
-        'neutral-dark': '#333333',
-        'neutral-light': '#F3F4F6',
       },
       fontFamily: {
-        'sans': ['Inter', 'Roboto', 'Poppins', 'sans-serif'],
+        'sans': ['Poppins', 'sans-serif'],
+        'poppins': ['Poppins', 'sans-serif'],
       },
+      borderRadius: {
+        'pill': '999px',
+        'huge': '60px',
+      }
     },
   },
   plugins: [],

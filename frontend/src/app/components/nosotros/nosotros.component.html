@@ -1,44 +1,75 @@
-<section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <!-- Image Grid -->
-            <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-4">
-                    <img src="assets/images/mateo.jpeg" alt="Mateo" class="rounded-2xl w-full h-64 object-cover shadow-lg transform translate-y-8">
-                    <img src="assets/images/home4.jpeg" alt="Taller" class="rounded-2xl w-full h-64 object-cover shadow-lg">
-                </div>
-                <div class="space-y-4 pt-12">
-                    <img src="assets/images/luisa.jpeg" alt="Luisa" class="rounded-2xl w-full h-64 object-cover shadow-lg">
-                    <img src="assets/images/sebas.jpeg" alt="Sebas" class="rounded-2xl w-full h-64 object-cover shadow-lg">
+<section class="py-32 bg-white overflow-hidden font-poppins">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+            
+            <!-- Asymmetrical Team Montage with Organic Rounding -->
+            <div class="relative">
+                <!-- Decorative brand elements -->
+                <div class="absolute -top-20 -left-20 w-64 h-64 bg-brand-turquesa/10 rounded-full blur-[100px]"></div>
+                <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-brand-lima/10 rounded-full blur-[100px]"></div>
+                
+                <div class="grid grid-cols-12 gap-6 items-end relative z-10">
+                    <!-- Mateo (Feature) -->
+                    <div class="col-span-8 group relative overflow-hidden rounded-huge shadow-2xl border-8 border-white">
+                        <img src="assets/images/mateo.jpeg" alt="Mateo" class="w-full h-[600px] object-cover transition-transform duration-1000 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-petrol/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-10 left-10 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                           <div class="text-[10px] uppercase tracking-[0.3em] text-brand-lima font-bold mb-2">Fundador</div>
+                           <div class="text-2xl font-bold">Mateo</div>
+                        </div>
+                    </div>
+                    
+                    <!-- supporting items -->
+                    <div class="col-span-4 flex flex-col gap-6">
+                        <div class="group relative overflow-hidden rounded-[40px] shadow-xl border-4 border-white">
+                            <img src="assets/images/luisa.jpeg" alt="Luisa" class="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-125">
+                            <div class="absolute inset-0 bg-brand-turquesa/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                        <div class="group relative overflow-hidden rounded-[40px] shadow-xl border-4 border-white">
+                            <img src="assets/images/sebas.jpeg" alt="Sebas" class="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-125">
+                            <div class="absolute inset-0 bg-brand-lima/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Text Content -->
-            <div>
-                <h2 class="text-4xl leading-tight">La Familia Camascotas</h2>
-                <div class="w-20 h-1.5 bg-steel-blue mt-4 mb-8"></div>
+            <div class="relative space-y-10">
+                <div class="space-y-4">
+                    <span class="text-brand-turquesa font-black tracking-[0.4em] uppercase text-[10px] bg-brand-turquesa/5 px-4 py-2 rounded-pill inline-block">Mobiliario Pet Mobiliario Pet</span>
+                    <h2 class="text-5xl md:text-6xl font-bold text-brand-petrol leading-[1.1] tracking-tight">
+                        La Familia <br> <span class="text-brand-turquesa underline decoration-brand-lima/40 underline-offset-8">Camascotas</span>
+                    </h2>
+                </div>
                 
-                <p class="text-gray-600 text-lg mb-6 leading-relaxed">
-                    Somos un equipo apasionado liderado por <span class="text-steel-blue font-bold">Mateo, Luisa y Sebas</span>, quienes compartimos un mismo sueño: elevar la calidad de vida de nuestras mascotas a través del buen diseño.
-                </p>
-                
-                <p class="text-gray-600 text-lg mb-8 leading-relaxed">
-                    En Camascotas, no solo creamos camas; construimos refugios de paz. Cada pieza es fabricada a mano con materiales premium, asegurando durabilidad y un estilo que se integra perfectamente con la decoración de tu hogar.
-                </p>
+                <div class="space-y-6">
+                    <p class="text-gray-500 text-xl font-light leading-relaxed">
+                        Somos un equipo apasionado liderado por <span class="text-brand-petrol font-bold">Mateo, Luisa y Sebas</span>, quienes compartimos un mismo sueño: elevar la calidad de vida de nuestras mascotas a través del buen diseño.
+                    </p>
+                    
+                    <p class="text-gray-500 text-xl font-light leading-relaxed border-l-4 border-brand-lima pl-8 italic">
+                        En Camascotas, no solo creamos camas; construimos refugios de paz. Cada pieza es fabricada a mano con materiales premium.
+                    </p>
+                </div>
 
-                <div class="grid grid-cols-3 gap-8 pt-8 border-t border-gray-100">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-steel-blue">5k+</div>
-                        <div class="text-xs text-gray-400 uppercase tracking-widest mt-1">Clientes</div>
+                <!-- Premium Stats with Brand Colors -->
+                <div class="grid grid-cols-3 gap-8 pt-10 border-t border-gray-100">
+                    <div class="space-y-2">
+                        <div class="text-5xl font-black text-brand-turquesa tracking-tighter">5k+</div>
+                        <div class="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold">Clientes felices</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-steel-blue">100%</div>
-                        <div class="text-xs text-gray-400 uppercase tracking-widest mt-1">Calidad</div>
+                    <div class="space-y-2">
+                        <div class="text-5xl font-black text-brand-lima tracking-tighter">100%</div>
+                        <div class="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold">Calidad local</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-steel-blue">Hecho</div>
-                        <div class="text-xs text-gray-400 uppercase tracking-widest mt-1">En Colombia</div>
+                    <div class="space-y-2">
+                        <div class="text-5xl font-black text-brand-petrol tracking-tighter">Hecho</div>
+                        <div class="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold">En Colombia</div>
                     </div>
+                </div>
+
+                <div class="pt-8">
+                   <button class="btn-primary">Nuestro Taller</button>
                 </div>
             </div>
         </div>

@@ -1,84 +1,90 @@
 /* ===================================================
    CARRUSEL DESTACADOS — Camascotas
-   Alineado al sistema de diseño global:
-   - Font: Inter (sans-serif)
-   - Colores: steel-blue #5B8FA8, cream #F5F0E8, neutral-dark #333333
-   - Layout: max-w-7xl, padding lateral consistente
-   - Headers: uppercase tracking-wider font-bold text-steel-blue
-=================================================== */
+   Alineado al sistema de diseño "Mobiliario Pet":
+   - Font: Poppins (Bold/Regular/Thin)
+   - Colores: Petrol #004153, Turquoise #00B3BC, Lima #B1D616
+   - Geometría: Bordes altamente redondeados (Organic-Huge)
+ =================================================== */
 
-/* Contenedor principal: fondo cream del sistema, padding igual a las demás secciones */
+:root {
+  --lima: #B1D616;
+  --turquesa: #00B3BC;
+  --petrol: #004153;
+  --blanco: #FFFFFF;
+}
+
 .carrusel-section {
-  background-color: #F5F0E8; /* cream */
-  padding: 80px 0 60px;
+  background-color: #FFFFFF;
+  padding: 100px 0 80px;
   overflow: hidden;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* ===== HEADER ===== */
 .carrusel-header {
-  max-width: 80rem; /* max-w-7xl */
+  max-width: 80rem;
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 40px;
-  gap: 24px;
+  margin-bottom: 50px;
+  gap: 32px;
   flex-wrap: wrap;
 }
 
-/* Título: mismo estilo que h2 en global → uppercase tracking-wider text-steel-blue font-bold */
-.carrusel-titulo {
-  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
-  font-size: 1.875rem; /* text-3xl */
-  font-weight: 700;
-  color: #5B8FA8; /* steel-blue */
-  text-transform: uppercase;
-  letter-spacing: 0.08em; /* tracking-wider */
-  margin: 0 0 6px;
+.carrusel-titulo-wrap {
+  flex: 1;
+  min-width: 300px;
 }
 
-/* Subtítulo: italic gray, mismo estilo que <p class="text-gray-500"> en el sistema */
+.carrusel-titulo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--petrol);
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
 .carrusel-subtitulo {
-  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
-  font-size: 0.9rem;
-  color: #9ca3af; /* text-gray-400 */
+  font-size: 1.1rem;
+  color: rgba(0, 65, 83, 0.5); /* Petrol with opacity */
   margin: 0;
-  font-style: italic;
+  font-weight: 300;
 }
 
 /* ===== TABS ===== */
 .carrusel-tabs {
   display: flex;
-  gap: 0;
-  border-bottom: 1.5px solid #d4cfc7;
-  padding-bottom: 0;
+  gap: 8px;
+  background-color: rgba(0, 179, 188, 0.05); /* Very light turquoise */
+  padding: 6px;
+  border-radius: 999px;
 }
 
 .tab-btn {
-  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
-  font-size: 0.78rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
   font-weight: 600;
-  letter-spacing: 0.08em; /* tracking-widest */
-  text-transform: uppercase;
-  padding: 8px 20px 10px;
+  padding: 10px 24px;
   border: none;
   background: transparent;
   cursor: pointer;
-  color: #9ca3af;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1.5px;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  color: var(--petrol);
+  border-radius: 999px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   white-space: nowrap;
 }
 
 .tab-btn:hover {
-  color: #333333; /* neutral-dark */
+  background-color: rgba(0, 65, 83, 0.05);
 }
 
 .tab-activo {
-  color: #5B8FA8 !important; /* steel-blue */
-  border-bottom-color: #5B8FA8 !important;
+  background-color: var(--petrol) !important;
+  color: var(--blanco) !important;
+  box-shadow: 0 4px 15px rgba(0, 65, 83, 0.2);
 }
 
 /* ===== SCROLL TRACK ===== */
@@ -86,32 +92,23 @@
   max-width: 80rem;
   margin: 0 auto;
   overflow-x: auto;
-  padding: 8px 2rem 16px;
-  scrollbar-width: thin;
-  scrollbar-color: #5B8FA8 #e8e4de;
+  padding: 20px 2rem 40px;
+  scrollbar-width: none; /* Hide scrollbar for cleaner look */
   cursor: grab;
+}
+
+.carrusel-track-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .carrusel-track-wrapper:active {
   cursor: grabbing;
 }
 
-.carrusel-track-wrapper::-webkit-scrollbar {
-  height: 3px;
-}
-.carrusel-track-wrapper::-webkit-scrollbar-track {
-  background: #e8e4de;
-}
-.carrusel-track-wrapper::-webkit-scrollbar-thumb {
-  background: #5B8FA8;
-  border-radius: 4px;
-}
-
 .carrusel-track {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   width: max-content;
-  padding-bottom: 8px;
 }
 
 /* ===== CARD ===== */
@@ -119,21 +116,24 @@
   display: block;
   text-decoration: none;
   color: inherit;
-  width: 248px;
+  width: 300px;
   flex-shrink: 0;
   cursor: pointer;
+  transition: transform 0.4s ease;
 }
 
-/* ===================================================
-   HOVER REVEAL: clip-path desliza imagen desde abajo
-=================================================== */
+.carrusel-card:hover {
+  transform: translateY(-8px);
+}
+
 .card-imagen-container {
   position: relative;
   width: 100%;
-  height: 310px;
+  aspect-ratio: 4/5;
   overflow: hidden;
-  border-radius: 4px; /* esquinas sutiles, no redondeadas — estilo editorial */
-  background: #e8e4de;
+  border-radius: 40px; /* Huge organic rounding */
+  background: #f8f9fa;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
 
 .card-img {
@@ -147,35 +147,50 @@
 
 .card-img-base {
   z-index: 1;
-  transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .card-img-hover {
   z-index: 2;
-  clip-path: inset(100% 0 0 0);
-  transition: clip-path 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1.04);
+  clip-path: circle(0% at 50% 50%);
+  transition: clip-path 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+              transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.15) 0%, transparent 55%);
+  background: linear-gradient(to top, rgba(0, 65, 83, 0.3) 0%, transparent 60%);
   z-index: 3;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s ease;
   pointer-events: none;
 }
 
-/* Hover states */
+.card-badge-nuevo {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: var(--lima);
+  color: var(--petrol);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(177, 214, 22, 0.25);
+}
+
+/* Card Hover States */
 .carrusel-card:hover .card-img-base {
-  transform: scale(1.04);
+  transform: scale(1.1);
 }
 
 .carrusel-card:hover .card-img-hover {
-  clip-path: inset(0% 0 0 0);
-  transform: scale(1);
+  clip-path: circle(100% at 50% 50%);
+  transform: scale(1.05);
 }
 
 .carrusel-card:hover .card-overlay {
@@ -184,62 +199,62 @@
 
 /* ===== CARD INFO ===== */
 .card-info {
-  padding: 12px 2px 0;
+  padding: 24px 15px 0;
+  text-align: center;
 }
 
-/* Nombre: neutral-dark, Inter, no uppercase (es info de producto) */
 .card-nombre {
-  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: #333333; /* neutral-dark */
-  margin: 0 0 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  letter-spacing: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--petrol);
+  margin: 0 0 6px;
+  transition: color 0.3s ease;
+}
+
+.carrusel-card:hover .card-nombre {
+  color: var(--turquesa);
 }
 
 .card-precio-row {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
 }
 
 .card-desde {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
-  color: #9ca3af;
-  font-style: italic;
+  font-size: 0.8rem;
+  color: rgba(0, 65, 83, 0.4);
+  font-weight: 400;
 }
 
 .card-precio {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #5B8FA8; /* steel-blue */
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--petrol);
 }
 
 /* Color swatches */
 .card-colores {
   display: flex;
-  gap: 4px;
+  gap: 8px;
   align-items: center;
+  justify-content: center;
 }
 
 .color-dot {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.9);
+  border: 2px solid white;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
   display: inline-block;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .color-dot:hover {
-  transform: scale(1.3);
+  transform: scale(1.5);
 }
 
 /* ===== FOOTER LINK ===== */
@@ -247,70 +262,61 @@
   max-width: 80rem;
   margin: 0 auto;
   display: flex;
-  justify-content: flex-end;
-  padding: 20px 2rem 0;
+  justify-content: center;
+  padding: 40px 2rem 0;
 }
 
-/* Mismo estilo que los links de acción en el sistema: uppercase tracking-widest font-bold text-xs */
 .ver-todos-link {
-  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
-  font-size: 0.7rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: #5B8FA8; /* steel-blue */
+  color: var(--blanco);
+  background-color: var(--petrol);
+  padding: 14px 40px;
+  border-radius: 999px;
   text-decoration: none;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: gap 0.25s ease, opacity 0.2s ease;
+  gap: 12px;
+  transition: all 0.4s ease;
+  box-shadow: 0 8px 25px rgba(0, 65, 83, 0.15);
 }
 
 .ver-todos-link:hover {
-  gap: 14px;
-  opacity: 0.75;
+  background-color: var(--turquesa);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 179, 188, 0.2);
 }
 
 .ver-todos-arrow {
-  font-size: 0.9rem;
-  transition: transform 0.25s ease;
-}
-
-.ver-todos-link:hover .ver-todos-arrow {
-  transform: translateX(4px);
+  font-size: 1.1rem;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .carrusel-section {
-    padding: 48px 0 40px;
+    padding: 60px 0 40px;
   }
 
   .carrusel-header {
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
   }
 
   .carrusel-titulo {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .carrusel-track-wrapper {
-    padding: 8px 1rem 16px;
-  }
-
-  .carrusel-footer {
-    padding: 16px 1rem 0;
-    justify-content: center;
+    padding: 20px 1.5rem 30px;
   }
 
   .carrusel-card {
-    width: 210px;
-  }
-
-  .card-imagen-container {
-    height: 260px;
+    width: 260px;
   }
 }

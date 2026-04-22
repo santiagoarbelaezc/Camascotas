@@ -7,23 +7,16 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04); /* Elevación inicial súper sutil */
+  background-color: var(--azul-oscuro);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  font-family: 'Inter', 'Poppins', sans-serif;
-  /* iPhone optimizations */
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
+  font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .navbar-wrapper.scrolled {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* Sutil aumento al scrollear */
-  background-color: rgba(255, 255, 255, 1);
+  background-color: var(--azul-oscuro);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .navbar-container {
@@ -32,12 +25,11 @@
   justify-content: space-between;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 16px 6% 14px 6%; /* Aumentado, elegante y respira */
-  transition: padding 0.4s ease;
+  padding: 20px 6%;
 }
 
 .navbar-wrapper.scrolled .navbar-container {
-  padding: 12px 6% 10px 6%; /* Se encoje un poquito al scrollear */
+  padding: 14px 6%;
 }
 
 /* =========================================================
@@ -47,22 +39,11 @@
   display: flex;
   align-items: center;
   text-decoration: none;
-  transition: opacity 0.3s ease;
 }
 
-.navbar-brand:hover {
-  opacity: 0.85;
-}
-
-.brand-logo {
-  height: 48px; /* Tamaño del logo amplio */
+  height: 52px;
   width: auto;
   object-fit: contain;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.navbar-wrapper.scrolled .brand-logo {
-  height: 42px; /* Se enlaza con el minidrop */
 }
 
 /* =========================================================
@@ -71,121 +52,72 @@
 .navbar-desktop {
   display: flex;
   align-items: center;
-  gap: 32px; /* Espacio elegante entre items */
+  gap: 40px;
 }
 
 .nav-link {
-  position: relative;
-  font-size: 1.05rem;
-  color: #333333;
+  font-size: 0.95rem;
+  color: #FFFFFF;
   font-weight: 400;
   text-decoration: none;
-  letter-spacing: 0.5px;
-  padding: 6px 0;
-  transition: color 0.3s ease;
-  cursor: pointer;
-  background: none;
-  border: none;
-  outline: none;
-}
-
-/* Subrayado elegante animado tipo Camascotas */
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0%;
-  height: 2px;
-  background-color: #5B8FA8;
-  border-radius: 2px;
-  transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  letter-spacing: 1px;
+  padding: 8px 0;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
 }
 
 .nav-link:hover {
-  color: #5B8FA8;
-}
-
-.nav-link:hover::after {
-  width: 100%;
+  color: var(--verde-principal);
 }
 
 .nav-link.active {
-  color: #5B8FA8;
-  font-weight: 500;
-}
-
-.nav-link.active::after {
-  width: 100%;
+  color: var(--verde-principal);
+  font-weight: 700;
 }
 
 .ubicacion-text {
-  color: #5B8FA8;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-}
-
-.ubicacion-text:hover {
-  color: #4A7A94;
-}
-
-.ubicacion-text::after {
-  display: none; /* No tiene línea hover */
+  color: var(--turquesa);
+  font-weight: 700;
+  font-size: 0.85rem;
 }
 
 /* DROPDOWN DESKTOP GRUPO */
-.nav-dropdown-group {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-toggle {
-  display: flex;
-  align-items: center;
-  font-family: inherit;
-}
-
 .dropdown-menu {
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(10px);
-  min-width: 200px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
-  padding: 8px 0;
+  min-width: 220px;
+  background-color: var(--azul-oscuro);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 12px 0;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  z-index: 1010;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
 }
 
-/* Mostrar dropdown al hacer hover en su contenedor */
 .nav-dropdown-group:hover .dropdown-menu {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(4px);
-}
-
-.nav-dropdown-group:hover .dropdown-arrow {
-  transform: rotate(180deg);
+  transform: translateX(-50%) translateY(10px);
 }
 
 .dropdown-item {
   display: block;
-  padding: 10px 20px;
-  color: #333333;
-  font-size: 0.95rem;
+  padding: 12px 24px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  font-weight: 400;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .dropdown-item:hover {
-  background-color: #F5F0E8; /* El color Crema local */
-  color: #5B8FA8;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--verde-principal);
+  padding-left: 30px;
 }
 
 /* LLAVE LOGIN */
@@ -193,19 +125,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #5B8FA8;
-  background-color: #F5F0E8;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  color: var(--azul-oscuro);
+  background-color: var(--verde-principal);
+  border-radius: 999px;
+  width: 42px;
+  height: 42px;
+  transition: all 0.3s ease;
 }
 
 .nav-admin-btn:hover {
-  background-color: #5B8FA8;
-  color: #ffffff;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(91, 143, 168, 0.2);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(177, 214, 22, 0.4);
 }
 
 /* =========================================================

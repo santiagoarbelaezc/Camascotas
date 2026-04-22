@@ -1,0 +1,22 @@
+.team-montage {
+  transition: all 0.5s ease;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #5B8FA8, #3b5f70);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Fallback for the cream background if tailwind classes aren't registered */
+section {
+  background-color: rgba(250, 249, 246, 0.5); /* #FAF9F6 with opacity */
+}
+
+.team-montage img {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.indicator-badge {
+    @apply absolute bottom-6 left-6 text-white bg-black/40 backdrop-blur-md px-5 py-1.5 rounded-full text-sm font-semibold border border-white/30 shadow-lg;
+}

@@ -5,25 +5,60 @@
 @tailwind utilities;
 
 :root {
+  --verde-principal: #B1D616;
+  --turquesa:        #00B3BC;
+  --azul-oscuro:     #004153;
+  --blanco:          #FFFFFF;
+  --cream:           #FAF9F6;
+  --main-bg:         var(--blanco);
+  --main-text:       var(--azul-oscuro);
+}
 
-  --steel-blue: #5B8FA8;
-  --cream: #F5F0E8;
+.theme-dark {
+  --main-bg: #1a1a1a;
+  --main-text: #ffffff;
 }
 
 body {
-  @apply bg-cream text-neutral-dark font-sans;
+  @apply font-poppins text-brand-petrol antialiased;
+  background-color: var(--main-bg);
+  color: var(--main-text);
   margin: 0;
   padding: 0;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  @apply uppercase tracking-wider text-steel-blue font-bold;
+/* Tipografía Corporativa */
+h1 {
+  @apply font-poppins font-[100] tracking-[0.3em] uppercase text-white;
+  font-size: clamp(2rem, 8vw, 5rem);
 }
 
+h2 {
+  @apply font-poppins font-bold text-brand-turquesa uppercase tracking-wider;
+}
+
+h3 {
+  @apply font-poppins font-bold text-brand-petrol uppercase;
+}
+
+p {
+  @apply font-poppins font-[400] leading-relaxed;
+}
+
+/* Componentes UI */
 .btn-primary {
-  @apply bg-steel-blue text-white px-6 py-2 rounded-lg hover:opacity-90 transition-all duration-300;
+  @apply bg-brand-lima text-brand-petrol px-10 py-3 rounded-pill font-bold hover:opacity-90 transition-all duration-300 shadow-lg shadow-brand-lima/20;
 }
 
-.glass-card {
-  @apply bg-white/30 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-xl;
+.btn-secondary {
+  @apply bg-brand-turquesa text-white px-10 py-3 rounded-pill font-bold hover:opacity-90 transition-all duration-300 shadow-lg shadow-brand-turquesa/20;
+}
+
+.card-premium {
+  @apply bg-white rounded-[40px] p-10 shadow-[0_8px_32px_rgba(0,65,83,0.10)] border border-brand-petrol/5;
+}
+
+.organic-circle {
+  @apply absolute bg-brand-turquesa/15 rounded-full blur-3xl;
 }

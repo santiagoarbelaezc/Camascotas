@@ -11,6 +11,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
   },
   {
+    path: 'asistente',
+    loadComponent: () => import('./pages/asistente/asistente.component').then(m => m.AsistenteComponent)
+  },
+  {
     path: 'nosotros',
     loadComponent: () => import('./components/nosotros/nosotros.component').then(m => m.NosotrosComponent)
   },
