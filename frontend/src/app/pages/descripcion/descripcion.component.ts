@@ -4,6 +4,7 @@ import { HeaderIndexComponent } from '../../components/header-index/header-index
 import { DescripcionProductosComponent } from '../../components/descripcion-productos/descripcion-productos.component';
 import { GridProductosComponent } from '../../components/grid-productos/grid-productos.component';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-descripcion',
@@ -19,5 +20,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
   styleUrl: './descripcion.component.css'
 })
 export class DescripcionComponent {
-
+  constructor(private loadingService: LoadingService) {
+    this.loadingService.show(800);
+  }
 }

@@ -59,19 +59,48 @@
 
 /* Mostrar logo con colores originales */
 .splash-logo img {
-  width: 280px;
+  width: 250px;
   object-fit: contain;
-  filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.2));
 }
 
 .splash-tagline {
   font-family: 'Inter', 'Poppins', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.725rem;
   letter-spacing: 0.35em;
   color: #5B8FA8;
   text-transform: uppercase;
   font-weight: 600;
   margin: 0;
+}
+
+/* ── BARRA DE CARGA MINIMALISTA ── */
+.splash-progress-wrap {
+  width: 100%;
+  max-width: 320px; /* Un poco más angosto para armonizar con el logo */
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+  animation: logoEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+
+.splash-progress-bar {
+  position: absolute;
+  inset: 0;
+  background: var(--verde-principal, #B1D616);
+  border-radius: 99px;
+  width: 100%;
+  transform: translateX(-100%);
+  animation: splashLoading 2.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  box-shadow: 0 0 15px rgba(177, 214, 22, 0.4);
+}
+
+@keyframes splashLoading {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(-30%); }
+  100% { transform: translateX(0%); }
 }
 
 /* ======================================================

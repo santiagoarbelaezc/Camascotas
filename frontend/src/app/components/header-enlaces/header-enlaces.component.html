@@ -1,5 +1,14 @@
 <!-- Carrusel Hero para Móvil (Visible solo en pantallas pequeñas) -->
 <div class="hero-carousel-mobile font-poppins">
+  <!-- Brand Header for Mobile landing -->
+  <div class="mobile-brand-header">
+    <img src="assets/icons/logo.png" alt="Camascotas" class="mobile-main-logo">
+    <div class="header-text-wrap">
+      <h1 class="header-main-title">CAMASCOTAS</h1>
+      <p class="header-tagline">Mobiliario Pet Premium</p>
+    </div>
+  </div>
+
   <div class="carousel-track" [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
     <div class="carousel-slide" *ngFor="let item of items">
       <img [src]="item.img" [alt]="item.title" class="slide-img">

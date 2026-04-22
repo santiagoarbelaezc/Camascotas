@@ -9,6 +9,7 @@ import { SplashScreenComponent } from './components/splash-screen/splash-screen.
 import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { LoadingService } from './services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -32,12 +33,16 @@ export class AppComponent {
   isLoginPage = false;
   isPageLoading = false;
 
-  constructor(private router: Router) {
-    this.router.events.subscribe((event: any) => {
-      if (event instanceof NavigationStart) {
-        this.isPageLoading = true;
-      }
+  constructor(
+    private router: Router,
+    private loadingService: LoadingService
+  ) {
+    // Suscribirse al estado de carga manual
+    this.loadingService.loading$.subscribe(state => {
+      this.isPageLoading = state;
+    });
 
+    this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         const currentUrl = event.urlAfterRedirects;
         this.isAssistantMode = currentUrl.includes('/asistente');
@@ -50,11 +55,8 @@ export class AppComponent {
           document.body.classList.remove('theme-dark');
         }
 
-        // Delay artificial de 1.5s para la elegancia solicitada
-        setTimeout(() => {
-          this.isPageLoading = false;
-          window.scrollTo(0, 0); // Reset scroll on navigation end
-        }, 1500);
+        // Siempre resetear scroll al final de la navegación
+        window.scrollTo(0, 0);
       }
     });
   }
