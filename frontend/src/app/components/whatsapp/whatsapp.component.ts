@@ -2,7 +2,6 @@ import { Component, ChangeDetectorRef, ElementRef, ViewChild, AfterViewChecked }
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GeminiService, ChatMessage } from '../../services/gemini.service';
-import { ProductosService, Producto } from '../../services/productos.service';
 
 @Component({
   selector: 'app-whatsapp',
@@ -16,20 +15,13 @@ export class WhatsappComponent implements AfterViewChecked {
   userMessage = '';
   chatHistory: ChatMessage[] = [];
   isLoading = false;
-  productosData: Producto[] = [];
-  
+
   @ViewChild('chatScroll') private chatScrollContainer!: ElementRef;
 
   constructor(
     private geminiService: GeminiService,
-    private productosService: ProductosService,
     private cdr: ChangeDetectorRef
-  ) {
-    // Load products to send as context to Gemini
-    this.productosService.getProductos().subscribe(prods => {
-      this.productosData = prods;
-    });
-  }
+  ) {}
 
   ngAfterViewChecked() {
     this.scrollToBottom();
@@ -45,7 +37,6 @@ export class WhatsappComponent implements AfterViewChecked {
 
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
-    // Add initial greeting if empty
     if (this.isChatOpen && this.chatHistory.length === 0) {
       this.chatHistory.push({
         text: '¡Hola! Soy Elisa, un gusto saludarte. En Camascotas estamos listos para consentir a tu mejor amigo con muebles premium desde nuestra sede en Armenia, Quindío. ¿Buscas algo especial para tu perro o gato?',
@@ -62,15 +53,13 @@ export class WhatsappComponent implements AfterViewChecked {
     if (!this.userMessage.trim()) return;
 
     const message = this.userMessage;
-    this.userMessage = ''; // Clear input
-    
-    // Add User message
+    this.userMessage = '';
+
     this.chatHistory.push({ text: message, isBot: false });
     this.isLoading = true;
 
-    // Await response
-    const botResponse = await this.geminiService.sendMessage(message, this.chatHistory, this.productosData);
-    
+    const botResponse = await this.geminiService.sendMessage(message);
+
     this.chatHistory.push({ text: botResponse, isBot: true });
     this.isLoading = false;
     this.cdr.detectChanges();

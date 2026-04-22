@@ -1,0 +1,35 @@
+<section class="banner-container">
+  
+  <!-- Background Layers for Smooth Transitions -->
+  <div class="background-layers">
+    <div 
+      *ngFor="let val of values; let i = index"
+      class="bg-layer"
+      [class.active]="activeIndex === i"
+      [style.background-image]="'url(' + val.image + ')'">
+      <div class="overlay"></div>
+    </div>
+  </div>
+
+  <!-- Content Columns -->
+  <div class="content-wrapper">
+    <div 
+      *ngFor="let val of values; let i = index"
+      class="value-column"
+      (mouseenter)="setActive(i)"
+      [class.active-column]="activeIndex === i">
+      
+      <div class="text-content">
+        <p class="subtitle">{{ val.subtitle }}</p>
+        <h2 class="title">{{ val.title }}</h2>
+        <p class="description">{{ val.description }}</p>
+        
+        <!-- Optional Button for the active section -->
+        <div class="action-wrap" [class.show]="activeIndex === i && i === 1">
+          <a routerLink="/nosotros" class="btn-outline">CONOCE MÁS</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const envFile = `export const environment = {
   production: ${process.env.NODE_ENV === 'production' ? 'true' : 'false'},
-  geminiApiKey: '${process.env.GEMINI_API_KEY || ''}'
+  apiUrl: '${process.env.API_URL || 'http://localhost:8000'}'
 };
 `;
 

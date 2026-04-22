@@ -1,0 +1,64 @@
+<section class="carrusel-section">
+
+  <!-- Header with title and tabs -->
+  <div class="carrusel-header">
+    <div class="carrusel-titulo-wrap">
+      <h2 class="carrusel-titulo">{{ titulo }}</h2>
+      <p class="carrusel-subtitulo">{{ subtitulo }}</p>
+    </div>
+
+    <div class="carrusel-tabs">
+      <button
+        *ngFor="let tab of tabs"
+        class="tab-btn"
+        [class.tab-activo]="tabActivo === tab"
+        (click)="setTab(tab)">
+        {{ tab }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Cards Scroll Track -->
+  <div class="carrusel-track-wrapper">
+    <div class="carrusel-track">
+      <a
+        *ngFor="let item of itemsFiltrados"
+        [routerLink]="['/productos', item.id]"
+        class="carrusel-card">
+
+        <!-- Image Reveal Container -->
+        <div class="card-imagen-container">
+          <img [src]="item.imagen" [alt]="item.nombre" class="card-img card-img-base" />
+          <img [src]="item.imagenHover" [alt]="item.nombre + ' hover'" class="card-img card-img-hover" />
+          <div class="card-overlay"></div>
+          <div class="card-badge-nuevo">Nuevo</div>
+        </div>
+
+        <!-- Card Info -->
+        <div class="card-info">
+          <p class="card-nombre">{{ item.nombre }}</p>
+          <div class="card-precio-row">
+            <span *ngIf="item.desde" class="card-desde">— Desde</span>
+            <span class="card-precio">{{ formatPrecio(item.precio) }}</span>
+          </div>
+          <div class="card-colores">
+            <span
+              *ngFor="let color of item.colores"
+              class="color-dot"
+              [style.background-color]="color">
+            </span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Ver todos link -->
+  <div class="carrusel-footer">
+    <a routerLink="/productos" class="ver-todos-link">
+      Ver todos los productos
+      <span class="ver-todos-arrow">→</span>
+    </a>
+  </div>
+
+</section>

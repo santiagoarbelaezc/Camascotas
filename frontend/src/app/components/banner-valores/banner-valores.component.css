@@ -1,0 +1,176 @@
+/* ===================================================
+   BANNER VALORES — Camascotas
+   Interactive background transitions on hover.
+   - Font: Inter (Sans-serif)
+   - Layout: 3 Columns
+   - Animation: Overlapping background cross-fade
+=================================================== */
+
+.banner-container {
+  position: relative;
+  width: 100%;
+  height: 600px; /* Altura generosa para impacto visual */
+  overflow: hidden;
+  display: flex;
+  background: #1a1a1a;
+}
+
+/* ===== BACKGROUND LAYERS ===== */
+.background-layers {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1.05); /* Sutil zoom out effect when active */
+}
+
+.bg-layer.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
+}
+
+/* ===== CONTENT COLUMNS ===== */
+.content-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.value-column {
+  flex: 1;
+  padding: 80px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.value-column:first-child {
+  border-left: none;
+}
+
+/* Subtle highlight on hover section */
+.value-column:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* ===== TEXT CONTENT ===== */
+.text-content {
+  max-width: 350px;
+  transition: transform 0.5s ease;
+}
+
+.active-column .text-content {
+  transform: scale(1.05);
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 24px;
+  line-height: 1.1;
+  text-transform: lowercase; /* Matching screenshot style */
+  letter-spacing: -0.01em;
+}
+
+.title::first-letter {
+  text-transform: uppercase;
+}
+
+/* "100%" or specific keywords can be handled if needed, but styling lowercase covers it */
+
+.description {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* ===== ACTION BUTTON ===== */
+.action-wrap {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+.action-wrap.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn-outline {
+  display: inline-block;
+  padding: 12px 32px;
+  border: 1px solid #fff;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: #fff;
+  color: #1a1a1a;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .banner-container {
+    height: auto;
+    flex-direction: column;
+  }
+  
+  .content-wrapper {
+    flex-direction: column;
+  }
+
+  .value-column {
+    padding: 60px 20px;
+    border-left: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}

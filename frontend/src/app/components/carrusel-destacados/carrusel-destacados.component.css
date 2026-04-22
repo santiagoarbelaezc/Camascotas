@@ -1,0 +1,316 @@
+/* ===================================================
+   CARRUSEL DESTACADOS — Camascotas
+   Alineado al sistema de diseño global:
+   - Font: Inter (sans-serif)
+   - Colores: steel-blue #5B8FA8, cream #F5F0E8, neutral-dark #333333
+   - Layout: max-w-7xl, padding lateral consistente
+   - Headers: uppercase tracking-wider font-bold text-steel-blue
+=================================================== */
+
+/* Contenedor principal: fondo cream del sistema, padding igual a las demás secciones */
+.carrusel-section {
+  background-color: #F5F0E8; /* cream */
+  padding: 80px 0 60px;
+  overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+.carrusel-header {
+  max-width: 80rem; /* max-w-7xl */
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* Título: mismo estilo que h2 en global → uppercase tracking-wider text-steel-blue font-bold */
+.carrusel-titulo {
+  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  color: #5B8FA8; /* steel-blue */
+  text-transform: uppercase;
+  letter-spacing: 0.08em; /* tracking-wider */
+  margin: 0 0 6px;
+}
+
+/* Subtítulo: italic gray, mismo estilo que <p class="text-gray-500"> en el sistema */
+.carrusel-subtitulo {
+  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  color: #9ca3af; /* text-gray-400 */
+  margin: 0;
+  font-style: italic;
+}
+
+/* ===== TABS ===== */
+.carrusel-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1.5px solid #d4cfc7;
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em; /* tracking-widest */
+  text-transform: uppercase;
+  padding: 8px 20px 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #9ca3af;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1.5px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: #333333; /* neutral-dark */
+}
+
+.tab-activo {
+  color: #5B8FA8 !important; /* steel-blue */
+  border-bottom-color: #5B8FA8 !important;
+}
+
+/* ===== SCROLL TRACK ===== */
+.carrusel-track-wrapper {
+  max-width: 80rem;
+  margin: 0 auto;
+  overflow-x: auto;
+  padding: 8px 2rem 16px;
+  scrollbar-width: thin;
+  scrollbar-color: #5B8FA8 #e8e4de;
+  cursor: grab;
+}
+
+.carrusel-track-wrapper:active {
+  cursor: grabbing;
+}
+
+.carrusel-track-wrapper::-webkit-scrollbar {
+  height: 3px;
+}
+.carrusel-track-wrapper::-webkit-scrollbar-track {
+  background: #e8e4de;
+}
+.carrusel-track-wrapper::-webkit-scrollbar-thumb {
+  background: #5B8FA8;
+  border-radius: 4px;
+}
+
+.carrusel-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  padding-bottom: 8px;
+}
+
+/* ===== CARD ===== */
+.carrusel-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  width: 248px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* ===================================================
+   HOVER REVEAL: clip-path desliza imagen desde abajo
+=================================================== */
+.card-imagen-container {
+  position: relative;
+  width: 100%;
+  height: 310px;
+  overflow: hidden;
+  border-radius: 4px; /* esquinas sutiles, no redondeadas — estilo editorial */
+  background: #e8e4de;
+}
+
+.card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-img-base {
+  z-index: 1;
+  transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card-img-hover {
+  z-index: 2;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1.04);
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.15) 0%, transparent 55%);
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* Hover states */
+.carrusel-card:hover .card-img-base {
+  transform: scale(1.04);
+}
+
+.carrusel-card:hover .card-img-hover {
+  clip-path: inset(0% 0 0 0);
+  transform: scale(1);
+}
+
+.carrusel-card:hover .card-overlay {
+  opacity: 1;
+}
+
+/* ===== CARD INFO ===== */
+.card-info {
+  padding: 12px 2px 0;
+}
+
+/* Nombre: neutral-dark, Inter, no uppercase (es info de producto) */
+.card-nombre {
+  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #333333; /* neutral-dark */
+  margin: 0 0 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0;
+}
+
+.card-precio-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.card-desde {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.card-precio {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #5B8FA8; /* steel-blue */
+}
+
+/* Color swatches */
+.card-colores {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.color-dot:hover {
+  transform: scale(1.3);
+}
+
+/* ===== FOOTER LINK ===== */
+.carrusel-footer {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 2rem 0;
+}
+
+/* Mismo estilo que los links de acción en el sistema: uppercase tracking-widest font-bold text-xs */
+.ver-todos-link {
+  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #5B8FA8; /* steel-blue */
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: gap 0.25s ease, opacity 0.2s ease;
+}
+
+.ver-todos-link:hover {
+  gap: 14px;
+  opacity: 0.75;
+}
+
+.ver-todos-arrow {
+  font-size: 0.9rem;
+  transition: transform 0.25s ease;
+}
+
+.ver-todos-link:hover .ver-todos-arrow {
+  transform: translateX(4px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .carrusel-section {
+    padding: 48px 0 40px;
+  }
+
+  .carrusel-header {
+    padding: 0 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .carrusel-titulo {
+    font-size: 1.5rem;
+  }
+
+  .carrusel-track-wrapper {
+    padding: 8px 1rem 16px;
+  }
+
+  .carrusel-footer {
+    padding: 16px 1rem 0;
+    justify-content: center;
+  }
+
+  .carrusel-card {
+    width: 210px;
+  }
+
+  .card-imagen-container {
+    height: 260px;
+  }
+}
