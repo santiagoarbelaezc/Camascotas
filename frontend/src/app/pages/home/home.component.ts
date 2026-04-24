@@ -6,6 +6,13 @@ import { NosotrosComponent } from '../../components/nosotros/nosotros.component'
 import { MisionVisionComponent } from '../../components/mision-vision/mision-vision.component';
 import { CarruselDestacadosComponent, CarruselItem } from '../../components/carrusel-destacados/carrusel-destacados.component';
 import { BannerValoresComponent } from '../../components/banner-valores/banner-valores.component';
+import { ExplorerCategoriasComponent } from '../../components/explorer-categorias/explorer-categorias.component';
+import { BrandExperienceComponent } from '../../components/brand-experience/brand-experience.component';
+import { BannerDualHomeComponent } from '../../components/banner-dual-home/banner-dual-home.component';
+import { BrandStoryComponent } from '../../components/brand-story/brand-story.component';
+import { CustomServiceComponent } from '../../components/custom-service/custom-service.component';
+
+
 
 @Component({
   selector: 'app-home',
@@ -17,7 +24,12 @@ import { BannerValoresComponent } from '../../components/banner-valores/banner-v
     NosotrosComponent,
     MisionVisionComponent,
     CarruselDestacadosComponent,
-    BannerValoresComponent
+    BannerValoresComponent,
+    ExplorerCategoriasComponent,
+    BrandExperienceComponent,
+    BannerDualHomeComponent,
+    BrandStoryComponent,
+    CustomServiceComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -35,7 +47,7 @@ export class HomeComponent {
       colores: ['#8B7355', '#C4A882', '#6B6B6B']
     },
     {
-      id: 2,
+      id: 3,
       nombre: 'Cama Cuadrada XL',
       precio: 120000,
       desde: true,
@@ -45,7 +57,7 @@ export class HomeComponent {
       colores: ['#D4B896', '#A0856C', '#8B6914']
     },
     {
-      id: 3,
+      id: 4,
       nombre: 'Sofá Canino Elegance',
       precio: 150000,
       desde: true,
@@ -55,7 +67,7 @@ export class HomeComponent {
       colores: ['#4A4A4A', '#8B7355', '#C9B99A']
     },
     {
-      id: 4,
+      id: 6,
       nombre: 'Rascador Multilevel',
       precio: 180000,
       desde: true,
@@ -68,7 +80,7 @@ export class HomeComponent {
 
   novedadesItems: CarruselItem[] = [
     {
-      id: 5,
+      id: 7,
       nombre: 'Cuna Felina Moon',
       precio: 75000,
       desde: false,
@@ -78,7 +90,7 @@ export class HomeComponent {
       colores: ['#E8D5C4', '#D4B896', '#A89880']
     },
     {
-      id: 6,
+      id: 9,
       nombre: 'Puff Camascotas',
       precio: 110000,
       desde: false,
@@ -88,7 +100,7 @@ export class HomeComponent {
       colores: ['#6B8E9F', '#4A7A8E', '#8B7355']
     },
     {
-      id: 7,
+      id: 5,
       nombre: 'Mini Sofá Toy',
       precio: 95000,
       desde: false,
@@ -106,17 +118,6 @@ export class HomeComponent {
       imagenHover: 'assets/images/other10.jpeg',
       categoria: 'Accesorios',
       colores: ['#F5E6D3', '#E8D0B3', '#C4A882']
-    },
-    {
-      id: 9,
-      nombre: 'Colección Ortopédica',
-      precio: 135000,
-      desde: true,
-      imagen: 'assets/images/home1.jpeg',
-      imagenHover: 'assets/images/home2.jpeg',
-      categoria: 'Perros',
-      colores: ['#1a1a1a', '#5B8FA8']
     }
   ];
 }
-

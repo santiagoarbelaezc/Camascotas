@@ -1,0 +1,193 @@
+.mision-vision-wrapper {
+  padding: 100px 0;
+  background-color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+
+.container-custom {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 4%;
+}
+
+.section-tag {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--turquesa);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--azul-oscuro);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.title-accent {
+  width: 60px;
+  height: 4px;
+  background-color: var(--verde-principal);
+  border-radius: 2px;
+}
+
+.mvv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.mvv-card {
+  background: white;
+  padding: 50px 40px;
+  border-radius: 40px;
+  box-shadow: 0 20px 40px rgba(0, 65, 83, 0.05);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  border: 1px solid rgba(0, 65, 83, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.mvv-card:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 30px 60px rgba(0, 65, 83, 0.12);
+  border-color: var(--turquesa);
+}
+
+.card-icon-box {
+  width: 80px;
+  height: 80px;
+  background-color: var(--cream);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--turquesa);
+  margin-bottom: 30px;
+  transition: all 0.5s ease;
+}
+
+.mvv-card:hover .card-icon-box {
+  background-color: var(--turquesa);
+  color: white;
+  transform: rotate(10deg);
+}
+
+.mvv-card h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.8rem;
+  color: var(--azul-oscuro);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.mvv-card p {
+  color: #666;
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+
+.values-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.values-list li {
+  margin-bottom: 12px;
+  color: #666;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.values-list li::before {
+  content: '✓';
+  color: var(--verde-principal);
+  font-weight: bold;
+}
+
+.card-bg-glow {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, var(--turquesa) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mvv-card:hover .card-bg-glow {
+  opacity: 0.1;
+}
+
+.commitment-banner {
+  background: var(--azul-oscuro);
+  border-radius: 40px;
+  padding: 60px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.commitment-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('https://www.transparenttextures.com/patterns/cubes.png');
+  opacity: 0.1;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background-color: var(--verde-principal);
+  color: var(--azul-oscuro);
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.commitment-banner h4 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.commitment-banner p {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .mvv-card {
+    padding: 40px 30px;
+  }
+  .commitment-banner {
+    padding: 40px 24px;
+  }
+  .commitment-banner h4 {
+    font-size: 1.6rem;
+  }
+}

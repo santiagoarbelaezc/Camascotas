@@ -1,11 +1,5 @@
-@keyframes levitate {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
 
-.animate-levitate {
-  animation: levitate 3s ease-in-out infinite;
-}
+
 
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out;

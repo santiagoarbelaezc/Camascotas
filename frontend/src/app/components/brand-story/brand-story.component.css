@@ -1,0 +1,187 @@
+.brand-story-section {
+  padding: 120px 0;
+  background-color: white;
+  overflow: hidden;
+}
+
+.brand-story-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 4%;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* Image Styles */
+.story-image-box {
+  position: relative;
+}
+
+.image-wrapper {
+  position: relative;
+  z-index: 2;
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0, 65, 83, 0.2);
+}
+
+.main-img {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+}
+
+.experience-badge {
+  position: absolute;
+  bottom: 40px;
+  left: -30px;
+  background-color: var(--verde-principal);
+  padding: 24px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 20px 40px rgba(177, 214, 22, 0.4);
+  z-index: 3;
+}
+
+.experience-badge .years {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--azul-oscuro);
+  line-height: 1;
+}
+
+.experience-badge .text {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--azul-oscuro);
+  letter-spacing: 1px;
+}
+
+.decorative-blob {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 300px;
+  height: 300px;
+  background-color: var(--turquesa);
+  border-radius: 50%;
+  opacity: 0.05;
+  z-index: 1;
+}
+
+/* Content Styles */
+.story-tag {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--turquesa);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.story-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  color: var(--azul-oscuro);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 30px;
+}
+
+.story-p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.feature-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.feature-icon {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(177, 214, 22, 0.15);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--azul-oscuro);
+  flex-shrink: 0;
+}
+
+.feature-text h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--azul-oscuro);
+  margin-bottom: 5px;
+}
+
+.feature-text p {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.btn-story-cta {
+  padding: 18px 40px;
+  background-color: var(--azul-oscuro);
+  color: white;
+  border: none;
+  border-radius: 99px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 65, 83, 0.2);
+}
+
+.btn-story-cta:hover {
+  background-color: var(--verde-principal);
+  color: var(--azul-oscuro);
+  transform: translateY(-5px);
+}
+
+@media (max-width: 1024px) {
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  
+  .story-image-box {
+    order: 2;
+  }
+  
+  .experience-badge {
+    left: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-img {
+    height: 400px;
+  }
+  .story-title {
+    font-size: 2rem;
+  }
+}

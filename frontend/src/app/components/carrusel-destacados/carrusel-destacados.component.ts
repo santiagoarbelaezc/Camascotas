@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 export interface CarruselItem {
   id: number;
@@ -28,6 +28,8 @@ export class CarruselDestacadosComponent {
   tabs = ['Todos', 'Perros', 'Gatos', 'Accesorios'];
   tabActivo = 'Todos';
 
+  constructor(private router: Router) {}
+
   get itemsFiltrados(): CarruselItem[] {
     if (this.tabActivo === 'Todos') return this.todosLosItems;
     return this.todosLosItems.filter(i => i.categoria === this.tabActivo);
@@ -39,5 +41,10 @@ export class CarruselDestacadosComponent {
 
   formatPrecio(precio: number): string {
     return '$' + precio.toLocaleString('es-CO') + ' COP';
+  }
+
+  verProducto(item: CarruselItem) {
+    const slug = item.nombre.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+    this.router.navigate(['/producto', item.id, slug]);
   }
 }

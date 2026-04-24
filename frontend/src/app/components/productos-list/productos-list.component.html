@@ -18,26 +18,52 @@
     </button>
   </div>
 
-  <div *ngIf="!cargando && productos.length > 0" class="productos-grid">
-    <div *ngFor="let prod of productos" 
-         class="producto-card cursor-pointer" 
-         (click)="verProducto(prod)">
-      <div class="image-wrapper">
-        <img [src]="prod.imagen" [alt]="prod.nombre" loading="lazy">
-        <div class="badge" *ngIf="prod.id % 3 === 0">Nuevo</div>
-      </div>
-      <div class="card-body">
-        <h3 class="producto-nombre">{{ prod.nombre }}</h3>
-        <p class="producto-desc">{{ prod.descripcion }}</p>
-        <div class="card-footer">
-          <span class="precio">{{ formatearPrecio(prod.precio) }}</span>
-          <button class="add-btn" aria-label="Ver más">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-          </button>
+  <div *ngIf="!cargando && productos.length > 0">
+    <div class="productos-grid">
+      <div *ngFor="let prod of paginatedProducts" 
+           class="producto-card cursor-pointer" 
+           (click)="verProducto(prod)">
+        <div class="image-wrapper">
+          <img [src]="prod.imagen" [alt]="prod.nombre" loading="lazy">
+          <div class="badge" *ngIf="prod.id % 3 === 0">Nuevo</div>
+        </div>
+        <div class="card-body">
+          <h3 class="producto-nombre">{{ prod.nombre }}</h3>
+          <p class="producto-desc">{{ prod.descripcion }}</p>
+          <div class="card-footer">
+            <span class="precio">{{ formatearPrecio(prod.precio) }}</span>
+            <button class="add-btn" aria-label="Ver más">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <button class="page-nav-btn" [disabled]="currentPage === 1" (click)="setPage(currentPage - 1)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+      
+      <div class="page-numbers">
+        <button *ngFor="let page of pageNumbers" 
+                class="page-btn" 
+                [class.active]="page === currentPage" 
+                (click)="setPage(page)">
+          {{ page }}
+        </button>
+      </div>
+
+      <button class="page-nav-btn" [disabled]="currentPage === totalPages" (click)="setPage(currentPage + 1)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
     </div>
   </div>
 

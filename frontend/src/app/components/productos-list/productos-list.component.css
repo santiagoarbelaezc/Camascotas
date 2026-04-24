@@ -20,6 +20,12 @@
   }
 }
 
+@media (min-width: 1440px) {
+  .productos-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .producto-card {
   background: white;
   border-radius: 40px;
@@ -132,6 +138,71 @@
 .add-btn svg {
   width: 22px;
   height: 22px;
+}
+
+/* Pagination Styles */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 60px;
+  padding: 20px 0;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 8px;
+}
+
+.page-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #004153;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.page-btn:hover {
+  border-color: #00B3BC;
+  color: #00B3BC;
+  background: rgba(0, 179, 188, 0.05);
+}
+
+.page-btn.active {
+  background: #004153;
+  color: white;
+  border-color: #004153;
+  box-shadow: 0 4px 15px rgba(0, 65, 83, 0.2);
+}
+
+.page-nav-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  border: none;
+  background: #f1f5f9;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.page-nav-btn:hover:not(:disabled) {
+  background: #00B3BC;
+  color: white;
+  transform: scale(1.1);
+}
+
+.page-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Loader Styles */

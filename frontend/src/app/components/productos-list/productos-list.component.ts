@@ -16,6 +16,10 @@ export class ProductosListComponent implements OnInit {
   cargando = true;
   terminoBusqueda: string | null = null;
 
+  // Paginación
+  currentPage = 1;
+  itemsPerPage = 12;
+
   constructor(
     private productosService: ProductosService,
     private productoSeleccionadoService: ProductoSeleccionadoService,
@@ -26,6 +30,7 @@ export class ProductosListComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
       this.cargando = true;
+      this.currentPage = 1; // Reset a la primera página al cambiar filtros
       const catId = params['categoria_id'] ? +params['categoria_id'] : undefined;
       const subCatId = params['subcategoria_id'] ? +params['subcategoria_id'] : undefined;
       this.terminoBusqueda = params['busqueda'] || null;
@@ -48,6 +53,25 @@ export class ProductosListComponent implements OnInit {
     });
   }
 
+  get totalPages(): number {
+    return Math.ceil(this.productos.length / this.itemsPerPage);
+  }
+
+  get paginatedProducts(): Producto[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.productos.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  setPage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   normalizarTexto(str: string): string {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
@@ -57,15 +81,8 @@ export class ProductosListComponent implements OnInit {
   }
 
   verProducto(prod: Producto): void {
-    // Paso A: Guardar en el servicio
     this.productoSeleccionadoService.setProducto(prod);
-
-    // Generar slug amigable
-    const slug = prod.nombre.toLowerCase()
-      .replace(/ /g, '-')
-      .replace(/[^\w-]+/g, '');
-
-    // Paso B: Navegar instantáneamente
+    const slug = prod.nombre.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
     this.router.navigate(['/producto', prod.id, slug]);
   }
 

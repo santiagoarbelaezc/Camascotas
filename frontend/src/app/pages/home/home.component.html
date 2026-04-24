@@ -1,59 +1,14 @@
 <app-header-enlaces></app-header-enlaces>
 
-<!-- BRAND EXPERIENCE SECTION: THE CAMASCOTAS SOUL -->
-<section class="py-32 bg-brand-turquesa relative overflow-hidden flex items-center">
-  <!-- Organic Background Elements (Blobs) for depth -->
-  <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-lima/20 rounded-full blur-[120px]"></div>
-  <div class="absolute top-1/2 -right-40 w-80 h-80 bg-brand-petrol/15 rounded-full blur-[100px]"></div>
-  <div class="absolute -bottom-20 left-1/4 w-60 h-60 bg-white/10 rounded-full blur-[80px]"></div>
+<!-- BRAND EXPERIENCE SECTION (Componentizado) -->
+<app-brand-experience></app-brand-experience>
 
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-    <!-- Brand Story Text -->
-    <div class="text-white space-y-10">
-      <div class="space-y-6">
-        <span class="inline-block px-5 py-2 bg-brand-lima/20 rounded-pill text-brand-lima font-bold text-[10px] uppercase tracking-[0.4em] border border-brand-lima/30 backdrop-blur-sm">
-          Mobiliario Pet Premium
-        </span>
-        <h2 class="text-white text-5xl md:text-7xl font-poppins font-extralight leading-[1.1] animate-fade-in-up">
-          El refugio que <br> <span class="font-bold">ellos sueñan</span>
-        </h2>
-        <p class="text-xl text-white/80 font-poppins font-light max-w-lg leading-relaxed">
-          Diseño contemporáneo fabricado a mano para los miembros más especiales de tu hogar. Bienvenida a la era del confort premium.
-        </p>
-      </div>
-      
-      <div class="flex flex-col sm:flex-row gap-6 pt-4">
-        <button class="btn-primary">Ver Colección 2026</button>
-        <button class="px-10 py-3 border-2 border-white/20 text-white rounded-pill font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-3 text-sm">
-          Ver Proceso
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        </button>
-      </div>
-    </div>
+<!-- CUSTOM SERVICE: PERSONALIZACIÓN -->
+<app-custom-service></app-custom-service>
 
-    <!-- Featured Product Visual -->
-    <div class="hidden lg:flex justify-end relative">
-      <div class="absolute inset-0 m-auto w-[520px] h-[520px] border border-white/10 rounded-full animate-[spin_30s_linear_infinite]"></div>
-      
-      <div class="relative w-[480px] h-[480px] bg-brand-lima/10 rounded-huge p-12 overflow-hidden shadow-2xl border border-white/10 backdrop-blur-md">
-        <img src="assets/images/home1.jpeg" alt="Mascota en Camascotas" class="w-full h-full object-cover rounded-huge shadow-lg">
-        <!-- Floating Brand Tag -->
-        <div class="absolute bottom-10 right-10 bg-brand-petrol/90 backdrop-blur-md p-5 rounded-3xl shadow-xl flex items-center gap-4 animate-bounce-slow">
-           <div class="w-12 h-12 bg-brand-lima rounded-full flex items-center justify-center">
-             <span class="text-brand-petrol text-2xl">✨</span>
-           </div>
-           <div>
-             <div class="text-[10px] text-white/50 uppercase tracking-widest font-bold">Destacado</div>
-             <div class="text-sm font-bold text-white">Cama Nube Premium</div>
-           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- HIGHLIGHTS SECTION: FAVORITOS -->
-<div class="py-32 bg-white overflow-hidden">
+<div class="py-12 bg-white overflow-hidden">
   <app-carrusel-destacados
       [titulo]="'Nuestros Favoritos'"
       [subtitulo]="'Los muebles más amados por peluditos y sus familias'"
@@ -61,45 +16,8 @@
   </app-carrusel-destacados>
 </div>
 
-<!-- COLLECTIONS EXPLORER: CATEGORIAS -->
-<section class="relative py-32 overflow-hidden bg-white font-poppins">
-  <!-- Brand Aesthetics Decorations -->
-  <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-brand-turquesa/5 rounded-full blur-3xl"></div>
-  <div class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-72 h-72 bg-brand-lima/5 rounded-full blur-3xl"></div>
-
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-    <div class="text-center mb-20 space-y-4">
-      <span class="text-brand-turquesa font-black tracking-[0.4em] uppercase text-[10px] bg-brand-turquesa/5 px-4 py-2 rounded-pill inline-block">Nuestras Colecciones</span>
-      <h2 class="text-5xl md:text-6xl text-brand-petrol font-bold tracking-tight">
-        Explora el <span class="text-brand-turquesa">Confort</span>
-      </h2>
-      <div class="w-12 h-1 bg-brand-lima mx-auto mt-6 rounded-full"></div>
-      <p class="mt-8 text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
-        Diseño contemporáneo fabricado a mano para los rincones más especiales de tu hogar.
-      </p>
-    </div>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-16">
-      <!-- Menú Lateral -->
-      <div class="lg:col-span-1">
-        <app-menu-categorias></app-menu-categorias>
-      </div>
-      
-      <!-- Contenedor dinámico (Placeholder premium) -->
-      <div class="lg:col-span-3">
-        <div class="h-full min-h-[500px] flex items-center justify-center border-2 border-dashed border-brand-turquesa/10 rounded-huge bg-gray-50/30 backdrop-blur-sm group hover:border-brand-turquesa/30 transition-all duration-700">
-           <div class="text-center p-12 space-y-6">
-             <div class="relative w-24 h-24 mx-auto mb-4">
-               <div class="absolute inset-0 bg-brand-lima/20 rounded-full animate-ping"></div>
-               <div class="relative w-full h-full bg-brand-turquesa/5 rounded-full flex items-center justify-center text-5xl">🛋️</div>
-             </div>
-             <p class="text-brand-petrol/40 font-bold text-sm uppercase tracking-widest leading-loose">Selecciona una categoría <br> para explorar el universo Camascotas</p>
-           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- COLLECTIONS EXPLORER: CATEGORIAS (Diseño Hero Premium) -->
+<app-explorer-categorias></app-explorer-categorias>
 
 <!-- NOSOTROS: BRAND SOUL -->
 <app-nosotros></app-nosotros>
@@ -107,16 +25,27 @@
 <!-- VALORES: INTERACTIVE BANNER -->
 <app-banner-valores></app-banner-valores>
 
+
+
+
 <!-- MISION & VISION: CORE BELIEFS -->
-<section class="py-32 bg-gray-50/50 overflow-hidden">
+<section class="py-12 bg-gray-50/50 overflow-hidden">
     <app-mision-vision></app-mision-vision>
 </section>
 
 <!-- NEW RELEASES: NOVEDADES -->
-<div class="py-32 bg-white overflow-hidden">
+<div class="py-12 bg-white overflow-hidden">
   <app-carrusel-destacados
       [titulo]="'Lo Nuevo en Camascotas'"
       [subtitulo]="'Descubre nuestras últimas creaciones y lanzamientos'"
       [todosLosItems]="novedadesItems">
   </app-carrusel-destacados>
 </div>
+
+<!-- DUAL BANNER: PERROS & GATOS -->
+<app-banner-dual-home></app-banner-dual-home>
+
+<!-- BRAND STORY & CONTEXT -->
+<app-brand-story></app-brand-story>
+
+

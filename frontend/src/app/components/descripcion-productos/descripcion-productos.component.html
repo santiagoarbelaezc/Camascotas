@@ -1,9 +1,9 @@
-<div class="max-w-7xl mx-auto px-6 lg:px-8 py-12" *ngIf="producto">
+<div class="max-w-[1800px] mx-auto px-6 lg:px-8 py-12" *ngIf="producto">
     <div class="bg-white rounded-[40px] shadow-2xl shadow-brand-petrol/5 overflow-hidden border border-brand-petrol/5">
         <div class="flex flex-col lg:flex-row">
             
             <!-- Galería de Imágenes -->
-            <div class="lg:w-1/2 p-8 lg:p-16 bg-gray-50/50 flex flex-col md:flex-row gap-8">
+            <div class="lg:w-7/12 p-8 lg:p-16 bg-gray-50/50 flex flex-col md:flex-row gap-8">
                 <!-- Miniaturas -->
                 <div class="flex md:flex-col gap-4 order-2 md:order-1">
                     <div *ngFor="let i of [1,2,3]" 
@@ -35,7 +35,7 @@
             </div>
 
             <!-- Información del Producto -->
-            <div class="lg:w-1/2 p-8 lg:p-20 flex flex-col justify-center bg-white">
+            <div class="lg:w-5/12 p-8 lg:p-20 flex flex-col justify-center bg-white">
                 <nav class="flex items-center gap-3 text-[10px] font-black text-brand-turquesa uppercase tracking-[0.4em] mb-10">
                     <span class="hover:text-brand-petrol cursor-pointer transition-colors">Inicio</span>
                     <span class="text-gray-200">/</span>
@@ -68,7 +68,7 @@
                     <a [href]="generarEnlaceWhatsApp()" 
                        target="_blank"
                        class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-6 px-10 rounded-[24px] flex items-center justify-center gap-3 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-500/30 active:scale-95 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/>
                         </svg>
                         <span class="uppercase tracking-widest text-xs">Consultar Disponibilidad</span>

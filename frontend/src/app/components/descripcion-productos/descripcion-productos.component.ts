@@ -26,25 +26,32 @@ export class DescripcionProductosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Intento 1: Carga por Servicio (Navegación interna)
-    this.productoSeleccionadoService.getProducto().subscribe(prod => {
-      if (prod) {
-        this.producto = prod;
-        this.imagenPrincipal = prod.imagen;
+    // Escuchamos siempre los cambios en los parámetros de la URL
+    // Esto asegura que si navegamos de un producto a otro (desde recomendados), el componente se actualice.
+    this.route.params.subscribe(params => {
+      const id = +params['id'];
+      if (id) {
+        this.cargarProductoPorId(id);
       } else {
-        // Intento 2: Carga por URL (F5 o link externo)
-        this.route.params.subscribe(params => {
-          const id = +params['id'];
-          if (id) {
-            this.productosService.getProductos().subscribe(prods => {
-              const found = prods.find(p => p.id === id);
-              if (found) {
-                this.producto = found;
-                this.imagenPrincipal = found.imagen;
-              }
-            });
+        // Si no hay ID en URL, intentamos ver si hay uno seleccionado en el servicio (caso poco probable pero por seguridad)
+        this.productoSeleccionadoService.getProducto().subscribe(prod => {
+          if (prod) {
+            this.producto = prod;
+            this.imagenPrincipal = prod.imagen;
           }
         });
+      }
+    });
+  }
+
+  private cargarProductoPorId(id: number): void {
+    this.productosService.getProductos().subscribe(prods => {
+      const found = prods.find(p => p.id === id);
+      if (found) {
+        this.producto = found;
+        this.imagenPrincipal = found.imagen;
+        // Hacemos scroll al inicio cuando cambia el producto
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
   }

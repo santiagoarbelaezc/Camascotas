@@ -1,30 +1,25 @@
-<app-header-index></app-header-index>
+<main class="min-h-screen bg-cream relative overflow-hidden">
+    <!-- Simplified Background Decorations (No Blur) -->
+    <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-brand-turquesa/[0.02] rounded-full"></div>
+    <div class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-72 h-72 bg-brand-lima/[0.02] rounded-full"></div>
 
-<main class="pt-32 min-h-screen bg-cream relative overflow-hidden">
-    <!-- Brand Aesthetics Decorations -->
-    <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-brand-turquesa/5 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-72 h-72 bg-brand-lima/5 rounded-full blur-3xl"></div>
 
-    <div class="relative z-10 space-y-24">
+    <div class="relative z-10 space-y-24 py-24">
         <!-- Componente central de detalles -->
         <app-descripcion-productos></app-descripcion-productos>
 
         <!-- Sección de también te puede interesar -->
-        <div class="py-24 bg-white/40 backdrop-blur-sm border-y border-white/20">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-16 space-y-4">
-                    <span class="text-brand-turquesa font-black tracking-[0.4em] uppercase text-[10px] bg-brand-turquesa/5 px-4 py-2 rounded-pill inline-block">Nuestras Recomendaciones</span>
-                    <h2 class="text-4xl md:text-5xl text-brand-petrol font-bold tracking-tight">
-                        También te <span class="text-brand-turquesa">Puede Interesar</span>
-                    </h2>
-                    <div class="w-12 h-1 bg-brand-lima mx-auto mt-6 rounded-full"></div>
-                </div>
-                
-                <app-grid-productos></app-grid-productos>
+        <div class="py-24 bg-white/80 border-y border-white/20">
+            <div class="max-w-[1800px] mx-auto px-6 lg:px-8">
+                <app-carrusel-destacados
+                    [titulo]="'También te Puede Interesar'"
+                    [subtitulo]="'Completa el espacio de tu mascota con estos diseños'"
+                    [todosLosItems]="recomendadosItems">
+                </app-carrusel-destacados>
+
             </div>
         </div>
     </div>
 </main>
 
-<app-footer></app-footer>
 

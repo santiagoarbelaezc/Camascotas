@@ -58,9 +58,9 @@ export class WhatsappComponent implements AfterViewChecked {
     this.chatHistory.push({ text: message, isBot: false });
     this.isLoading = true;
 
-    const botResponse = await this.geminiService.sendMessage(message);
+    const { text } = await this.geminiService.sendMessage(message);
 
-    this.chatHistory.push({ text: botResponse, isBot: true });
+    this.chatHistory.push({ text, isBot: true });
     this.isLoading = false;
     this.cdr.detectChanges();
   }

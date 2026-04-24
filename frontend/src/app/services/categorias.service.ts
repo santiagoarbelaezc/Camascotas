@@ -9,6 +9,7 @@ export interface Subcategoria {
 export interface Categoria {
   id: number;
   nombre: string;
+  imagen: string;
   subcategorias: Subcategoria[];
 }
 
@@ -19,7 +20,8 @@ export class CategoriasService {
   private categorias: Categoria[] = [
     {
       id: 1,
-      nombre: 'Camitas Perros',
+      nombre: 'Perros',
+      imagen: 'assets/images/15.jpeg',
       subcategorias: [
         { id: 1, nombre: 'Cubos' },
         { id: 2, nombre: 'Cuadradas' },
@@ -29,7 +31,8 @@ export class CategoriasService {
     },
     {
       id: 2,
-      nombre: 'Camitas Gatos',
+      nombre: 'Gatos',
+      imagen: 'assets/images/other1.jpeg',
       subcategorias: [
         { id: 5, nombre: 'Rascadores' },
         { id: 6, nombre: 'Cunas' }
@@ -38,6 +41,7 @@ export class CategoriasService {
     {
       id: 3,
       nombre: 'Accesorios',
+      imagen: 'assets/images/other5.jpeg',
       subcategorias: [
         { id: 7, nombre: 'Comederos' },
         { id: 8, nombre: 'Puff' }

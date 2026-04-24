@@ -3,9 +3,13 @@
 
 <div class="min-h-screen flex flex-col transition-colors duration-500" [class.opacity-0]="isPageLoading">
   <!-- Header: Oculto en modo asistente y LOGIN -->
-  <app-navbar class="hidden md:block" *ngIf="!isAssistantMode && !isLoginPage"></app-navbar>
+  <app-navbar *ngIf="!isAssistantMode && !isLoginPage"></app-navbar>
   
-  <main class="flex-grow" [class.pb-24]="!isAssistantMode && !isLoginPage" [class.md:pb-0]="isAssistantMode || isLoginPage">
+  <main class="flex-grow" 
+        [class.pt-[72px]]="!isAssistantMode && !isLoginPage" 
+        [class.md:pt-[126px]]="!isAssistantMode && !isLoginPage"
+        [class.pb-24]="!isAssistantMode && !isLoginPage" 
+        [class.md:pb-0]="isAssistantMode || isLoginPage">
     <router-outlet></router-outlet>
   </main>
 

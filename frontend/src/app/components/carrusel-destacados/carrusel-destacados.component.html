@@ -21,9 +21,9 @@
   <!-- Cards Scroll Track -->
   <div class="carrusel-track-wrapper">
     <div class="carrusel-track">
-      <a
+      <div
         *ngFor="let item of itemsFiltrados"
-        [routerLink]="['/productos', item.id]"
+        (click)="verProducto(item)"
         class="carrusel-card">
 
         <!-- Image Reveal Container -->
@@ -49,7 +49,7 @@
             </span>
           </div>
         </div>
-      </a>
+      </div>
     </div>
   </div>
 

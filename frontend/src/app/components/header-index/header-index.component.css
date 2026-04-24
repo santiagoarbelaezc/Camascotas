@@ -41,9 +41,10 @@
   text-decoration: none;
 }
 .brand-logo {
-  height: 52px;
+  height: 62px; /* Reduced from 72px */
   width: auto;
   object-fit: contain;
+  transition: height 0.4s ease;
 }
 
 /* =========================================================
@@ -234,7 +235,7 @@
 }
 
 .mobile-brand-logo {
-  height: 40px;
+  height: 60px; /* Increased from 40px */
   width: auto;
   object-fit: contain;
 }
@@ -475,9 +476,9 @@
     padding: 8px 16px;
   }
   .brand-logo {
-    height: 40px;
+    height: 48px; /* Reduced from 55px */
   }
   .navbar-wrapper.scrolled .brand-logo {
-    height: 36px;
+    height: 42px; /* Reduced from 48px */
   }
 }

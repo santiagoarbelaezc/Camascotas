@@ -2,14 +2,43 @@
 use Controllers\AssistantController;
 
 $method = $_SERVER['REQUEST_METHOD'];
+// URL: /api/chat        → POST (enviar mensaje)
+// URL: /api/chat/history → GET (obtener historial)
+// URL: /api/chat/clear  → DELETE (limpiar sesión)
 
-switch ($method) {
-    case 'POST':
-        AssistantController::chat();
+$action = $uriSegments[2] ?? '';
+
+if ($method === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+switch ($action) {
+    case 'history':
+        if ($method === 'GET') {
+            AssistantController::history();
+        } else {
+            http_response_code(405);
+            echo json_encode(['error' => 'Method not allowed']);
+        }
+        break;
+
+    case 'clear':
+        if ($method === 'DELETE') {
+            AssistantController::clear();
+        } else {
+            http_response_code(405);
+            echo json_encode(['error' => 'Method not allowed']);
+        }
         break;
 
     default:
-        http_response_code(405);
-        echo json_encode(["error" => "Method not allowed"]);
+        // /api/chat  (POST)
+        if ($method === 'POST') {
+            AssistantController::chat();
+        } else {
+            http_response_code(405);
+            echo json_encode(['error' => 'Method not allowed']);
+        }
         break;
 }

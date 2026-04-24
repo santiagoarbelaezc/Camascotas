@@ -1,26 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderIndexComponent } from '../../components/header-index/header-index.component';
 import { DescripcionProductosComponent } from '../../components/descripcion-productos/descripcion-productos.component';
-import { GridProductosComponent } from '../../components/grid-productos/grid-productos.component';
-import { FooterComponent } from '../../components/footer/footer.component';
+import { CarruselDestacadosComponent, CarruselItem } from '../../components/carrusel-destacados/carrusel-destacados.component';
 import { LoadingService } from '../../services/loading.service';
+import { ProductosService } from '../../services/productos.service';
 
 @Component({
   selector: 'app-descripcion',
   standalone: true,
   imports: [
     CommonModule, 
-    HeaderIndexComponent, 
     DescripcionProductosComponent, 
-    GridProductosComponent, 
-    FooterComponent
+    CarruselDestacadosComponent
   ],
   templateUrl: './descripcion.component.html',
   styleUrl: './descripcion.component.css'
 })
-export class DescripcionComponent {
-  constructor(private loadingService: LoadingService) {
+export class DescripcionComponent implements OnInit {
+  recomendadosItems: CarruselItem[] = [];
+
+  constructor(
+    private loadingService: LoadingService,
+    private productosService: ProductosService
+  ) {
     this.loadingService.show(800);
+  }
+
+  ngOnInit(): void {
+    // Cargamos algunos productos para el carrusel de recomendados
+    this.productosService.getProductos().subscribe(prods => {
+      this.recomendadosItems = prods.slice(0, 6).map(p => ({
+        id: p.id,
+        nombre: p.nombre,
+        precio: p.precio,
+        desde: false,
+        imagen: p.imagen,
+        imagenHover: p.imagen, // Por ahora igual
+        categoria: 'Muebles',
+        colores: ['#004153', '#00B3BC']
+      }));
+    });
   }
 }

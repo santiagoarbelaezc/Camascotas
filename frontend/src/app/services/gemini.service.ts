@@ -4,54 +4,108 @@ import { environment } from '../../environments/environment';
 export interface ChatMessage {
   text: string;
   isBot: boolean;
+  created_at?: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface ChatApiResponse {
+  status: string;
+  message: string;
+  data: {
+    response: string;
+    redirect: string | null;
+    session_id: string;
+  };
+}
+
+export interface HistoryApiResponse {
+  status: string;
+  data: {
+    history: ChatMessage[];
+  };
+}
+
+@Injectable({ providedIn: 'root' })
 export class GeminiService {
-  private sessionId: string | null = null;
+
+  private sessionId: string;
 
   constructor() {
-    this.sessionId = localStorage.getItem('camascotas_chat_session');
+    // Recuperar o generar una session_id persistente
+    const stored = localStorage.getItem('camascotas_chat_session');
+    this.sessionId = stored ?? this.generateSessionId();
+    localStorage.setItem('camascotas_chat_session', this.sessionId);
   }
 
-  async sendMessage(message: string): Promise<string> {
+  /** Enviar un mensaje y recibir respuesta */
+  async sendMessage(message: string): Promise<{ text: string; redirect: string | null }> {
     try {
-      const body: any = { message };
-
-      if (this.sessionId) {
-        body.session_id = this.sessionId;
-      }
-
-      const response = await fetch(`${environment.apiUrl}/api/chat`, {
+      const res = await fetch(`${environment.apiUrl}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify({ message, session_id: this.sessionId })
       });
 
-      if (!response.ok) {
-        console.error('Error del servidor:', await response.text());
-        return 'Lo siento, en este momento no puedo conectarme al servicio. ¿Podrías intentar nuevamente o escribirnos por WhatsApp?';
+      if (!res.ok) {
+        console.error('Error del servidor:', await res.text());
+        return {
+          text: 'Lo siento, en este momento no puedo conectarme al servicio. ¿Podrías intentar nuevamente o escribirnos por WhatsApp?',
+          redirect: null
+        };
       }
 
-      const data = await response.json();
+      const data: ChatApiResponse = await res.json();
 
+      // Actualizar session_id por si el servidor generó uno nuevo
       if (data.data?.session_id) {
         this.sessionId = data.data.session_id;
-        localStorage.setItem('camascotas_chat_session', this.sessionId!);
+        localStorage.setItem('camascotas_chat_session', this.sessionId);
       }
 
-      return data.data?.response ?? 'Mmm, no estoy seguro de cómo responder a eso. ¿Hay algo en lo que pueda ayudarte de nuestra tienda?';
+      return {
+        text: data.data?.response ?? '¿Hay algo más en lo que pueda ayudarte?',
+        redirect: data.data?.redirect ?? null
+      };
 
-    } catch (error) {
-      console.error('Error en GeminiService:', error);
-      return 'Lo siento, he tenido un problema interno. Escríbenos por WhatsApp para que un asesor te ayude de inmediato.';
+    } catch (err) {
+      console.error('Error en GeminiService:', err);
+      return {
+        text: 'Lo siento, tuve un problema interno. Escríbenos por WhatsApp para que un asesor te ayude.',
+        redirect: null
+      };
     }
   }
 
-  clearSession(): void {
-    this.sessionId = null;
-    localStorage.removeItem('camascotas_chat_session');
+  /** Cargar historial de la sesión actual */
+  async getHistory(): Promise<ChatMessage[]> {
+    try {
+      const res = await fetch(
+        `${environment.apiUrl}/api/chat/history?session_id=${this.sessionId}`
+      );
+      if (!res.ok) return [];
+
+      const data: HistoryApiResponse = await res.json();
+      return data.data?.history ?? [];
+    } catch {
+      return [];
+    }
+  }
+
+  /** Limpiar conversación */
+  async clearSession(): Promise<void> {
+    try {
+      await fetch(`${environment.apiUrl}/api/chat/clear`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: this.sessionId })
+      });
+    } catch { /* silencioso */ }
+
+    // Generar nueva sesión local
+    this.sessionId = this.generateSessionId();
+    localStorage.setItem('camascotas_chat_session', this.sessionId);
+  }
+
+  private generateSessionId(): string {
+    return 'sess_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
   }
 }

@@ -1,0 +1,138 @@
+.custom-service-section {
+  padding: 100px 0;
+  background-color: var(--cream);
+}
+
+.custom-container {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 4%;
+}
+
+.custom-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 100px;
+  align-items: center;
+}
+
+.custom-image {
+  position: relative;
+}
+
+.image-inner {
+  position: relative;
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 65, 83, 0.1);
+  aspect-ratio: 1774 / 887;
+}
+
+.image-inner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.glow-effect {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, var(--turquesa) 0%, transparent 70%);
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.custom-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--turquesa);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.custom-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--azul-oscuro);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 30px;
+}
+
+.green-text {
+  color: var(--verde-principal);
+}
+
+.custom-p {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+.whatsapp-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  background-color: #25D366;
+  color: white;
+  padding: 20px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 15px 30px rgba(37, 211, 102, 0.2);
+}
+
+.whatsapp-cta:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(37, 211, 102, 0.4);
+}
+
+.icon-circle {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-line {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.bot-line {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 1024px) {
+  .custom-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  
+  .custom-image {
+    order: 2;
+  }
+  
+  .custom-text {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

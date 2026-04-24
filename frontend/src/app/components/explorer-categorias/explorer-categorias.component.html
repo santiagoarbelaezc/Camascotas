@@ -1,0 +1,65 @@
+<section class="explorer-hero-section">
+  
+  <!-- Organic Background Blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="explorer-hero-grid">
+    
+    <!-- LEFT SIDE: CONTROLS & INFO -->
+    <div class="explorer-info-side">
+      <div class="category-selector-pills">
+        <button 
+          *ngFor="let cat of categorias" 
+          (click)="toggleCategoria(cat)"
+          class="cat-pill"
+          [class.active]="categoriaSeleccionadaId === cat.id">
+          {{ cat.nombre }}
+        </button>
+      </div>
+
+      <!-- ACTIVE STATE CONTENT -->
+      <div class="active-category-content" *ngIf="categoriaActiva">
+        <div class="content-header" [style.animation]="'fade-in-up 0.8s ease-out'">
+          <span class="badge">Explora la Colección</span>
+          <h2 class="cat-title">{{ categoriaActiva.nombre }}</h2>
+          <p class="cat-desc">
+            Diseños especializados para el máximo confort de tu mascota. 
+            Calidad artesanal con materiales premium.
+          </p>
+        </div>
+
+        <div class="subcategories-pills-grid">
+          <button 
+            *ngFor="let sub of categoriaActiva.subcategorias; let i = index" 
+            class="sub-pill"
+            [class.active]="subcategoriaSeleccionadaId === sub.id"
+            [style.animation-delay]="i * 0.1 + 's'"
+            (click)="seleccionarSubcategoria(sub.id)">
+            {{ sub.nombre }}
+          </button>
+        </div>
+
+        <div class="action-footer">
+          <button (click)="verTodo()" class="btn-primary-white">
+            Ver Todo en {{ categoriaActiva.nombre }}
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE: VISUAL EXPERIENCE -->
+    <div class="explorer-visual-side">
+      <!-- VISUAL FOR ACTIVE STATE -->
+      <div class="visual-container" *ngIf="categoriaActiva">
+        <div class="rotating-ring"></div>
+        <div class="main-image-wrapper">
+          <img [src]="categoriaActiva.imagen" [alt]="categoriaActiva.nombre" class="main-cat-img">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

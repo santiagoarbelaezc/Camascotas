@@ -1,9 +1,9 @@
 .section {
   display: none;
   /* Oculto por defecto, se activa en media query */
-  width: 100vw;
-  height: calc(100vh - 110px);
-  margin-top: 110px;
+  width: 100%;
+  min-height: calc(100vh - 126px);
+  margin-top: 0;
   align-items: stretch;
   overflow: hidden;
   background: var(--azul-oscuro);
