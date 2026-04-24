@@ -1,22 +1,22 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
     @for (producto of productos; track producto.id) {
-        <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col">
+        <div class="group bg-white rounded-[40px] overflow-hidden shadow-2xl shadow-brand-petrol/5 hover:shadow-brand-petrol/20 transition-all duration-700 border border-brand-petrol/5 flex flex-col transform hover:-translate-y-4">
             <!-- Image Container -->
-            <div class="relative aspect-square overflow-hidden bg-gray-50">
+            <div class="relative aspect-[4/5] overflow-hidden bg-gray-50/50">
                 <img [src]="producto.imagen" [alt]="producto.nombre" 
-                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-out">
                 
                 <!-- Badge -->
-                <div class="absolute top-4 left-4">
-                    <span class="bg-steel-blue/90 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold">
+                <div class="absolute top-6 left-6">
+                    <span class="bg-brand-turquesa text-white px-4 py-2 rounded-pill text-[9px] uppercase tracking-[0.3em] font-black border border-white/20 backdrop-blur-md shadow-lg shadow-brand-turquesa/20">
                         {{ producto.tipo }}
                     </span>
                 </div>
 
                 <!-- Hover Overlay -->
-                <div class="absolute inset-0 bg-neutral-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button class="bg-white text-neutral-dark p-4 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:bg-steel-blue hover:text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="absolute inset-0 bg-brand-petrol/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center backdrop-blur-[2px]">
+                    <button class="bg-white text-brand-petrol p-5 rounded-full shadow-2xl transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 hover:bg-brand-turquesa hover:text-white group/btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover/btn:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
@@ -25,28 +25,31 @@
             </div>
 
             <!-- Content -->
-            <div class="p-8 flex-grow flex flex-col">
-                <div class="mb-4">
-                    <h3 class="text-xl text-neutral-dark normal-case tracking-tight group-hover:text-steel-blue transition-colors">
+            <div class="p-10 flex-grow flex flex-col bg-white">
+                <div class="mb-6 space-y-3">
+                    <h3 class="text-2xl text-brand-petrol font-bold tracking-tight group-hover:text-brand-turquesa transition-colors duration-300">
                         {{ producto.nombre }}
                     </h3>
-                    <p class="text-gray-400 text-sm mt-2 line-clamp-2 italic">
+                    <p class="text-gray-400 text-sm italic font-light line-clamp-2">
                         "{{ producto.descripcion }}"
                     </p>
                 </div>
                 
-                <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-6">
-                    <span class="text-2xl font-bold text-steel-blue">
+                <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-8">
+                    <span class="text-3xl font-extralight text-brand-turquesa">
                         {{ producto.precio | currency:'USD':'symbol':'1.0-0' }}
                     </span>
-                    <button class="text-neutral-dark font-bold text-xs uppercase tracking-widest hover:text-steel-blue transition-colors flex items-center gap-2">
-                        Añadir 
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
+                    <button class="text-brand-petrol font-black text-[10px] uppercase tracking-[0.4em] hover:text-brand-turquesa transition-all flex items-center gap-3 group/add">
+                        Ver Detalles
+                        <div class="w-8 h-8 rounded-full bg-brand-lima/10 flex items-center justify-center group-hover/add:bg-brand-lima group-hover/add:text-brand-petrol transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </div>
                     </button>
                 </div>
             </div>
         </div>
     }
 </div>
+
