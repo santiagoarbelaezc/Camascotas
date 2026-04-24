@@ -14,6 +14,7 @@ import { ProductoSeleccionadoService } from '../../services/producto-seleccionad
 export class ProductosListComponent implements OnInit {
   productos: Producto[] = [];
   cargando = true;
+  terminoBusqueda: string | null = null;
 
   constructor(
     private productosService: ProductosService,
@@ -23,19 +24,36 @@ export class ProductosListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params: any) => {
       this.cargando = true;
       const catId = params['categoria_id'] ? +params['categoria_id'] : undefined;
       const subCatId = params['subcategoria_id'] ? +params['subcategoria_id'] : undefined;
+      this.terminoBusqueda = params['busqueda'] || null;
 
       // Simulamos un retraso para mostrar elegancia en la carga
       setTimeout(() => {
-        this.productosService.getProductos(catId, subCatId).subscribe(prods => {
-          this.productos = prods;
+        this.productosService.getProductos(catId, subCatId).subscribe((prods: Producto[]) => {
+          if (this.terminoBusqueda) {
+            const termNormalizado = this.normalizarTexto(this.terminoBusqueda);
+            this.productos = prods.filter(p => 
+              this.normalizarTexto(p.nombre).includes(termNormalizado) ||
+              this.normalizarTexto(p.descripcion).includes(termNormalizado)
+            );
+          } else {
+            this.productos = prods;
+          }
           this.cargando = false;
         });
       }, 300);
     });
+  }
+
+  normalizarTexto(str: string): string {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+
+  limpiarBusqueda() {
+    this.router.navigate(['/productos'], { queryParams: { busqueda: null }, queryParamsHandling: 'merge' });
   }
 
   verProducto(prod: Producto): void {

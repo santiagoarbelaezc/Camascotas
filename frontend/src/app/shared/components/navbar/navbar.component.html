@@ -6,6 +6,31 @@
       <img src="assets/icons/logo2.png" alt="Camascotas Logo" class="brand-logo" />
     </a>
 
+    <!-- Buscador Desktop -->
+    <div class="search-container hidden md:block">
+      <div class="search-input-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="search-icon"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="onSearchInput()" 
+          (keyup.enter)="performSearch()"
+          (focus)="showSuggestions = suggestions.length > 0"
+          placeholder="Busca camas, rascadores..."
+          class="search-input">
+        <button *ngIf="searchTerm" (click)="clearSearch()" class="clear-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+      
+      <!-- Suggestions Dropdown -->
+      <div *ngIf="showSuggestions" class="suggestions-dropdown" (mouseleave)="showSuggestions = false">
+        <div *ngFor="let s of suggestions" (click)="selectSuggestion(s)" class="suggestion-item">
+          {{ s }}
+        </div>
+      </div>
+    </div>
+
     <!-- Lado Derecho: ENLACES DESKTOP -->
     <nav class="navbar-desktop">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">Inicio</a>
@@ -80,6 +105,26 @@
   </div>
   
   <div class="mobile-nav-links">
+    <!-- Buscador Mobile -->
+    <div class="mobile-search-container">
+      <div class="search-input-wrapper">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="onSearchInput()" 
+          (keyup.enter)="performSearch()"
+          placeholder="Buscar productos..."
+          class="mobile-search-input">
+        <button (click)="performSearch()" class="mobile-search-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+        </button>
+      </div>
+      <div *ngIf="showSuggestions" class="mobile-suggestions">
+        <div *ngFor="let s of suggestions" (click)="selectSuggestion(s)" class="suggestion-item">
+          {{ s }}
+        </div>
+      </div>
+    </div>
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="navigateAndClose()">Inicio</a>
     <a routerLink="/productos" routerLinkActive="active" (click)="navigateAndClose()">Productos</a>
     <a routerLink="/contacto" routerLinkActive="active" (click)="navigateAndClose()">Contáctanos</a>
