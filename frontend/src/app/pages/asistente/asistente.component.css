@@ -140,6 +140,45 @@
   margin-bottom: 8px;
 }
 
+.mascot-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  animation: fadeUp 0.8s ease-out;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn span {
+  font-size: 1rem;
+}
+
+.action-btn:hover {
+  background: var(--turquesa);
+  border-color: var(--turquesa);
+  color: var(--bg);
+  transform: scale(1.05);
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
 .quick-prompts {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -296,4 +335,26 @@
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* MOBILE ADJUSTMENTS */
+@media (max-width: 768px) {
+  .chat-shell {
+    background: #000000 !important;
+  }
+  
+  .chat-header, .chat-footer {
+    background: #000000 !important;
+    border-color: rgba(255,255,255,0.1) !important;
+  }
+
+  .mascot-wrap {
+    width: 220px;
+    height: 220px;
+  }
+
+  .bubble-bot, .welcome-bubble, .quick-btn, .action-btn {
+    background: #111111 !important;
+    border-color: rgba(255,255,255,0.05) !important;
+  }
 }

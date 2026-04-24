@@ -172,14 +172,14 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  transition: flex 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: flex 0.9s cubic-bezier(0.25, 1, 0.5, 1);
   min-width: 0;
   border-right: 1px solid rgba(255, 255, 255, 0.05);
   cursor: pointer;
 }
 
 .box:hover {
-  flex: 2.5 1 0%;
+  flex: 1.8 1 0%;
 }
 
 .bg-img {
@@ -191,8 +191,8 @@
 }
 
 .box:hover .bg-img {
-  transform: scale(1.1);
-  filter: brightness(1.05);
+  transform: scale(1.05);
+  filter: brightness(1);
 }
 
 .box::after {
@@ -206,7 +206,7 @@
 }
 
 .box:hover::after {
-  background-color: rgba(0, 65, 83, 0.65);
+  background-color: rgba(0, 65, 83, 0.5);
 }
 
 .content {
@@ -253,7 +253,7 @@
 
 .box:hover .card-logo {
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .btn {

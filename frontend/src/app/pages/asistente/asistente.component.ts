@@ -71,10 +71,22 @@ export class AsistenteComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  playMascotVideo(videoName: string): void {
+    this.currentVideo = `assets/videos/${videoName}`;
+    this.isPlaying = true;
+  }
+
+  onVideoEnded(): void {
+    this.isPlaying = false;
+    this.currentVideo = null;
+  }
+
   async clearChat(): Promise<void> {
     await this.geminiService.clearSession();
     this.messages = [];
     this.showMascot = true;
+    this.isPlaying = false;
+    this.currentVideo = null;
   }
 
   onEnter(event: KeyboardEvent): void {

@@ -26,7 +26,24 @@
     <!-- Mascot Welcome -->
     <div class="mascot-welcome" *ngIf="showMascot">
       <div class="mascot-wrap">
-        <img [src]="idleImage" alt="Husky" class="mascot-img">
+        <video *ngIf="isPlaying" [src]="currentVideo" autoplay muted (ended)="onVideoEnded()" playsinline class="mascot-img"></video>
+        <img *ngIf="!isPlaying" [src]="idleImage" alt="Husky" class="mascot-img">
+      </div>
+
+      <!-- Husky Action Buttons (Mobile Focused) -->
+      <div class="mascot-actions">
+        <button (click)="playMascotVideo('video-husky6.mp4')" class="action-btn">
+          <span>🦴</span> Aullar
+        </button>
+        <button (click)="playMascotVideo('video-husky11.mp4')" class="action-btn">
+          <span>🎭</span> Bailar
+        </button>
+        <button (click)="playMascotVideo('video-husky4.mp4')" class="action-btn">
+          <span>🎾</span> Jugar
+        </button>
+        <button (click)="playMascotVideo('video-husky14.mp4')" class="action-btn">
+          <span>✨</span> Truco
+        </button>
       </div>
       <div class="welcome-bubble">
         <span class="welcome-emoji">🐾</span>

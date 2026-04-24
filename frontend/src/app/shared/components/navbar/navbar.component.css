@@ -291,6 +291,58 @@
   border-top: 1px solid rgba(255,255,255,0.05);
 }
 
+/* MOBILE DROPDOWN - GRUPO */
+.mobile-dropdown-group {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.mobile-dropdown-toggle {
+  width: 100%;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.mobile-dropdown-toggle:active {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mobile-dropdown-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mobile-dropdown-menu.abierto {
+  max-height: 300px; /* Suficiente para los items */
+  padding-bottom: 10px;
+}
+
+.mobile-dropdown-item {
+  display: block;
+  padding: 14px 48px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.mobile-dropdown-item:active {
+  color: var(--verde-principal);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
 /* INFO BAR */
 .info-bar {
   position: absolute;
