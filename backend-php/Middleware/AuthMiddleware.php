@@ -1,27 +1,37 @@
 <?php
-namespace Middleware;
 
+declare(strict_types=1);
+
+namespace App\Middleware;
+
+use App\Utils\Response;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Exception;
-use Utils\ResponseHandler;
 
 class AuthMiddleware {
-    public static function verifyToken() {
-        $headers = getallheaders();
-        $authHeader = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+    public static function verifyToken(): array {
+        $headers    = getallheaders();
+        $authHeader = $headers['Authorization'] ?? $headers['authorization'] ?? null;
 
-        if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
-            $jwt = $matches[1];
-            try {
-                $key = $_ENV['JWT_SECRET'];
-                $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
-                return $decoded;
-            } catch (Exception $e) {
-                ResponseHandler::sendError(401, "Invalid token: " . $e->getMessage());
-            }
+        if (!$authHeader) {
+            Response::error('Token no proporcionado', 401);
         }
 
-        ResponseHandler::sendError(401, "Authorization header not found or invalid.");
+        $parts = explode(' ', $authHeader);
+        if (count($parts) !== 2 || $parts[0] !== 'Bearer') {
+            Response::error('Formato de token inválido. Use: Bearer <token>', 400);
+        }
+
+        $token = $parts[1];
+        $key   = $_ENV['JWT_SECRET'] ?? '';
+
+        try {
+            $decoded = JWT::decode($token, new Key($key, 'HS256'));
+            return (array) $decoded;
+        } catch (\Exception $e) {
+            Response::error('Token inválido o expirado', 403, $e->getMessage());
+        }
+
+        return [];
     }
 }
