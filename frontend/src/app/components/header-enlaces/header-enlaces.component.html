@@ -9,14 +9,16 @@
     </div>
   </div>
 
-  <div class="carousel-track" [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
-    <div class="carousel-slide" *ngFor="let item of items">
-      <img [src]="item.img" [alt]="item.title" class="slide-img">
-      <div class="slide-overlay">
-        <div class="slide-content">
-          <h2 class="slide-title">{{ item.title }}</h2>
-          <p class="slide-subtitle text-center px-6">{{ item.subtitle }}</p>
-          <a [routerLink]="item.link" class="slide-cta">Descubrir</a>
+  <div class="carousel-track-container" #scrollContainer (scroll)="onScroll($event)">
+    <div class="carousel-track">
+      <div class="carousel-slide" *ngFor="let item of items; let i = index" [id]="'slide-' + i">
+        <img [src]="item.img" [alt]="item.title" class="slide-img">
+        <div class="slide-overlay">
+          <div class="slide-content">
+            <h2 class="slide-title">{{ item.title }}</h2>
+            <p class="slide-subtitle text-center px-6">{{ item.subtitle }}</p>
+            <a [routerLink]="item.link" class="slide-cta">Descubrir</a>
+          </div>
         </div>
       </div>
     </div>
@@ -25,7 +27,7 @@
   <!-- Indicadores (Dots) -->
   <div class="carousel-dots">
     <button *ngFor="let dot of items; let i = index" 
-            (click)="setSlide(i)" 
+            (click)="scrollToSlide(i)" 
             [class.active]="i === currentSlide"
             class="dot-btn"></button>
   </div>

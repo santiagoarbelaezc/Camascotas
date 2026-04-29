@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Layout Base ─────────────────────────────────────────────────────────── */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f0f4f8;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: 260px;
+  background: #004153;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+  width: 72px;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar.collapsed .brand-name {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+/* ── Nav Items ───────────────────────────────────────────────────────────── */
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.nav-item.active {
+  background: #B1D616;
+  color: #004153;
+  font-weight: 700;
+}
+
+/* ── Sidebar Footer ──────────────────────────────────────────────────────── */
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 16px 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #00B3BC;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.user-name {
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.7rem;
+  text-transform: capitalize;
+}
+
+.logout-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 100, 100, 0.2);
+  color: #ff6b6b;
+}
+
+/* ── Main Content ────────────────────────────────────────────────────────── */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 28px;
+  background: white;
+  border-bottom: 1px solid #e5e9f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.collapse-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.collapse-btn:hover {
+  background: #f1f5f9;
+  color: #004153;
+}
+
+.topbar-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.page-breadcrumb {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.breadcrumb-sep {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.page-name {
+  color: #004153;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.view-site-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #004153;
+  color: white;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.view-site-btn:hover {
+  opacity: 0.85;
+}
+
+.content-area {
+  flex: 1;
+  padding: 28px;
+  overflow-y: auto;
+}

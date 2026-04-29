@@ -21,14 +21,19 @@
     height: 100vh;
     background: white;
     padding: 30px;
-    box-shadow: 20px 0 60px rgba(0,65,83,0.15);
-    z-index: 100;
-    transition: left 0.5s cubic-bezier(0.8, 0, 0.2, 1);
+    box-shadow: 20px 0 60px rgba(0,65,83,0.2);
+    z-index: 1000; /* Higher z-index for the sidebar */
+    transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Smoother curve */
     overflow-y: auto;
   }
 
   .sidebar-container.menu-visible {
     left: 0;
+  }
+
+  .menu-overlay {
+    transition: opacity 0.4s ease;
+    z-index: 900;
   }
 }
 

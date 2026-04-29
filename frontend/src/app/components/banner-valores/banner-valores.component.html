@@ -12,7 +12,7 @@
   </div>
 
   <!-- Content Columns -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" (scroll)="onScroll($event)">
     <div 
       *ngFor="let val of values; let i = index"
       class="value-column"

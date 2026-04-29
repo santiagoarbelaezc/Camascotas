@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -10,6 +10,8 @@ import { RouterModule } from '@angular/router';
   styleUrl: './header-enlaces.component.css'
 })
 export class HeaderEnlacesComponent implements OnInit, OnDestroy {
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
+  
   currentSlide = 0;
   private slideInterval: any;
 
@@ -50,8 +52,10 @@ export class HeaderEnlacesComponent implements OnInit, OnDestroy {
 
   startAutoSlide() {
     this.slideInterval = setInterval(() => {
+      // Solo auto-slide si no es móvil o si queremos forzarlo (opcional)
+      // En este caso lo mantendremos pero para móvil usaremos scrollToSlide
       this.nextSlide();
-    }, 5000);
+    }, 6000);
   }
 
   stopAutoSlide() {
@@ -61,17 +65,34 @@ export class HeaderEnlacesComponent implements OnInit, OnDestroy {
   }
 
   nextSlide() {
-    this.currentSlide = (this.currentSlide + 1) % this.items.length;
+    const next = (this.currentSlide + 1) % this.items.length;
+    this.scrollToSlide(next);
   }
 
-  prevSlide() {
-    this.currentSlide = (this.currentSlide - 1 + this.items.length) % this.items.length;
-  }
-
-  setSlide(index: number) {
+  scrollToSlide(index: number) {
     this.currentSlide = index;
-    // Reset timer when user manually interacts
+    if (this.scrollContainer) {
+      const container = this.scrollContainer.nativeElement;
+      const slideWidth = container.offsetWidth;
+      container.scrollTo({
+        left: index * slideWidth,
+        behavior: 'smooth'
+      });
+    }
+    // Reset timer
     this.stopAutoSlide();
     this.startAutoSlide();
+  }
+
+  onScroll(event: Event) {
+    const container = event.target as HTMLElement;
+    const scrollLeft = container.scrollLeft;
+    const slideWidth = container.offsetWidth;
+    
+    // Calcular el slide actual basado en la posición del scroll
+    const newSlide = Math.round(scrollLeft / slideWidth);
+    if (newSlide !== this.currentSlide) {
+      this.currentSlide = newSlide;
+    }
   }
 }

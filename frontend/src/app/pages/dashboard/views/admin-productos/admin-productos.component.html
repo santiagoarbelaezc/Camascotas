@@ -1,0 +1,151 @@
+<div class="admin-section">
+  <!-- Header -->
+  <div class="section-header">
+    <div>
+      <h1 class="section-title">Productos</h1>
+      <p class="section-sub">{{ productos.length }} productos en el catálogo</p>
+    </div>
+    <button class="btn-create" (click)="abrirFormulario()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+      Nuevo Producto
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loader-wrap" *ngIf="cargando">
+    <div class="loader-spin"></div>
+    <span>Cargando productos...</span>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card" *ngIf="!cargando">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Categoría</th>
+          <th>Subcategoría</th>
+          <th>Precio</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prod of productos" class="table-row">
+          <td class="prod-cell">
+            <img [src]="prod.imagen || prod.imagenes?.[0] || 'assets/images/placeholder.jpg'" [alt]="prod.nombre" class="prod-thumb">
+            <div class="prod-info">
+              <span class="prod-name">{{ prod.nombre }}</span>
+              <span class="prod-desc">{{ (prod.descripcion || '') | slice:0:60 }}{{ (prod.descripcion || '').length > 60 ? '...' : '' }}</span>
+            </div>
+          </td>
+          <td><span class="badge-cat">{{ prod.categoria }}</span></td>
+          <td>{{ prod.subcategoria }}</td>
+          <td class="price-cell">
+            <span *ngIf="prod.desde" class="desde-label">Desde</span>
+            {{ formatPrecio(prod.precio) }}
+          </td>
+          <td class="actions-cell">
+            <button class="btn-edit" (click)="editar(prod)" title="Editar">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+            </button>
+            <button class="btn-delete" (click)="confirmarEliminar(prod)" title="Eliminar">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="productos.length === 0">
+          <td colspan="5" class="empty-state">No hay productos. ¡Crea el primero!</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de formulario -->
+  <div class="modal-overlay" *ngIf="mostrarFormulario" (click)="cerrarFormulario()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ productoEditando ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+        <button class="modal-close" (click)="cerrarFormulario()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="guardar()" class="product-form">
+          <div class="form-row">
+            <div class="form-group full">
+              <label>Nombre del Producto *</label>
+              <input type="text" [(ngModel)]="form.nombre" name="nombre" placeholder="Ej: Cubo Premium Perros" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Precio (COP) *</label>
+              <input type="number" [(ngModel)]="form.precio" name="precio" placeholder="85000" min="0" required>
+            </div>
+            <div class="form-group">
+              <label>Subcategoría *</label>
+              <select [(ngModel)]="form.subcategoria_id" name="subcategoria_id" required>
+                <option value="">Selecciona...</option>
+                <optgroup *ngFor="let cat of categorias" [label]="cat.nombre">
+                  <option *ngFor="let sub of cat.subcategorias" [value]="sub.id">{{ sub.nombre }}</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="form.desde" name="desde">
+                <span>Mostrar precio como "Desde $X"</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label>Descripción</label>
+            <textarea [(ngModel)]="form.descripcion" name="descripcion" rows="3" placeholder="Describe el producto..."></textarea>
+          </div>
+
+          <div class="form-group full">
+            <label>Colores disponibles (separados por coma)</label>
+            <input type="text" [(ngModel)]="form.colores" name="colores" placeholder="Gris, Beige, Café, Negro">
+          </div>
+
+          <div class="form-group full">
+            <label>Imágenes {{ productoEditando ? '(deja vacío para mantener actuales)' : '*' }}</label>
+            <div class="upload-zone" (click)="fileInput.click()">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" /></svg>
+              <span *ngIf="archivosSeleccionados.length === 0">Haz clic o arrastra imágenes aquí</span>
+              <span *ngIf="archivosSeleccionados.length > 0">{{ archivosSeleccionados.length }} imagen(es) seleccionada(s)</span>
+            </div>
+            <input #fileInput type="file" multiple accept="image/*" (change)="onFilesSelected($event)" style="display:none">
+
+            <!-- Preview de imágenes existentes en edición -->
+            <div class="existing-images" *ngIf="productoEditando?.imagenes?.length">
+              <p class="existing-label">Imágenes actuales:</p>
+              <div class="img-previews">
+                <img *ngFor="let img of productoEditando?.imagenes" [src]="img" class="img-preview-thumb">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" (click)="cerrarFormulario()">Cancelar</button>
+            <button type="submit" class="btn-save" [disabled]="guardando">
+              <span *ngIf="!guardando">{{ productoEditando ? 'Actualizar' : 'Crear Producto' }}</span>
+              <span *ngIf="guardando">Guardando...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" [class.visible]="toastVisible" [class.error]="toastError">
+    {{ toastMessage }}
+  </div>
+</div>

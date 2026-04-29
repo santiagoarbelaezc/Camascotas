@@ -46,4 +46,16 @@ export class BannerValoresComponent {
   setActive(index: number) {
     this.activeIndex = index;
   }
+
+  onScroll(event: Event) {
+    const container = event.target as HTMLElement;
+    const scrollLeft = container.scrollLeft;
+    const itemWidth = container.offsetWidth;
+    
+    // Solo actualizamos el índice si el scroll se detiene cerca de un item
+    const newIndex = Math.round(scrollLeft / itemWidth);
+    if (newIndex !== this.activeIndex && newIndex >= 0 && newIndex < this.values.length) {
+      this.activeIndex = newIndex;
+    }
+  }
 }

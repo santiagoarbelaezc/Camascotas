@@ -26,11 +26,15 @@
       <div class="space-y-5">
         <div>
           <label for="email-address" class="block text-[10px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-2 px-1">Email Corporativo</label>
-          <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none relative block w-full px-6 py-4 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa sm:text-sm transition-all bg-gray-50/50" placeholder="admin@camascotas.com">
+          <input id="email-address" name="correo" type="email" autocomplete="email" required
+            [(ngModel)]="correo"
+            class="appearance-none relative block w-full px-6 py-4 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa sm:text-sm transition-all bg-gray-50/50" placeholder="admin@camascotas.com">
         </div>
         <div>
           <label for="password" class="block text-[10px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-2 px-1">Contraseña</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none relative block w-full px-6 py-4 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa sm:text-sm transition-all bg-gray-50/50" placeholder="••••••••">
+          <input id="password" name="password" type="password" autocomplete="current-password" required
+            [(ngModel)]="password"
+            class="appearance-none relative block w-full px-6 py-4 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa sm:text-sm transition-all bg-gray-50/50" placeholder="••••••••">
         </div>
       </div>
 
@@ -49,9 +53,12 @@
         </div>
       </div>
 
+      <!-- Error message -->
+      <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-sm text-red-600 font-medium">{{ error }}</div>
+
       <div class="pt-4">
-        <button type="submit" class="btn-primary w-full py-4 text-sm uppercase tracking-[0.2em] shadow-2xl shadow-brand-lima/30 active:scale-95">
-          Ingresar al Panel
+        <button type="submit" [disabled]="cargando" class="btn-primary w-full py-4 text-sm uppercase tracking-[0.2em] shadow-2xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
+          {{ cargando ? 'Verificando...' : 'Ingresar al Panel' }}
         </button>
       </div>
     </form>

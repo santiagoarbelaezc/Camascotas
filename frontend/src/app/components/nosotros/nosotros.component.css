@@ -2,21 +2,42 @@
   transition: all 0.5s ease;
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, #5B8FA8, #3b5f70);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Montage container for mobile flex fallback */
+.team-grid-mobile {
+  display: flex;
+  flex-direction: column;
 }
 
-/* Fallback for the cream background if tailwind classes aren't registered */
-section {
-  background-color: rgba(250, 249, 246, 0.5); /* #FAF9F6 with opacity */
+@media (min-width: 1024px) {
+  .team-grid-mobile {
+    display: grid;
+  }
 }
 
-.team-montage img {
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+.main-member img {
+  box-shadow: 0 30px 60px rgba(0, 65, 83, 0.15);
 }
 
-.indicator-badge {
-    @apply absolute bottom-6 left-6 text-white bg-black/40 backdrop-blur-md px-5 py-1.5 rounded-full text-sm font-semibold border border-white/30 shadow-lg;
+.member-small img {
+  box-shadow: 0 15px 30px rgba(0, 65, 83, 0.1);
+}
+
+/* Reveal transition for stats */
+.space-y-1 {
+  animation: slideUpFade 0.8s ease-out both;
+}
+
+.space-y-1:nth-child(1) { animation-delay: 0.1s; }
+.space-y-1:nth-child(2) { animation-delay: 0.2s; }
+.space-y-1:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -26,4 +26,10 @@ export class ProductosComponent {
   cerrarMenu(): void {
     this.menuVisible = false;
   }
+
+  cerrarMenuSiEsMovil(): void {
+    if (window.innerWidth <= 1024) {
+      this.cerrarMenu();
+    }
+  }
 }
