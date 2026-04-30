@@ -26,13 +26,13 @@
       <div class="space-y-5">
         <div>
           <label for="email-address" class="block text-[10px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-2 px-1">Email Corporativo</label>
-          <input id="email-address" name="correo" type="email" autocomplete="email" required
+          <input id="email-address" name="correo" type="email" autocomplete="off" required
             [(ngModel)]="correo"
-            class="appearance-none relative block w-full px-6 py-4 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa sm:text-sm transition-all bg-gray-50/50" placeholder="admin@camascotas.com">
+            class="appearance-none relative block w-full px-6 py-4 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa sm:text-sm transition-all bg-gray-50/50" placeholder="tu@correo.com">
         </div>
         <div>
           <label for="password" class="block text-[10px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-2 px-1">Contraseña</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" required
+          <input id="password" name="password" type="password" autocomplete="off" required
             [(ngModel)]="password"
             class="appearance-none relative block w-full px-6 py-4 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa sm:text-sm transition-all bg-gray-50/50" placeholder="••••••••">
         </div>
