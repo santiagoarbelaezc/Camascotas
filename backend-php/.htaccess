@@ -1,29 +1,34 @@
-Options -Indexes
-
-# ─── Bloquear .env ─────────────────────────────────────────────────────────────
-<FilesMatch "^\.env(\..*)?$">
-  Order Allow,Deny
-  Deny from all
-</FilesMatch>
-
-# ─── CORS Headers ──────────────────────────────────────────────────────────────
+# ─── CORS CONFIGURATION ───────────────────────────────────────────────────────
 <IfModule mod_headers.c>
-  Header always set Access-Control-Allow-Origin "*"
-  Header always set Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-  Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
-  Header always set Access-Control-Max-Age "86400"
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, Origin, Accept"
+    Header always set Access-Control-Expose-Headers "Content-Length, X-JSON"
+    Header always set Access-Control-Max-Age "86400"
 </IfModule>
 
-# ─── Pre-flight OPTIONS ────────────────────────────────────────────────────────
+# Handle Pre-flight OPTIONS requests
 RewriteEngine On
 RewriteCond %{REQUEST_METHOD} OPTIONS
 RewriteRule ^(.*)$ $1 [R=200,L]
 
-# ─── Redirigir todo a index.php ───────────────────────────────────────────────
+# ─── GENERAL SETTINGS ─────────────────────────────────────────────────────────
+Options -Indexes
+
+# Block .env files
+<FilesMatch "^\.env(\..*)?$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# ─── ROUTING ──────────────────────────────────────────────────────────────────
+# Redirect all requests to index.php if the file/dir doesn't exist
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 
-# ─── Headers de seguridad ─────────────────────────────────────────────────────
-Header always set X-Content-Type-Options "nosniff"
-Header always set X-Frame-Options "SAMEORIGIN"
+# ─── SECURITY HEADERS ─────────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
