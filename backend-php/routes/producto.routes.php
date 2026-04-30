@@ -11,6 +11,7 @@ return function($router) {
     $router->add('GET', '/producto/aleatorios',          [ProductoController::class, 'obtenerAleatorios']);
     $router->add('GET', '/producto/buscar',              [ProductoController::class, 'buscarPorNombre']);
     $router->add('GET', '/producto/{id}',               [ProductoController::class, 'obtenerProductoPorId']);
+    $router->add('PATCH', '/producto/{id}/vista',       [ProductoController::class, 'incrementarVista']);
 
     // Rutas protegidas (requieren JWT)
     $router->add('POST',   '/producto',       [ProductoController::class, 'crearProducto'],      [AuthMiddleware::class, 'verifyToken']);

@@ -39,7 +39,7 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 
 // CORS
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Access-Control-Max-Age: 86400");
 
@@ -103,6 +103,7 @@ $router = new Router();
 (require __DIR__ . '/routes/categoria.routes.php')($router);
 (require __DIR__ . '/routes/subcategoria.routes.php')($router);
 (require __DIR__ . '/routes/producto.routes.php')($router);
+(require __DIR__ . '/routes/visitas.routes.php')($router);
 
 $router->add('GET', '/health', function() {
     App\Utils\Response::success(['status' => 'ok', 'app' => 'Camascotas API', 'version' => '2.0']);

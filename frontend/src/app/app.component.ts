@@ -10,6 +10,7 @@ import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component
 import { LoadingComponent } from './components/loading/loading.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { LoadingService } from './services/loading.service';
+import { StatsService } from './services/stats.service';
 
 @Component({
   selector: 'app-root',
@@ -31,11 +32,13 @@ export class AppComponent {
   title = 'Camascotas';
   isAssistantMode = false;
   isLoginPage = false;
+  isAdminPage = false;
   isPageLoading = false;
 
   constructor(
     private router: Router,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private statsService: StatsService
   ) {
     // Suscribirse al estado de carga manual
     this.loadingService.loading$.subscribe(state => {
@@ -46,8 +49,14 @@ export class AppComponent {
       if (event instanceof NavigationEnd) {
         const currentUrl = event.urlAfterRedirects;
         this.isAssistantMode = currentUrl.includes('/asistente');
-        this.isLoginPage = currentUrl.includes('/login');
+        this.isLoginPage     = currentUrl.includes('/login');
+        this.isAdminPage     = currentUrl.includes('/dashboard');
         
+        // Registrar visita si NO es una página administrativa
+        if (!this.isAdminPage && !this.isLoginPage) {
+          this.statsService.registrarVisita(currentUrl, document.referrer).subscribe();
+        }
+
         // Aplicar clase al body
         if (this.isAssistantMode) {
           document.body.classList.add('theme-dark');

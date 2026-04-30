@@ -34,4 +34,8 @@ class AuthMiddleware {
 
         return [];
     }
+
+    public static function handle(): void {
+        self::verifyToken();
+    }
 }

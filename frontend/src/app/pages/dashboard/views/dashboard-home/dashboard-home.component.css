@@ -1,4 +1,4 @@
-.dash-home { max-width: 1000px; }
+.dash-home { width: 100%; }
 
 .welcome-banner {
   display: flex;

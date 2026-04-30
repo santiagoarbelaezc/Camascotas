@@ -1,0 +1,129 @@
+<div class="admin-section animate-fade-in">
+  <div class="section-header">
+    <div>
+      <h1 class="section-title">Gestión de Categorías</h1>
+      <p class="section-sub">Organiza el catálogo de productos por categorías y subcategorías.</p>
+    </div>
+    <button class="btn-create" (click)="abrirModalCat()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+      Nueva Categoría
+    </button>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="cargando" class="loader-wrap">
+    <div class="loader-spin"></div>
+    <span>Cargando categorías...</span>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!cargando && categorias.length === 0" class="empty-state">
+    <img src="assets/images/icon-navbar.png" alt="Empty" class="w-16 h-16 opacity-20 mb-4 mx-auto">
+    <p>No hay categorías registradas.</p>
+  </div>
+
+  <!-- Categories Grid -->
+  <div class="categories-grid" *ngIf="!cargando && categorias.length > 0">
+    <div *ngFor="let cat of categorias" class="category-card">
+      <div class="category-header">
+        <div class="cat-info">
+          <img [src]="cat.imagen || 'assets/images/placeholder.png'" class="cat-icon">
+          <h3 class="cat-name">{{ cat.nombre }}</h3>
+        </div>
+        <div class="cat-actions">
+          <button (click)="abrirModalCat(cat)" class="btn-icon" title="Editar Categoría">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+          </button>
+          <button (click)="eliminarCategoria(cat)" class="btn-icon delete" title="Eliminar Categoría">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Subcategories Section -->
+      <div class="subcategories-area">
+        <div class="sub-header">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Subcategorías</span>
+          <button (click)="abrirModalSub(cat.id)" class="btn-add-sub">
+            + Añadir
+          </button>
+        </div>
+        <div class="sub-list">
+          <div *ngFor="let sub of cat.subcategorias" class="sub-item">
+            <span class="sub-name">{{ sub.nombre }}</span>
+            <div class="sub-actions">
+              <button (click)="abrirModalSub(cat.id, sub)" class="sub-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+              </button>
+              <button (click)="eliminarSubcategoria(sub)" class="sub-btn delete">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+          </div>
+          <p *ngIf="cat.subcategorias.length === 0" class="no-sub-msg">Sin subcategorías</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Categoría -->
+  <div class="modal-overlay" *ngIf="mostrarModalCat">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>{{ catForm.id > 0 ? 'Editar' : 'Nueva' }} Categoría</h2>
+        <button class="modal-close" (click)="mostrarModalCat = false">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="product-form">
+          <div class="form-group full">
+            <label>Nombre de la Categoría</label>
+            <input type="text" [(ngModel)]="catForm.nombre" placeholder="Ej: Perros, Gatos...">
+          </div>
+          <div class="form-group full">
+            <label>Icono / Imagen</label>
+            <div class="upload-zone" (click)="fileInput.click()">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              <span>{{ archivoSeleccionado ? archivoSeleccionado.name : 'Haz clic para subir imagen' }}</span>
+              <input type="file" #fileInput (change)="onFileSelected($event)" hidden accept="image/*">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-cancel" (click)="mostrarModalCat = false">Cancelar</button>
+            <button class="btn-save" [disabled]="guardando" (click)="guardarCategoria()">
+              {{ guardando ? 'Guardando...' : 'Guardar Categoría' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Subcategoría -->
+  <div class="modal-overlay" *ngIf="mostrarModalSub">
+    <div class="modal-box small">
+      <div class="modal-header">
+        <h2>{{ subForm.id > 0 ? 'Editar' : 'Nueva' }} Subcategoría</h2>
+        <button class="modal-close" (click)="mostrarModalSub = false">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="product-form">
+          <div class="form-group full">
+            <label>Nombre de la Subcategoría</label>
+            <input type="text" [(ngModel)]="subForm.nombre" placeholder="Ej: Camas, Rascadores...">
+          </div>
+          <div class="form-actions">
+            <button class="btn-cancel" (click)="mostrarModalSub = false">Cancelar</button>
+            <button class="btn-save" [disabled]="guardando" (click)="guardarSubcategoria()">
+              {{ guardando ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" [class.visible]="toast.visible" [class.error]="toast.error">
+    {{ toast.message }}
+  </div>
+</div>

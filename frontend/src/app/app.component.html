@@ -2,26 +2,26 @@
 <app-loading *ngIf="isPageLoading"></app-loading>
 
 <div class="min-h-screen flex flex-col transition-colors duration-500" [class.opacity-0]="isPageLoading">
-  <!-- Header: Oculto en modo asistente y LOGIN -->
-  <app-navbar *ngIf="!isAssistantMode && !isLoginPage"></app-navbar>
+  <!-- Header: Oculto en modo asistente, LOGIN y DASHBOARD -->
+  <app-navbar *ngIf="!isAssistantMode && !isLoginPage && !isAdminPage"></app-navbar>
   
   <main class="flex-grow" 
-        [class.pt-[72px]]="!isAssistantMode && !isLoginPage" 
-        [class.md:pt-[126px]]="!isAssistantMode && !isLoginPage"
-        [class.pb-24]="!isAssistantMode && !isLoginPage" 
-        [class.md:pb-0]="isAssistantMode || isLoginPage">
+        [class.pt-[72px]]="!isAssistantMode && !isLoginPage && !isAdminPage" 
+        [class.md:pt-[90px]]="!isAssistantMode && !isLoginPage && !isAdminPage"
+        [class.pb-24]="!isAssistantMode && !isLoginPage && !isAdminPage" 
+        [class.md:pb-0]="isAssistantMode || isLoginPage || isAdminPage">
     <router-outlet></router-outlet>
   </main>
 
-  <!-- Footer: Oculto en modo asistente y LOGIN -->
-  <app-footer *ngIf="!isAssistantMode && !isLoginPage"></app-footer>
+  <!-- Footer: Oculto en modo asistente, LOGIN y DASHBOARD -->
+  <app-footer *ngIf="!isAssistantMode && !isLoginPage && !isAdminPage"></app-footer>
   
-  <!-- WhatsApp: Oculto en modo asistente y LOGIN -->
-  <app-whatsapp class="hidden md:block" *ngIf="!isAssistantMode && !isLoginPage"></app-whatsapp>
+  <!-- WhatsApp: Oculto en modo asistente, LOGIN y DASHBOARD -->
+  <app-whatsapp class="hidden md:block" *ngIf="!isAssistantMode && !isLoginPage && !isAdminPage"></app-whatsapp>
 
-  <!-- Bottom Navigation: Visible solo en Mobile y NO en login -->
+  <!-- Bottom Navigation: Visible solo en Mobile y NO en login/dashboard -->
   <app-bottom-nav 
-    *ngIf="!isLoginPage" 
+    *ngIf="!isLoginPage && !isAdminPage" 
     [isAssistantMode]="isAssistantMode">
   </app-bottom-nav>
 </div>

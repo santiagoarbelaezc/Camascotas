@@ -1,4 +1,4 @@
-<div class="max-w-[1800px] mx-auto px-6 lg:px-8 py-12" *ngIf="producto">
+<div class="max-w-[1800px] mx-auto px-6 lg:px-8 pt-0 pb-12" *ngIf="producto">
     <div class="bg-white rounded-[40px] shadow-2xl shadow-brand-petrol/5 overflow-hidden border border-brand-petrol/5">
         <div class="flex flex-col lg:flex-row">
             
@@ -6,11 +6,13 @@
             <div class="lg:w-7/12 p-8 lg:p-16 bg-gray-50/50 flex flex-col md:flex-row gap-8">
                 <!-- Miniaturas -->
                 <div class="flex md:flex-col gap-4 order-2 md:order-1">
-                    <div *ngFor="let i of [1,2,3]" 
-                         (click)="cambiarImagen(producto.imagen)"
+                    <div *ngFor="let img of producto.imagenes" 
+                         (click)="cambiarImagen(getImagenUrl(img))"
                          class="w-20 h-20 rounded-2xl overflow-hidden cursor-pointer border-2 transition-all duration-300 transform hover:scale-105 shadow-sm"
-                         [ngClass]="imagenPrincipal === producto.imagen ? 'border-brand-turquesa' : 'border-transparent'">
-                        <img [src]="producto.imagen" class="w-full h-full object-cover">
+                         [ngClass]="imagenPrincipal === getImagenUrl(img) ? 'border-brand-turquesa' : 'border-transparent'">
+                        <img [src]="getImagenUrl(img)" 
+                             (error)="onImageError($event)"
+                             class="w-full h-full object-cover">
                     </div>
                 </div>
 
@@ -22,6 +24,7 @@
                          (mouseleave)="onImageMouseLeave()">
                         
                         <img [src]="imagenPrincipal" 
+                             (error)="onImageError($event)"
                              class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                              [alt]="producto.nombre">
 
@@ -95,7 +98,7 @@
 </div>
 
 <!-- Loader -->
-<div class="flex flex-col items-center justify-center min-h-[400px]" *ngIf="!producto">
+<div class="flex flex-col items-center justify-center min-h-[400px] pt-0" *ngIf="!producto">
     <div class="w-16 h-16 border-4 border-brand-turquesa/10 border-t-brand-turquesa rounded-full animate-spin shadow-lg shadow-brand-turquesa/20"></div>
     <p class="mt-8 text-brand-petrol/20 font-black uppercase tracking-[0.4em] text-[10px]">Descifrando el confort...</p>
 </div>

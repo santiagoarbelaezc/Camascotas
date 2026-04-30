@@ -314,4 +314,15 @@ class ProductoController {
             Response::error('Error al obtener productos aleatorios', 500, $e->getMessage());
         }
     }
+
+    public static function incrementarVista(int $id): void {
+        try {
+            $db = Database::getConnection();
+            $stmt = $db->prepare("UPDATE productos SET vistas = vistas + 1 WHERE id = ?");
+            $stmt->execute([$id]);
+            Response::success(['mensaje' => 'Vista incrementada']);
+        } catch (\Exception $e) {
+            Response::error('Error al incrementar vista', 500, $e->getMessage());
+        }
+    }
 }

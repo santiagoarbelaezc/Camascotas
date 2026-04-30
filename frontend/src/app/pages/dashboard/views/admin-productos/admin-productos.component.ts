@@ -91,11 +91,17 @@ export class AdminProductosComponent implements OnInit {
 
   guardar(): void {
     if (!this.form.nombre || !this.form.precio || !this.form.subcategoria_id) {
-      this.showToast('Completa los campos requeridos', true);
+      this.showToast('Completa los campos requeridos (*)', true);
       return;
     }
+    
+    if (this.form.precio < 0) {
+      this.showToast('El precio no puede ser un valor negativo', true);
+      return;
+    }
+
     if (!this.productoEditando && this.archivosSeleccionados.length === 0) {
-      this.showToast('Debes seleccionar al menos una imagen', true);
+      this.showToast('Debes seleccionar al menos una imagen para el nuevo producto', true);
       return;
     }
 

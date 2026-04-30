@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
     '/dashboard':            'Panel Principal',
     '/dashboard/productos':  'Gestión de Productos',
     '/dashboard/categorias': 'Gestión de Categorías',
+    '/dashboard/stats':      'Estadísticas y Analíticas',
   };
 
   constructor(private auth: AuthService, private router: Router) {}
@@ -31,10 +32,13 @@ export class DashboardComponent implements OnInit {
       filter(e => e instanceof NavigationEnd),
       map((e: any) => e.urlAfterRedirects)
     ).subscribe(url => {
+      console.log('Dashboard: Navegación finalizada a:', url);
       this.currentPageTitle = this.pageTitles[url] ?? 'Admin';
     });
 
     this.currentPageTitle = this.pageTitles[this.router.url] ?? 'Admin';
+    console.log('Dashboard inicializado. URL actual:', this.router.url);
+    console.log('Usuario actual:', this.usuario?.nombre);
   }
 
   get usuarioInicial(): string {

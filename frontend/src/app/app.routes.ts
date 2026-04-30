@@ -52,6 +52,10 @@ export const routes: Routes = [
       {
         path: 'categorias',
         loadComponent: () => import('./pages/dashboard/views/admin-categorias/admin-categorias-view.component').then(c => c.AdminCategoriasComponent)
+      },
+      {
+        path: 'stats',
+        loadComponent: () => import('./pages/dashboard/views/admin-stats/admin-stats.component').then(m => m.AdminStatsComponent)
       }
     ]
   },

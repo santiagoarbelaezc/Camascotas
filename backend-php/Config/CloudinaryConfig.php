@@ -18,6 +18,10 @@ class CloudinaryConfig {
             $config->cloud->apiKey    = $_ENV['CLOUDINARY_API_KEY']    ?? '';
             $config->cloud->apiSecret = $_ENV['CLOUDINARY_API_SECRET'] ?? '';
             $config->url->secure      = true;
+            // Bypass SSL verification for local environments with certificate issues
+            $config->api->callbackUrl = null; 
+            // Note: Cloudinary SDK uses Guzzle, we might need to set it globally if this doesn't work.
+            // For now, let's try a different approach if the SDK allows it.
 
             Logger::info("Inicializando Cloudinary...");
             self::$instance = new Cloudinary($config);

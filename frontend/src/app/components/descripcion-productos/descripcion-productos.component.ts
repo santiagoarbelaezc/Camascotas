@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ProductosService, Producto } from '../../services/productos.service';
 import { ProductoSeleccionadoService } from '../../services/producto-seleccionado.service';
+import { StatsService } from '../../services/stats.service';
 
 @Component({
   selector: 'app-descripcion-productos',
@@ -22,7 +23,8 @@ export class DescripcionProductosComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productosService: ProductosService,
-    private productoSeleccionadoService: ProductoSeleccionadoService
+    private productoSeleccionadoService: ProductoSeleccionadoService,
+    private statsService: StatsService
   ) {}
 
   ngOnInit(): void {
@@ -45,20 +47,40 @@ export class DescripcionProductosComponent implements OnInit {
   }
 
   private cargarProductoPorId(id: number): void {
-    this.productosService.getProductos().subscribe(prods => {
-      const found = prods.find(p => p.id === id);
-      if (found) {
+    // Resetear producto para mostrar el estado de carga (loader)
+    this.producto = null;
+
+    // Registrar vista del producto
+    this.statsService.registrarVistaProducto(id).subscribe();
+
+    this.productosService.getProductoById(id).subscribe({
+      next: (found) => {
         this.producto = found;
-        this.imagenPrincipal = found.imagen;
+        // Establecer imagen principal (la primera de la galería si existe, sino la imagen base)
+        const firstImg = (found.imagenes && found.imagenes.length > 0) ? found.imagenes[0] : found.imagen;
+        this.imagenPrincipal = this.getImagenUrl(firstImg);
         // Hacemos scroll al inicio cuando cambia el producto
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      },
+      error: (err) => console.error('Error cargando producto', err)
     });
   }
 
   cambiarImagen(img: string): void {
     this.imagenPrincipal = img;
   }
+
+  onImageError(event: any): void {
+    event.target.src = 'assets/images/placeholder.jpg';
+  }
+
+  getImagenUrl(img: any): string {
+    if (!img) return 'assets/images/placeholder.jpg';
+    if (typeof img === 'string') return img;
+    return img.imagen_url || 'assets/images/placeholder.jpg';
+  }
+
+
 
   // Zoom Dinámico
   onImageMouseMove(event: MouseEvent): void {

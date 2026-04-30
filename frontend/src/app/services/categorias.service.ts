@@ -35,9 +35,33 @@ export class CategoriasService {
   constructor(private http: HttpClient) {}
 
   getCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.apiUrl}/categoria/con-subcategorias`).pipe(
-      catchError(() => of(MOCK_CATEGORIAS))
-    );
+    return this.http.get<Categoria[]>(`${this.apiUrl}/categoria/con-subcategorias`);
+  }
+
+  // CRUD Categorías
+  crearCategoria(fd: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/categoria`, fd);
+  }
+
+  actualizarCategoria(id: number, fd: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/categoria/${id}`, fd); // Usamos POST por el tema de archivos en PHP
+  }
+
+  eliminarCategoria(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/categoria/${id}`);
+  }
+
+  // CRUD Subcategorías
+  crearSubcategoria(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/subcategoria`, data);
+  }
+
+  actualizarSubcategoria(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/subcategoria/${id}`, data);
+  }
+
+  eliminarSubcategoria(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/subcategoria/${id}`);
   }
 }
 

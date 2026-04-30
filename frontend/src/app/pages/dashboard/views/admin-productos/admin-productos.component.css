@@ -1,5 +1,5 @@
 /* ── Header ──────────────────────────────────────────────────────────────── */
-.admin-section { max-width: 1200px; }
+.admin-section { width: 100%; }
 
 .section-header {
   display: flex;
