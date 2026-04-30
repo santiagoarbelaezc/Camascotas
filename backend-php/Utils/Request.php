@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Utils;
+namespace App\utils;
 
-class Request {
+class request {
     public static function all(): array {
         $data = [];
         $data = array_merge($data, $_POST);

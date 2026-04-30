@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Config;
+namespace App\config;
 
 use PDO;
 use PDOException;
-use App\Utils\Logger;
+use App\utils\logger;
 
-class Database {
+class database {
     private static ?PDO $instance = null;
 
     public static function getConnection(): PDO {
@@ -28,10 +28,10 @@ class Database {
             ];
 
             try {
-                Logger::info("Conectando a DB: $host:$port/$db");
+                logger::info("Conectando a DB: $host:$port/$db");
                 self::$instance = new PDO($dsn, $user, $pass, $options);
             } catch (PDOException $e) {
-                Logger::error("Error de conexión: " . $e->getMessage());
+                logger::error("Error de conexión: " . $e->getMessage());
                 header('Content-Type: application/json');
                 http_response_code(500);
                 echo json_encode(['error' => 'Error de conexión a la base de datos', 'details' => $e->getMessage()]);

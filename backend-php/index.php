@@ -15,24 +15,24 @@ if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
-use App\Utils\Response;
-use App\Utils\Logger;
+use App\utils\response;
+use App\utils\logger;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
 // Error handlers
 set_exception_handler(function($e) {
-    Logger::error("EXCEPCIÓN: " . $e->getMessage());
-    Response::error("Error interno del servidor", 500, $e->getMessage());
+    logger::error("EXCEPCIÓN: " . $e->getMessage());
+    response::error("Error interno del servidor", 500, $e->getMessage());
 });
 
 set_error_handler(function($errno, $errstr, $errfile, $errline) {
     if (!(error_reporting() & $errno)) return false;
     $msg = "ERROR PHP ($errno): $errstr en $errfile:$errline";
-    Logger::warning($msg);
+    logger::warning($msg);
     if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR])) {
-        Response::error("Error fatal en el servidor", 500, $msg);
+        response::error("Error fatal en el servidor", 500, $msg);
     }
     return true;
 });
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-Logger::request($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+logger::request($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 
 /**
  * Router minimalista
@@ -83,7 +83,7 @@ class Router {
         foreach ($this->routes as $route) {
             if ($route['method'] === $method && preg_match($route['path'], $uri, $matches)) {
                 array_shift($matches);
-                Logger::info("Route matched: {$route['method']} $uri");
+                logger::info("Route matched: {$route['method']} $uri");
                 if ($route['middleware']) {
                     call_user_func($route['middleware']);
                 }
@@ -93,7 +93,7 @@ class Router {
             }
         }
 
-        Response::error("Ruta no encontrada: $method $uri", 404);
+        response::error("Ruta no encontrada: $method $uri", 404);
     }
 }
 
@@ -106,7 +106,7 @@ $router = new Router();
 (require __DIR__ . '/routes/visitas.routes.php')($router);
 
 $router->add('GET', '/health', function() {
-    App\Utils\Response::success(['status' => 'ok', 'app' => 'Camascotas API', 'version' => '2.0']);
+    App\utils\response::success(['status' => 'ok', 'app' => 'Camascotas API', 'version' => '2.0']);
 });
 
 $router->dispatch();

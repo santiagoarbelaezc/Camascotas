@@ -1,21 +1,21 @@
 <?php
-use Controllers\ProductoController;
-use Middleware\AuthMiddleware;
+use Controllers\productocontroller;
+use Middleware\authmiddleware;
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case 'GET':
         if (isset($uriSegments[2])) {
-            ProductoController::getById($uriSegments[2]);
+            productocontroller::getById($uriSegments[2]);
         } else {
-            ProductoController::getAll();
+            productocontroller::getAll();
         }
         break;
 
     case 'POST':
-        // AuthMiddleware::verifyToken(); // Uncomment to protect this route
-        ProductoController::create();
+        // authmiddleware::verifyToken(); // Uncomment to protect this route
+        productocontroller::create();
         break;
 
     case 'PUT':

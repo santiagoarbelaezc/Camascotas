@@ -1,7 +1,7 @@
 <?php
 namespace Utils;
 
-class ResponseHandler {
+class responsehandler {
     public static function sendResponse($status, $message, $data = null) {
         http_response_code($status);
         $response = [

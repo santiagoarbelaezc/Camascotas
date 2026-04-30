@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Middleware;
+namespace App\middleware;
 
-use App\Utils\Response;
+use App\utils\response;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-class AuthMiddleware {
+class authmiddleware {
     public static function verifyToken(): array {
         $headers    = getallheaders();
         $authHeader = $headers['Authorization'] ?? $headers['authorization'] ?? null;
 
         if (!$authHeader) {
-            Response::error('Token no proporcionado', 401);
+            response::error('Token no proporcionado', 401);
         }
 
         $parts = explode(' ', $authHeader);
         if (count($parts) !== 2 || $parts[0] !== 'Bearer') {
-            Response::error('Formato de token inválido. Use: Bearer <token>', 400);
+            response::error('Formato de token inválido. Use: Bearer <token>', 400);
         }
 
         $token = $parts[1];
@@ -29,7 +29,7 @@ class AuthMiddleware {
             $decoded = JWT::decode($token, new Key($key, 'HS256'));
             return (array) $decoded;
         } catch (\Exception $e) {
-            Response::error('Token inválido o expirado', 403, $e->getMessage());
+            response::error('Token inválido o expirado', 403, $e->getMessage());
         }
 
         return [];

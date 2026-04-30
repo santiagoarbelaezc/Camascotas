@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Utils;
+namespace App\utils;
 
-class Logger {
+class logger {
     private static string $logFile = __DIR__ . '/../logs/app.log';
 
     public static function init(): void {

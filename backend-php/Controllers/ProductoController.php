@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\controllers;
 
-use App\Config\Database;
-use App\Config\CloudinaryConfig;
-use App\Utils\Response;
-use App\Utils\Logger;
-use App\Middleware\UploadMiddleware;
+use App\config\database;
+use App\config\cloudinaryconfig;
+use App\utils\response;
+use App\utils\logger;
+use App\middleware\uploadmiddleware;
 use PDO;
 
-class ProductoController {
+class productocontroller {
 
     public static function obtenerProductos(): void {
         try {
-            $db   = Database::getConnection();
+            $db   = database::getConnection();
             $sql  = "
                 SELECT p.id, p.nombre, p.descripcion, p.precio, p.desde,
                        p.subcategoria_id,
@@ -49,7 +49,7 @@ class ProductoController {
             $productos = $stmt->fetchAll();
 
             if (empty($productos)) {
-                Response::success([]);
+                response::success([]);
             }
 
             // Cargar imágenes en batch
@@ -70,15 +70,15 @@ class ProductoController {
                 $prod['colores'] = $stmtColores->fetchAll(PDO::FETCH_COLUMN);
             }
 
-            Response::success($productos);
+            response::success($productos);
         } catch (\Exception $e) {
-            Response::error('No se pudieron obtener los productos', 500, $e->getMessage());
+            response::error('No se pudieron obtener los productos', 500, $e->getMessage());
         }
     }
 
     public static function obtenerProductoPorId(int $id): void {
         try {
-            $db   = Database::getConnection();
+            $db   = database::getConnection();
             $stmt = $db->prepare("
                 SELECT p.id, p.nombre, p.descripcion, p.precio, p.desde,
                        p.subcategoria_id,
@@ -94,7 +94,7 @@ class ProductoController {
             $producto = $stmt->fetch();
 
             if (!$producto) {
-                Response::error('Producto no encontrado', 404);
+                response::error('Producto no encontrado', 404);
             }
 
             // Imágenes
@@ -107,16 +107,16 @@ class ProductoController {
             $stmtColores->execute([$id]);
             $producto['colores']  = $stmtColores->fetchAll(PDO::FETCH_COLUMN);
 
-            Response::success($producto);
+            response::success($producto);
         } catch (\Exception $e) {
-            Response::error('No se pudo obtener el producto', 500, $e->getMessage());
+            response::error('No se pudo obtener el producto', 500, $e->getMessage());
         }
     }
 
     public static function buscarPorNombre(): void {
         $nombre = trim($_GET['nombre'] ?? '');
         if (empty($nombre)) {
-            Response::error('Proporciona un nombre para buscar', 400);
+            response::error('Proporciona un nombre para buscar', 400);
         }
         $_GET['nombre'] = $nombre;
         self::obtenerProductos();
@@ -130,18 +130,18 @@ class ProductoController {
         $subcategoria_id = (int)($_POST['subcategoria_id'] ?? 0);
         $colores        = $_POST['colores'] ?? [];
 
-        Logger::info("Creando producto: $nombre");
+        logger::info("Creando producto: $nombre");
 
         if (empty($nombre) || $precio <= 0 || !$subcategoria_id) {
-            Response::error('Nombre, precio y subcategoría son requeridos', 400);
+            response::error('Nombre, precio y subcategoría son requeridos', 400);
         }
 
-        $imagesInfo = UploadMiddleware::handleMultipleUpload('imagenes', 'camascotas_productos');
+        $imagesInfo = uploadmiddleware::handleMultipleUpload('imagenes', 'camascotas_productos');
         if (empty($imagesInfo)) {
-            Response::error('Debes subir al menos una imagen', 400);
+            response::error('Debes subir al menos una imagen', 400);
         }
 
-        $db = Database::getConnection();
+        $db = database::getConnection();
         try {
             $db->beginTransaction();
 
@@ -169,17 +169,17 @@ class ProductoController {
             }
 
             $db->commit();
-            Logger::info("Producto creado: ID $productoId");
-            Response::success(['mensaje' => 'Producto creado exitosamente', 'id' => $productoId], 201);
+            logger::info("Producto creado: ID $productoId");
+            response::success(['mensaje' => 'Producto creado exitosamente', 'id' => $productoId], 201);
         } catch (\Exception $e) {
             if ($db->inTransaction()) $db->rollBack();
-            Logger::error("Error creando producto: " . $e->getMessage());
-            Response::error('Error al crear el producto', 500, $e->getMessage());
+            logger::error("Error creando producto: " . $e->getMessage());
+            response::error('Error al crear el producto', 500, $e->getMessage());
         }
     }
 
     public static function actualizarProducto(int $id): void {
-        $params         = \App\Utils\Request::all();
+        $params         = \App\utils\request::all();
         $nombre         = trim($params['nombre']         ?? '');
         $descripcion    = trim($params['descripcion']    ?? '');
         $precio         = (float)($params['precio']      ?? 0);
@@ -188,15 +188,15 @@ class ProductoController {
         $colores        = $params['colores'] ?? [];
 
         if (empty($nombre) || $precio <= 0 || !$subcategoria_id) {
-            Response::error('Datos inválidos', 400);
+            response::error('Datos inválidos', 400);
         }
 
-        $db = Database::getConnection();
+        $db = database::getConnection();
         try {
             $check = $db->prepare('SELECT id FROM productos WHERE id = ?');
             $check->execute([$id]);
             if (!$check->fetch()) {
-                Response::error('Producto no encontrado', 404);
+                response::error('Producto no encontrado', 404);
             }
 
             $db->beginTransaction();
@@ -205,13 +205,13 @@ class ProductoController {
             $stmt->execute([$nombre, $descripcion, $precio, $desde, $subcategoria_id, $id]);
 
             // Actualizar imágenes si se envían nuevas
-            $imagesInfo = UploadMiddleware::handleMultipleUpload('imagenes', 'camascotas_productos');
+            $imagesInfo = uploadmiddleware::handleMultipleUpload('imagenes', 'camascotas_productos');
             if (!empty($imagesInfo)) {
                 // Eliminar viejas en Cloudinary
                 $oldImgs = $db->prepare('SELECT public_id FROM producto_imagenes WHERE producto_id = ?');
                 $oldImgs->execute([$id]);
                 foreach ($oldImgs->fetchAll() as $img) {
-                    if ($img['public_id']) CloudinaryConfig::delete($img['public_id']);
+                    if ($img['public_id']) cloudinaryconfig::delete($img['public_id']);
                 }
 
                 $db->prepare('DELETE FROM producto_imagenes WHERE producto_id = ?')->execute([$id]);
@@ -237,22 +237,22 @@ class ProductoController {
             }
 
             $db->commit();
-            Logger::info("Producto $id actualizado");
-            Response::success(['mensaje' => 'Producto actualizado exitosamente']);
+            logger::info("Producto $id actualizado");
+            response::success(['mensaje' => 'Producto actualizado exitosamente']);
         } catch (\Exception $e) {
             if ($db->inTransaction()) $db->rollBack();
-            Logger::error("Error actualizando producto $id: " . $e->getMessage());
-            Response::error('Error al actualizar el producto', 500, $e->getMessage());
+            logger::error("Error actualizando producto $id: " . $e->getMessage());
+            response::error('Error al actualizar el producto', 500, $e->getMessage());
         }
     }
 
     public static function eliminarProducto(int $id): void {
-        $db = Database::getConnection();
+        $db = database::getConnection();
         try {
             $check = $db->prepare('SELECT id FROM productos WHERE id = ?');
             $check->execute([$id]);
             if (!$check->fetch()) {
-                Response::error('Producto no encontrado', 404);
+                response::error('Producto no encontrado', 404);
             }
 
             $db->beginTransaction();
@@ -261,7 +261,7 @@ class ProductoController {
             $imgs = $db->prepare('SELECT public_id FROM producto_imagenes WHERE producto_id = ?');
             $imgs->execute([$id]);
             foreach ($imgs->fetchAll() as $img) {
-                if ($img['public_id']) CloudinaryConfig::delete($img['public_id']);
+                if ($img['public_id']) cloudinaryconfig::delete($img['public_id']);
             }
 
             $db->prepare('DELETE FROM producto_imagenes WHERE producto_id = ?')->execute([$id]);
@@ -269,18 +269,18 @@ class ProductoController {
             $db->prepare('DELETE FROM productos WHERE id = ?')->execute([$id]);
 
             $db->commit();
-            Logger::info("Producto $id eliminado");
-            Response::success(['mensaje' => 'Producto eliminado correctamente']);
+            logger::info("Producto $id eliminado");
+            response::success(['mensaje' => 'Producto eliminado correctamente']);
         } catch (\Exception $e) {
             if ($db->inTransaction()) $db->rollBack();
-            Response::error('Error al eliminar el producto', 500, $e->getMessage());
+            response::error('Error al eliminar el producto', 500, $e->getMessage());
         }
     }
 
     public static function obtenerAleatorios(): void {
         try {
             $cantidad = (int)($_GET['cantidad'] ?? 8);
-            $db       = Database::getConnection();
+            $db       = database::getConnection();
             $stmt     = $db->prepare("
                 SELECT p.id, p.nombre, p.descripcion, p.precio, p.desde,
                        s.nombre AS subcategoria,
@@ -295,7 +295,7 @@ class ProductoController {
             $stmt->execute();
             $productos = $stmt->fetchAll();
 
-            if (empty($productos)) Response::success([]);
+            if (empty($productos)) response::success([]);
 
             $ids          = array_column($productos, 'id');
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
@@ -309,20 +309,20 @@ class ProductoController {
                 $prod['imagen']   = $prod['imagenes'][0] ?? null;
             }
 
-            Response::success($productos);
+            response::success($productos);
         } catch (\Exception $e) {
-            Response::error('Error al obtener productos aleatorios', 500, $e->getMessage());
+            response::error('Error al obtener productos aleatorios', 500, $e->getMessage());
         }
     }
 
     public static function incrementarVista(int $id): void {
         try {
-            $db = Database::getConnection();
+            $db = database::getConnection();
             $stmt = $db->prepare("UPDATE productos SET vistas = vistas + 1 WHERE id = ?");
             $stmt->execute([$id]);
-            Response::success(['mensaje' => 'Vista incrementada']);
+            response::success(['mensaje' => 'Vista incrementada']);
         } catch (\Exception $e) {
-            Response::error('Error al incrementar vista', 500, $e->getMessage());
+            response::error('Error al incrementar vista', 500, $e->getMessage());
         }
     }
 }

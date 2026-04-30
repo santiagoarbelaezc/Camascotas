@@ -1,5 +1,5 @@
 <?php
-use Controllers\AssistantController;
+use Controllers\assistantcontroller;
 
 $method = $_SERVER['REQUEST_METHOD'];
 // URL: /api/chat        → POST (enviar mensaje)
@@ -16,7 +16,7 @@ if ($method === 'OPTIONS') {
 switch ($action) {
     case 'history':
         if ($method === 'GET') {
-            AssistantController::history();
+            assistantcontroller::history();
         } else {
             http_response_code(405);
             echo json_encode(['error' => 'Method not allowed']);
@@ -25,7 +25,7 @@ switch ($action) {
 
     case 'clear':
         if ($method === 'DELETE') {
-            AssistantController::clear();
+            assistantcontroller::clear();
         } else {
             http_response_code(405);
             echo json_encode(['error' => 'Method not allowed']);
@@ -35,7 +35,7 @@ switch ($action) {
     default:
         // /api/chat  (POST)
         if ($method === 'POST') {
-            AssistantController::chat();
+            assistantcontroller::chat();
         } else {
             http_response_code(405);
             echo json_encode(['error' => 'Method not allowed']);

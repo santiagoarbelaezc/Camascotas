@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Config;
+namespace App\config;
 
 use Cloudinary\Cloudinary;
 use Cloudinary\Configuration\Configuration;
-use App\Utils\Logger;
+use App\utils\logger;
 
-class CloudinaryConfig {
+class cloudinaryconfig {
     private static ?Cloudinary $instance = null;
 
     public static function getInstance(): Cloudinary {
@@ -23,14 +23,14 @@ class CloudinaryConfig {
             // Note: Cloudinary SDK uses Guzzle, we might need to set it globally if this doesn't work.
             // For now, let's try a different approach if the SDK allows it.
 
-            Logger::info("Inicializando Cloudinary...");
+            logger::info("Inicializando Cloudinary...");
             self::$instance = new Cloudinary($config);
         }
         return self::$instance;
     }
 
     public static function upload(string $filePath, string $folder = 'camascotas_general'): array {
-        Logger::info("Subiendo imagen a Cloudinary: $folder");
+        logger::info("Subiendo imagen a Cloudinary: $folder");
         $cloudinary = self::getInstance();
         $result = $cloudinary->uploadApi()->upload($filePath, [
             'folder'        => $folder,
@@ -40,7 +40,7 @@ class CloudinaryConfig {
             ]
         ]);
 
-        Logger::info("Subida completada: " . ($result['public_id'] ?? 'N/A'));
+        logger::info("Subida completada: " . ($result['public_id'] ?? 'N/A'));
         return [
             'secure_url' => $result['secure_url'],
             'public_id'  => $result['public_id']
@@ -49,15 +49,15 @@ class CloudinaryConfig {
 
     public static function delete(string $publicId): bool {
         try {
-            Logger::info("Eliminando de Cloudinary: $publicId");
+            logger::info("Eliminando de Cloudinary: $publicId");
             $cloudinary = self::getInstance();
             $result  = $cloudinary->uploadApi()->destroy($publicId);
             $success = ($result['result'] ?? '') === 'ok';
-            if ($success) Logger::info("Eliminación exitosa");
-            else Logger::warning("Eliminación fallida para $publicId");
+            if ($success) logger::info("Eliminación exitosa");
+            else logger::warning("Eliminación fallida para $publicId");
             return $success;
         } catch (\Exception $e) {
-            Logger::error("Error eliminando de Cloudinary: " . $e->getMessage());
+            logger::error("Error eliminando de Cloudinary: " . $e->getMessage());
             return false;
         }
     }

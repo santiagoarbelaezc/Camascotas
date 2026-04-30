@@ -1,12 +1,12 @@
 <?php
 namespace Controllers;
 
-use Config\Database;
-use Utils\ResponseHandler;
+use Config\database;
+use Utils\responsehandler;
 use PDO;
 use Exception;
 
-class AssistantController {
+class assistantcontroller {
 
     // ─── POST /api/chat ───────────────────────────────────────────────────────
     public static function chat(): void {
@@ -15,7 +15,7 @@ class AssistantController {
         $sessionId   = trim($data['session_id'] ?? '');
 
         if (!$userMessage) {
-            ResponseHandler::sendError(400, 'El mensaje no puede estar vacío');
+            responsehandler::sendError(400, 'El mensaje no puede estar vacío');
             return;
         }
 
@@ -24,7 +24,7 @@ class AssistantController {
             $sessionId = bin2hex(random_bytes(16));
         }
 
-        $db = (new Database())->getConnection();
+        $db = (new database())->getConnection();
 
         try {
             // 1. Obtener catálogo de productos reales
@@ -48,14 +48,14 @@ class AssistantController {
             $cleanReply = preg_replace('/\[REDIRECT:[^\]]+\]/', '', $botResponse);
             $cleanReply = trim($cleanReply);
 
-            ResponseHandler::sendResponse(200, 'Respuesta generada', [
+            responsehandler::sendResponse(200, 'Respuesta generada', [
                 'response'   => $cleanReply,
                 'redirect'   => $redirect,
                 'session_id' => $sessionId
             ]);
 
         } catch (Exception $e) {
-            ResponseHandler::sendError(500, 'Error del asistente: ' . $e->getMessage());
+            responsehandler::sendError(500, 'Error del asistente: ' . $e->getMessage());
         }
     }
 
@@ -64,11 +64,11 @@ class AssistantController {
         $sessionId = $_GET['session_id'] ?? '';
 
         if (!$sessionId) {
-            ResponseHandler::sendError(400, 'session_id es requerido');
+            responsehandler::sendError(400, 'session_id es requerido');
             return;
         }
 
-        $db = (new Database())->getConnection();
+        $db = (new database())->getConnection();
 
         $stmt = $db->prepare(
             'SELECT message, is_bot, created_at
@@ -87,7 +87,7 @@ class AssistantController {
             'created_at' => $r['created_at']
         ], $rows);
 
-        ResponseHandler::sendResponse(200, 'Historial recuperado', ['history' => $history]);
+        responsehandler::sendResponse(200, 'Historial recuperado', ['history' => $history]);
     }
 
     // ─── DELETE /api/chat/clear ───────────────────────────────────────────────
@@ -96,15 +96,15 @@ class AssistantController {
         $sessionId = trim($data['session_id'] ?? '');
 
         if (!$sessionId) {
-            ResponseHandler::sendError(400, 'session_id es requerido');
+            responsehandler::sendError(400, 'session_id es requerido');
             return;
         }
 
-        $db   = (new Database())->getConnection();
+        $db   = (new database())->getConnection();
         $stmt = $db->prepare('DELETE FROM chat_messages WHERE session_id = ?');
         $stmt->execute([$sessionId]);
 
-        ResponseHandler::sendResponse(200, 'Historial eliminado', ['success' => true]);
+        responsehandler::sendResponse(200, 'Historial eliminado', ['success' => true]);
     }
 
     // ─── PRIVATE: Catálogo de productos desde la BD ───────────────────────────

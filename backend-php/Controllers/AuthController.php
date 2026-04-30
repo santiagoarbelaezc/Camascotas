@@ -2,37 +2,37 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\controllers;
 
-use App\Config\Database;
-use App\Utils\Response;
-use App\Utils\Logger;
+use App\config\database;
+use App\utils\response;
+use App\utils\logger;
 use Firebase\JWT\JWT;
 use PDO;
 
-class AuthController {
+class authcontroller {
     public static function login(): void {
-        $data     = \App\Utils\Request::all();
+        $data     = \App\utils\request::all();
         $correo   = strtolower(trim($data['correo'] ?? ''));
         $password = $data['password'] ?? '';
 
         if (empty($correo) || empty($password)) {
-            Response::error('Correo y contraseña son requeridos', 400);
+            response::error('Correo y contraseña son requeridos', 400);
         }
 
-        $db   = Database::getConnection();
+        $db   = database::getConnection();
         $stmt = $db->prepare('SELECT * FROM usuarios WHERE correo = ?');
         $stmt->execute([$correo]);
         $usuario = $stmt->fetch();
 
         if (!$usuario) {
-            Logger::warning("Login fallido: Usuario no encontrado ($correo)");
-            Response::error('Credenciales incorrectas', 401);
+            logger::warning("Login fallido: Usuario no encontrado ($correo)");
+            response::error('Credenciales incorrectas', 401);
         }
 
         if (!password_verify($password, $usuario['password'])) {
-            Logger::warning("Login fallido: Contraseña incorrecta ($correo)");
-            Response::error('Credenciales incorrectas', 401);
+            logger::warning("Login fallido: Contraseña incorrecta ($correo)");
+            response::error('Credenciales incorrectas', 401);
         }
 
         $payload = [
@@ -45,9 +45,9 @@ class AuthController {
 
         $jwt = JWT::encode($payload, $_ENV['JWT_SECRET'] ?? 'camascotas-secret', 'HS256');
 
-        Logger::info("Login exitoso: $correo (ID: {$usuario['id']})");
+        logger::info("Login exitoso: $correo (ID: {$usuario['id']})");
 
-        Response::success([
+        response::success([
             'mensaje' => 'Login exitoso',
             'token'   => $jwt,
             'usuario' => [
@@ -60,36 +60,36 @@ class AuthController {
     }
 
     public static function logout(): void {
-        Response::success(['mensaje' => 'Logout exitoso']);
+        response::success(['mensaje' => 'Logout exitoso']);
     }
 
     public static function register(): void {
-        $data     = \App\Utils\Request::all();
+        $data     = \App\utils\request::all();
         $nombre   = trim($data['nombre']   ?? '');
         $correo   = strtolower(trim($data['correo'] ?? ''));
         $password = $data['password'] ?? '';
         $rol      = $data['rol'] ?? 'admin';
 
         if (empty($nombre) || empty($correo) || empty($password)) {
-            Response::error('Nombre, correo y contraseña son requeridos', 400);
+            response::error('Nombre, correo y contraseña son requeridos', 400);
         }
 
-        $db   = Database::getConnection();
+        $db   = database::getConnection();
         $stmt = $db->prepare('SELECT id FROM usuarios WHERE correo = ?');
         $stmt->execute([$correo]);
         if ($stmt->fetch()) {
-            Response::error('El correo ya está registrado', 400);
+            response::error('El correo ya está registrado', 400);
         }
 
         try {
             $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
             $stmt = $db->prepare('INSERT INTO usuarios (nombre, correo, password, rol) VALUES (?, ?, ?, ?)');
             $stmt->execute([$nombre, $correo, $hash, $rol]);
-            Logger::info("Usuario registrado: $correo ($rol)");
-            Response::success(['mensaje' => 'Usuario creado exitosamente', 'id' => $db->lastInsertId()], 201);
+            logger::info("Usuario registrado: $correo ($rol)");
+            response::success(['mensaje' => 'Usuario creado exitosamente', 'id' => $db->lastInsertId()], 201);
         } catch (\PDOException $e) {
-            Logger::error("Error al registrar usuario: " . $e->getMessage());
-            Response::error('Error al crear el usuario', 500);
+            logger::error("Error al registrar usuario: " . $e->getMessage());
+            response::error('Error al crear el usuario', 500);
         }
     }
 }

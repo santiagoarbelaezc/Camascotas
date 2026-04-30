@@ -1,17 +1,17 @@
 <?php
 
-use App\Controllers\VisitasController;
-use App\Middleware\AuthMiddleware;
+use App\controllers\visitascontroller;
+use App\middleware\authmiddleware;
 
 return function($router) {
-    $controller = new VisitasController();
+    $controller = new visitascontroller();
 
     // Registro público
     $router->add('POST', '/visitas/registrar', [$controller, 'registrar']);
 
     // Estadísticas protegidas
-    $router->add('GET', '/visitas/resumen', [$controller, 'getResumen'], [AuthMiddleware::class, 'handle']);
-    $router->add('GET', '/visitas/grafica', [$controller, 'getGraficaSemanal'], [AuthMiddleware::class, 'handle']);
-    $router->add('GET', '/visitas/logs', [$controller, 'getUltimasVisitas'], [AuthMiddleware::class, 'handle']);
-    $router->add('GET', '/visitas/productos', [$controller, 'getTopProductos'], [AuthMiddleware::class, 'handle']);
+    $router->add('GET', '/visitas/resumen', [$controller, 'getResumen'], [authmiddleware::class, 'handle']);
+    $router->add('GET', '/visitas/grafica', [$controller, 'getGraficaSemanal'], [authmiddleware::class, 'handle']);
+    $router->add('GET', '/visitas/logs', [$controller, 'getUltimasVisitas'], [authmiddleware::class, 'handle']);
+    $router->add('GET', '/visitas/productos', [$controller, 'getTopProductos'], [authmiddleware::class, 'handle']);
 };

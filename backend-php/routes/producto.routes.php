@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-use App\Controllers\ProductoController;
-use App\Middleware\AuthMiddleware;
+use App\controllers\productocontroller;
+use App\middleware\authmiddleware;
 
 return function($router) {
     // Rutas públicas
-    $router->add('GET', '/producto',                    [ProductoController::class, 'obtenerProductos']);
-    $router->add('GET', '/producto/aleatorios',          [ProductoController::class, 'obtenerAleatorios']);
-    $router->add('GET', '/producto/buscar',              [ProductoController::class, 'buscarPorNombre']);
-    $router->add('GET', '/producto/{id}',               [ProductoController::class, 'obtenerProductoPorId']);
-    $router->add('PATCH', '/producto/{id}/vista',       [ProductoController::class, 'incrementarVista']);
+    $router->add('GET', '/producto',                    [productocontroller::class, 'obtenerProductos']);
+    $router->add('GET', '/producto/aleatorios',          [productocontroller::class, 'obtenerAleatorios']);
+    $router->add('GET', '/producto/buscar',              [productocontroller::class, 'buscarPorNombre']);
+    $router->add('GET', '/producto/{id}',               [productocontroller::class, 'obtenerProductoPorId']);
+    $router->add('PATCH', '/producto/{id}/vista',       [productocontroller::class, 'incrementarVista']);
 
     // Rutas protegidas (requieren JWT)
-    $router->add('POST',   '/producto',       [ProductoController::class, 'crearProducto'],      [AuthMiddleware::class, 'verifyToken']);
-    $router->add('PUT',    '/producto/{id}',  [ProductoController::class, 'actualizarProducto'], [AuthMiddleware::class, 'verifyToken']);
-    $router->add('DELETE', '/producto/{id}',  [ProductoController::class, 'eliminarProducto'],   [AuthMiddleware::class, 'verifyToken']);
+    $router->add('POST',   '/producto',       [productocontroller::class, 'crearProducto'],      [authmiddleware::class, 'verifyToken']);
+    $router->add('PUT',    '/producto/{id}',  [productocontroller::class, 'actualizarProducto'], [authmiddleware::class, 'verifyToken']);
+    $router->add('DELETE', '/producto/{id}',  [productocontroller::class, 'eliminarProducto'],   [authmiddleware::class, 'verifyToken']);
 };
