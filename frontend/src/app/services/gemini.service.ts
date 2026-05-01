@@ -39,7 +39,7 @@ export class GeminiService {
   /** Enviar un mensaje y recibir respuesta */
   async sendMessage(message: string): Promise<{ text: string; redirect: string | null }> {
     try {
-      const res = await fetch(`${environment.apiUrl}/api/chat`, {
+      const res = await fetch(`${environment.apiUrl}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message, session_id: this.sessionId })
@@ -79,7 +79,7 @@ export class GeminiService {
   async getHistory(): Promise<ChatMessage[]> {
     try {
       const res = await fetch(
-        `${environment.apiUrl}/api/chat/history?session_id=${this.sessionId}`
+        `${environment.apiUrl}/chat/history?session_id=${this.sessionId}`
       );
       if (!res.ok) return [];
 
@@ -93,7 +93,7 @@ export class GeminiService {
   /** Limpiar conversación */
   async clearSession(): Promise<void> {
     try {
-      await fetch(`${environment.apiUrl}/api/chat/clear`, {
+      await fetch(`${environment.apiUrl}/chat/clear`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: this.sessionId })

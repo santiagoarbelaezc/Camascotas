@@ -4,64 +4,65 @@
   <header class="chat-header">
     <div class="header-brand">
       <div class="avatar-ring">
-        <img src="assets/videos/husky.png" alt="Elisa" class="avatar-img">
+        <img src="assets/videos/husky.png" alt="Husky" class="avatar-img">
         <span class="online-dot"></span>
       </div>
       <div>
-        <p class="agent-name">Elisa</p>
-        <p class="agent-status">Asistente de Camascotas · En línea</p>
+        <p class="agent-name">Husky</p>
+        <p class="agent-status">Agente Husky · Camascotas</p>
       </div>
     </div>
     <button (click)="clearChat()" class="new-chat-btn" title="Nueva conversación">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
       </svg>
-      Nueva conversación
+      Nueva sesión
     </button>
   </header>
 
   <!-- ── CHAT BODY ── -->
-  <div class="chat-body" #chatContainer>
+  <div class="chat-body" [class.chat-active]="messages.length > 0" (scroll)="onScroll($event)" #chatContainer>
 
-    <!-- Mascot Welcome -->
-    <div class="mascot-welcome" *ngIf="showMascot">
-      <div class="mascot-wrap">
-        <video *ngIf="isPlaying" [src]="currentVideo" autoplay muted (ended)="onVideoEnded()" playsinline class="mascot-img"></video>
-        <img *ngIf="!isPlaying" [src]="idleImage" alt="Husky" class="mascot-img">
+    <!-- Mascot Display (Dynamic) -->
+    <div class="mascot-container" [class.mini-mode]="isMini">
+      <div class="mascot-wrap" (click)="toggleMascot()">
+        <!-- Imagen base (siempre presente como fallback o fondo) -->
+        <img [src]="idleImage" alt="Husky" class="mascot-img base-img" 
+             [style.opacity]="isPlaying && !isVideoLoading ? 0 : 1">
+
+        <!-- Video superpuesto (se desvanece al aparecer) -->
+        <video *ngIf="currentVideo"
+               [src]="currentVideo" 
+               autoplay muted 
+               (canplay)="onVideoReady()"
+               (ended)="onVideoEnded()" 
+               playsinline 
+               class="mascot-img video-layer"
+               [style.opacity]="isPlaying && !isVideoLoading ? 1 : 0">
+        </video>
       </div>
 
-      <!-- Husky Action Buttons (Mobile Focused) -->
-      <div class="mascot-actions">
-        <button (click)="playMascotVideo('video-husky6.mp4')" class="action-btn">
-          <span>🦴</span> Aullar
-        </button>
-        <button (click)="playMascotVideo('video-husky11.mp4')" class="action-btn">
-          <span>🎭</span> Bailar
-        </button>
-        <button (click)="playMascotVideo('video-husky4.mp4')" class="action-btn">
-          <span>🎾</span> Jugar
-        </button>
-        <button (click)="playMascotVideo('video-husky14.mp4')" class="action-btn">
-          <span>✨</span> Truco
-        </button>
+      <!-- Husky Action Buttons (Mini Version) -->
+      <div class="mascot-actions" *ngIf="messages.length === 0">
+        <button (click)="playMascotVideo('video-husky.mp4')" class="action-btn">🧸 Tierno</button>
+        <button (click)="playMascotVideo('video-husky2.mp4')" class="action-btn">🎾 Jugar</button>
+        <button (click)="playMascotVideo('video-husky6.mp4')" class="action-btn">💖 Panza</button>
+        <button (click)="playMascotVideo('video-husky8.mp4')" class="action-btn">🥺 Ojitos</button>
+        <button (click)="playMascotVideo('video-husky10.mp4')" class="action-btn">🐾 Pata</button>
+        <button (click)="playMascotVideo('video-husky11.mp4')" class="action-btn">🎵 Música</button>
+        <button (click)="playMascotVideo('video-husky12.mp4')" class="action-btn">📸 Foto</button>
+        <button (click)="playMascotVideo('video-husky13.mp4')" class="action-btn">🍿 Cine</button>
       </div>
-      <div class="welcome-bubble">
-        <span class="welcome-emoji">🐾</span>
+
+      <div class="welcome-bubble" *ngIf="messages.length === 0">
         <p>
-          ¡Hola! Soy <strong>Elisa</strong>, la asistente de <strong>Camascotas</strong>.<br>
-          Cuéntame sobre tu peludito y te ayudo a encontrar el <em>mueble perfecto</em> para él 🛋️
+          Mi nombre es <strong>Husky</strong>, habla conmigo de lo que quieras. 🐾
         </p>
-      </div>
-      <div class="quick-prompts">
-        <button (click)="inputText = 'Busco una cama para mi perro grande'; sendMessage()" class="quick-btn">🐕 Cama para perro grande</button>
-        <button (click)="inputText = 'Tengo un gato, ¿qué me recomiendas?'; sendMessage()" class="quick-btn">🐱 Muebles para gato</button>
-        <button (click)="inputText = '¿Dónde están ubicados?'; sendMessage()" class="quick-btn">📍 ¿Dónde están?</button>
-        <button (click)="inputText = 'Quiero ver el catálogo completo'; sendMessage()" class="quick-btn">📦 Ver catálogo</button>
       </div>
     </div>
 
     <!-- Historial de mensajes -->
-    <div class="messages-list" *ngIf="!showMascot">
+    <div class="messages-list">
       <div
         *ngFor="let msg of messages"
         class="message-row"
