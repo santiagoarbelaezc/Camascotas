@@ -245,8 +245,13 @@ export class AdminCategoriasComponent implements OnInit {
   }
 
   guardarCategoria(): void {
-    if (!this.catForm.nombre) {
+    if (!this.catForm.nombre.trim()) {
       this.showToast('El nombre es obligatorio', true);
+      return;
+    }
+
+    if (/^\d+$/.test(this.catForm.nombre.trim())) {
+      this.showToast('El nombre de la categoría no puede ser solo números', true);
       return;
     }
 
@@ -295,8 +300,13 @@ export class AdminCategoriasComponent implements OnInit {
   }
 
   guardarSubcategoria(): void {
-    if (!this.subForm.nombre) {
+    if (!this.subForm.nombre.trim()) {
       this.showToast('El nombre es obligatorio', true);
+      return;
+    }
+
+    if (/^\d+$/.test(this.subForm.nombre.trim())) {
+      this.showToast('El nombre no puede ser solo números', true);
       return;
     }
 

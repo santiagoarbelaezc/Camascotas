@@ -18,7 +18,7 @@ class productocontroller {
             $db   = database::getConnection();
             $sql  = "
                 SELECT p.id, p.nombre, p.descripcion, p.precio, p.desde,
-                       p.subcategoria_id,
+                       p.subcategoria_id, p.created_at,
                        s.nombre AS subcategoria,
                        c.id    AS categoria_id,
                        c.nombre AS categoria
@@ -87,7 +87,7 @@ class productocontroller {
             $db   = database::getConnection();
             $stmt = $db->prepare("
                 SELECT p.id, p.nombre, p.descripcion, p.precio, p.desde,
-                       p.subcategoria_id,
+                       p.subcategoria_id, p.created_at,
                        s.nombre AS subcategoria,
                        c.id    AS categoria_id,
                        c.nombre AS categoria

@@ -116,13 +116,24 @@ export class AdminProductosComponent implements OnInit {
   }
 
   guardar(): void {
-    if (!this.form.nombre || !this.form.precio || !this.form.subcategoria_id) {
+    if (!this.form.nombre.trim() || !this.form.precio || !this.form.subcategoria_id) {
       this.showToast('Completa los campos requeridos (*)', true);
       return;
     }
     
     if (this.form.precio < 0) {
       this.showToast('El precio no puede ser un valor negativo', true);
+      this.form.precio = 0;
+      return;
+    }
+
+    if (/^\d+$/.test(this.form.nombre.trim())) {
+      this.showToast('El nombre del producto no puede ser solo números', true);
+      return;
+    }
+
+    if (this.form.nombre.trim().length < 3) {
+      this.showToast('El nombre debe tener al menos 3 caracteres', true);
       return;
     }
 
