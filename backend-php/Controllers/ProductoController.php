@@ -55,19 +55,25 @@ class productocontroller {
             // Cargar imágenes en batch
             $ids          = array_column($productos, 'id');
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
+            
             $stmtImg      = $db->prepare("SELECT producto_id, imagen_url, es_principal FROM producto_imagenes WHERE producto_id IN ($placeholders)");
             $stmtImg->execute($ids);
             $imagenes = $stmtImg->fetchAll();
 
+            // Cargar colores en batch
+            $stmtColores = $db->prepare("SELECT producto_id, color FROM producto_colores WHERE producto_id IN ($placeholders)");
+            $stmtColores->execute($ids);
+            $coloresTotal = $stmtColores->fetchAll();
+
             foreach ($productos as &$prod) {
+                // Imágenes
                 $imgs              = array_filter($imagenes, fn($i) => $i['producto_id'] == $prod['id']);
                 $prod['imagenes']  = array_values(array_column(array_values($imgs), 'imagen_url'));
                 $prod['imagen']    = $prod['imagenes'][0] ?? null;
 
                 // Colores
-                $stmtColores = $db->prepare("SELECT color FROM producto_colores WHERE producto_id = ?");
-                $stmtColores->execute([$prod['id']]);
-                $prod['colores'] = $stmtColores->fetchAll(PDO::FETCH_COLUMN);
+                $misColores      = array_filter($coloresTotal, fn($c) => $c['producto_id'] == $prod['id']);
+                $prod['colores'] = array_values(array_column(array_values($misColores), 'color'));
             }
 
             response::success($productos);

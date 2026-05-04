@@ -37,7 +37,7 @@ import { CategoriasService, Categoria, Subcategoria } from '../../../../services
     <div *ngFor="let cat of categorias" class="category-card">
       <div class="category-header">
         <div class="cat-info">
-          <img [src]="cat.imagen || 'assets/images/placeholder.png'" class="cat-icon">
+          <img [src]="cat.imagen || 'assets/images/placeholder.jpg'" class="cat-icon">
           <h3 class="cat-name">{{ cat.nombre }}</h3>
         </div>
         <div class="cat-actions">

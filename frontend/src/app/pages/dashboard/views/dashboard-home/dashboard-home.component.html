@@ -39,6 +39,31 @@
     </div>
   </div>
 
+  <!-- Charts Section -->
+  <h2 class="section-title">Estadísticas del Catálogo</h2>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Distribución por Categoría</h3>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="doughnutChartData"
+          [type]="'doughnut'"
+          [options]="chartOptions">
+        </canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>Ingreso de Productos (6 meses)</h3>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="barChartData"
+          [type]="'bar'"
+          [options]="chartOptions">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
   <!-- Quick Actions -->
   <h2 class="section-title">Acciones Rápidas</h2>
   <div class="tiles-grid">

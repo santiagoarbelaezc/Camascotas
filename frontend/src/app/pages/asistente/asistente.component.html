@@ -1,4 +1,4 @@
-<div class="chat-shell font-poppins">
+<div class="chat-shell font-poppins" [class.chat-shell-floating]="isFloating">
 
   <!-- ── HEADER ── -->
   <header class="chat-header">
@@ -12,16 +12,23 @@
         <p class="agent-status">Agente Husky · Camascotas</p>
       </div>
     </div>
-    <button (click)="clearChat()" class="new-chat-btn" title="Nueva conversación">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-      </svg>
-      Nueva sesión
-    </button>
+    <div class="header-actions">
+      <button (click)="clearChat()" class="new-chat-btn" title="Nueva conversación">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+        </svg>
+      </button>
+
+      <button *ngIf="isFloating" (click)="close.emit()" class="close-chat-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
   </header>
 
   <!-- ── CHAT BODY ── -->
-  <div class="chat-body" [class.chat-active]="messages.length > 0" (scroll)="onScroll($event)" #chatContainer>
+  <div class="chat-body" [class.chat-active]="messages.length > 0" (scroll)="onScroll()" #chatContainer>
 
     <!-- Mascot Display (Dynamic) -->
     <div class="mascot-container" [class.mini-mode]="isMini">
@@ -43,7 +50,7 @@
       </div>
 
       <!-- Husky Action Buttons (Mini Version) -->
-      <div class="mascot-actions" *ngIf="messages.length === 0">
+      <div class="mascot-actions" *ngIf="messages.length === 0 || !isMini">
         <button (click)="playMascotVideo('video-husky.mp4')" class="action-btn">🧸 Tierno</button>
         <button (click)="playMascotVideo('video-husky2.mp4')" class="action-btn">🎾 Jugar</button>
         <button (click)="playMascotVideo('video-husky6.mp4')" class="action-btn">💖 Panza</button>
@@ -75,6 +82,27 @@
 
         <div class="bubble" [class.bubble-user]="!msg.isBot" [class.bubble-bot]="msg.isBot">
           <p class="bubble-text">{{ msg.text }}</p>
+
+          <!-- Product Cards inside Bot Bubble -->
+          <div class="chat-products-grid" *ngIf="msg.isBot && msg.products && msg.products.length > 0">
+            <div class="chat-prod-card" *ngFor="let p of msg.products" (click)="goToProduct(p)">
+              <div class="cp-img-wrap">
+                <img [src]="p.imagen" [alt]="p.nombre">
+              </div>
+              <div class="cp-content">
+                <span class="cp-cat">{{ p.categoria }}</span>
+                <h4 class="cp-name">{{ p.nombre }}</h4>
+                <div class="cp-footer">
+                  <span class="cp-price">
+                    <small *ngIf="p.desde">Desde</small> {{ p.precio | currency:'USD':'symbol':'1.0-0' }}
+                  </span>
+                  <div class="cp-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -83,7 +83,7 @@ export class ProductosListComponent implements OnInit {
   verProducto(prod: Producto): void {
     this.productoSeleccionadoService.setProducto(prod);
     const slug = prod.nombre.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-    this.router.navigate(['/producto', prod.id, slug]);
+    this.router.navigateByUrl(`/compra/muebles-mascotas/${slug}-p${prod.id}`);
   }
 
   formatearPrecio(precio: number): string {

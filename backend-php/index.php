@@ -76,9 +76,6 @@ class Router {
         if ($uri[0] !== '/') $uri = '/' . $uri;
 
         $method = $_SERVER['REQUEST_METHOD'];
-        if ($method === 'POST' && isset($_POST['_method'])) {
-            $method = strtoupper($_POST['_method']);
-        }
 
         foreach ($this->routes as $route) {
             if ($route['method'] === $method && preg_match($route['path'], $uri, $matches)) {

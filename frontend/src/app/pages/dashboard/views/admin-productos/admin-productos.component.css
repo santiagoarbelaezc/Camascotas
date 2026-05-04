@@ -345,3 +345,69 @@
 
 .toast.visible { opacity: 1; transform: translateY(0); }
 .toast.error   { background: #ef4444; }
+
+/* ── Pagination ───────────────────────────────────────────────────────────── */
+.pagination-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  border-top: 1px solid #f1f5f9;
+  background: #fafbfc;
+}
+
+.btn-page {
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-page:hover:not(:disabled) {
+  border-color: #00B3BC;
+  color: #00B3BC;
+  background: rgba(0, 179, 188, 0.05);
+}
+
+.btn-page:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #f1f5f9;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-num {
+  background: none;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  min-width: 34px;
+  height: 34px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-num:hover {
+  color: #00B3BC;
+  background: rgba(0, 179, 188, 0.05);
+}
+
+.btn-num.active {
+  background: #00B3BC;
+  color: white;
+  border-color: #00B3BC;
+}

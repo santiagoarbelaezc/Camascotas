@@ -101,12 +101,23 @@ class categoriacontroller {
 
         try {
             $db   = database::getConnection();
+            
+            logger::info("Actualizando categoría $id. Datos recibidos: " . json_encode($params));
+            $files = \App\utils\request::files();
+            logger::info("Archivos recibidos: " . json_encode(array_keys($files)));
+
             $curr = $db->prepare('SELECT icono_public_id FROM categorias WHERE id = ?');
             $curr->execute([$id]);
             $row  = $curr->fetch();
             if (!$row) response::error('Categoría no encontrada', 404);
 
             $imageInfo  = uploadmiddleware::handleSingleUpload('icono', 'camascotas_categorias');
+            if ($imageInfo) {
+                logger::info("Nueva imagen subida: " . $imageInfo['secure_url']);
+            } else {
+                logger::info("No se subió nueva imagen o fallo en el proceso.");
+            }
+
             $nuevoIcono = $imageInfo['secure_url'] ?? null;
             $nuevoPubl  = $imageInfo['public_id']  ?? null;
 

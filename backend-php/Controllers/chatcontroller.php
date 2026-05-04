@@ -26,24 +26,30 @@ class chatcontroller {
             $db = database::getConnection();
             
             // 1. Obtener contexto de productos y categorías para la IA
-            $stmt = $db->query("SELECT id, nombre FROM categorias LIMIT 10");
-            $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $catList = implode(", ", array_column($categorias, 'nombre'));
+            $stmt = $db->query("SELECT id, nombre, precio, desde, descripcion FROM productos LIMIT 50");
+            $productosCtx = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $prodContext = "";
+            foreach($productosCtx as $p) {
+                $pago = $p['desde'] ? "Desde $" : "$";
+                $prodContext .= "- {$p['nombre']} (ID: {$p['id']}, Precio: {$pago}{$p['precio']})\n";
+            }
 
             // 2. Guardar mensaje del usuario
             $stmt = $db->prepare("INSERT INTO chat_historial (session_id, message, is_bot) VALUES (?, ?, 0)");
             $stmt->execute([$sessionId, $message]);
 
             // 3. Preparar el Prompt para Husky
-            $systemPrompt = "Eres Husky, el asistente virtual de Camascotas. Tu personalidad es alegre, servicial y un poco juguetona (puedes usar emojis de patitas 🐾). 
-            Tu objetivo es ayudar a los clientes a elegir el mejor mueble para sus mascotas. 
-            Tenemos categorías como: $catList.
+            $systemPrompt = "Eres Husky, el asistente virtual de Camascotas 🐾. Alegre, servicial y juguetón.
+            Ayuda a los clientes a elegir muebles para sus mascotas del catálogo.
             
-            REGLAS CRÍTICAS:
-            1. Si el usuario busca algo específico (ej: camas, gimnasios, rascadores), proporciónale un enlace de redirección usando EXACTAMENTE este formato al final de tu mensaje: [REDIRECT:/productos?nombre=TERMINO] o [REDIRECT:/productos?categoria_id=ID].
-            2. Si preguntan por camas para perro grande, usa [REDIRECT:/productos?nombre=grande].
-            3. No inventes productos que no existan.
-            4. Responde de forma concisa.";
+            CATÁLOGO DISPONIBLE:
+            $prodContext
+            
+            REGLAS DE RECOMENDACIÓN:
+            1. Para recomendar productos específicos usa el formato [PRODUCT:ID] al final. Máximo 3.
+            2. Ejemplo: \"¡Este te encantará! 🐾 [PRODUCT:5]\".
+            3. Si buscan categorías generales usa [REDIRECT:/productos?nombre=termino].
+            4. No inventes productos. Sé breve.";
 
             // 4. Llamar a Groq
             $apiKey = $_ENV['GROQ_API_KEY'] ?? '';
@@ -65,42 +71,65 @@ class chatcontroller {
                 "Content-Type: application/json"
             ]);
 
-            // Desactivar verificación SSL solo si estamos en localhost
             if ($_SERVER['HTTP_HOST'] === 'localhost:8000' || $_SERVER['HTTP_HOST'] === '127.0.0.1:8000') {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             }
 
             $result = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $curlError = curl_error($ch);
             curl_close($ch);
 
-            if ($curlError) {
-                throw new \Exception("CURL Error: " . $curlError);
-            }
-
             if ($httpCode !== 200) {
-                logger::error("Groq API Error: Status $httpCode, Response: $result");
-                throw new \Exception("Error Groq API: Status $httpCode");
+                throw new \Exception("Error Groq API: $httpCode");
             }
 
             $jsonResponse = json_decode($result, true);
-            $botReply = $jsonResponse['choices'][0]['message']['content'] ?? '¡Guau! Algo salió mal, ¿puedes repetirlo? 🐾';
+            $botReply = $jsonResponse['choices'][0]['message']['content'] ?? '🐾 ¡Guau! No pude procesar eso.';
 
-            // 5. Procesar redirección si existe en la respuesta de la IA
+            // 5. Extraer Redirecciones y Productos
             $redirect = null;
             if (preg_match('/\[REDIRECT:(.*?)\]/', $botReply, $matches)) {
                 $redirect = $matches[1];
-                $botReply = str_replace($matches[0], '', $botReply); // Limpiar el tag del texto visible
+                $botReply = str_replace($matches[0], '', $botReply);
             }
 
-            // 6. Guardar respuesta del bot
-            $stmt = $db->prepare("INSERT INTO chat_historial (session_id, message, is_bot) VALUES (?, ?, 1)");
-            $stmt->execute([$sessionId, $botReply]);
+            $recommendedProducts = [];
+            if (preg_match_all('/\[PRODUCT:(\d+)\]/', $botReply, $pMatches)) {
+                $pIds = $pMatches[1];
+                foreach ($pIds as $pId) {
+                    $botReply = str_replace("[PRODUCT:$pId]", '', $botReply);
+                    
+                    // Fetch product details for the card
+                    $pStmt = $db->prepare("
+                        SELECT p.id, p.nombre, p.precio, p.desde, c.nombre as categoria
+                        FROM productos p
+                        JOIN subcategorias s ON p.subcategoria_id = s.id
+                        JOIN categorias c ON s.categoria_id = c.id
+                        WHERE p.id = ?
+                    ");
+                    $pStmt->execute([$pId]);
+                    $pData = $pStmt->fetch(PDO::FETCH_ASSOC);
+                    
+                    if ($pData) {
+                        // Fetch first image
+                        $iStmt = $db->prepare("SELECT imagen_url FROM producto_imagenes WHERE producto_id = ? LIMIT 1");
+                        $iStmt->execute([$pId]);
+                        $img = $iStmt->fetch(PDO::FETCH_ASSOC);
+                        $pData['imagen'] = $img['imagen_url'] ?? 'assets/images/placeholder.jpg';
+                        $pData['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $pData['nombre']), '-'));
+                        $recommendedProducts[] = $pData;
+                    }
+                }
+            }
+
+            // 6. Guardar y Responder
+            $stmt = $db->prepare("INSERT INTO chat_historial (session_id, message, is_bot, metadata) VALUES (?, ?, 1, ?)");
+            $stmt->execute([$sessionId, trim($botReply), json_encode($recommendedProducts)]);
 
             response::success([
                 'response' => trim($botReply),
                 'redirect' => $redirect,
+                'products' => $recommendedProducts,
                 'session_id' => $sessionId
             ]);
 
@@ -114,13 +143,15 @@ class chatcontroller {
         $sessionId = $_GET['session_id'] ?? 'default';
         try {
             $db = database::getConnection();
-            $stmt = $db->prepare("SELECT message as text, is_bot FROM chat_historial WHERE session_id = ? ORDER BY created_at ASC");
+            $stmt = $db->prepare("SELECT message as text, is_bot, metadata FROM chat_historial WHERE session_id = ? ORDER BY created_at ASC");
             $stmt->execute([$sessionId]);
             $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($history as &$msg) {
                 $msg['isBot'] = (bool)$msg['is_bot'];
+                $msg['products'] = $msg['metadata'] ? json_decode($msg['metadata'], true) : [];
                 unset($msg['is_bot']);
+                unset($msg['metadata']);
             }
 
             response::success(['history' => $history]);

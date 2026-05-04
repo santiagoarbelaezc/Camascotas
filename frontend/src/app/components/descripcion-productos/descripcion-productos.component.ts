@@ -31,7 +31,13 @@ export class DescripcionProductosComponent implements OnInit {
     // Escuchamos siempre los cambios en los parámetros de la URL
     // Esto asegura que si navegamos de un producto a otro (desde recomendados), el componente se actualice.
     this.route.params.subscribe(params => {
-      const id = +params['id'];
+      const slugId = params['slugId'];
+      let id = null;
+
+      if (slugId && slugId.includes('-p')) {
+        id = +slugId.split('-p').pop();
+      }
+
       if (id) {
         this.cargarProductoPorId(id);
       } else {

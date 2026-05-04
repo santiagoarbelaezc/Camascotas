@@ -45,6 +45,6 @@ export class CarruselDestacadosComponent {
 
   verProducto(item: CarruselItem) {
     const slug = item.nombre.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-    this.router.navigate(['/producto', item.id, slug]);
+    this.router.navigateByUrl(`/compra/muebles-mascotas/${slug}-p${item.id}`);
   }
 }

@@ -32,7 +32,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/contacto/contacto.component').then(m => m.ContactoComponent)
   },
   {
-    path: 'producto/:id/:slug',
+    path: 'compra/muebles-mascotas/:slugId',
     loadComponent: () => import('./pages/descripcion/descripcion.component').then(m => m.DescripcionComponent)
   },
   // ─── Dashboard Admin (Protegido) ──────────────────────────────────────────

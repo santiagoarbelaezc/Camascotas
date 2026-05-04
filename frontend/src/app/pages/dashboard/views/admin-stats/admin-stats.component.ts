@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { StatsService } from '../../../../services/stats.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartOptions, ChartType, Chart, registerables } from 'chart.js';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-stats',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, BaseChartDirective, FormsModule],
   template: `
     <div class="p-2 lg:p-4 space-y-8 animate-fade-in">
       <header>
@@ -77,11 +78,17 @@ import { ChartConfiguration, ChartOptions, ChartType, Chart, registerables } fro
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         <!-- Top Products -->
-        <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
-          <div class="p-8 border-b border-slate-50">
-            <h3 class="text-lg font-bold text-slate-800">Top 10 Productos</h3>
+        <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden flex flex-col">
+          <div class="p-8 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <h3 class="text-lg font-bold text-slate-800">Estadísticas de Productos</h3>
+            <div class="relative">
+              <input type="text" [(ngModel)]="filtroProducto" (ngModelChange)="paginaProd = 1" 
+                     placeholder="Buscar producto..." 
+                     class="pl-10 pr-4 py-2 bg-slate-50 border-none rounded-2xl text-xs focus:ring-2 focus:ring-brand-turquesa/20 w-full md:w-48">
+              <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            </div>
           </div>
-          <div class="overflow-x-auto">
+          <div class="overflow-x-auto flex-1">
             <table class="w-full text-left">
               <thead>
                 <tr class="bg-slate-50/50 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
@@ -90,7 +97,7 @@ import { ChartConfiguration, ChartOptions, ChartType, Chart, registerables } fro
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-50">
-                <tr *ngFor="let prod of topProductos" class="hover:bg-slate-50/30 transition-colors group">
+                <tr *ngFor="let prod of productosPaginados" class="hover:bg-slate-50/30 transition-colors group">
                   <td class="px-8 py-4">
                     <span class="text-sm font-bold text-slate-600">{{ prod.nombre }}</span>
                   </td>
@@ -101,15 +108,21 @@ import { ChartConfiguration, ChartOptions, ChartType, Chart, registerables } fro
               </tbody>
             </table>
           </div>
+          <!-- Pagination -->
+          <div class="p-4 bg-slate-50/30 border-t border-slate-50 flex justify-center gap-2" *ngIf="totalPaginasProd > 1">
+             <button (click)="paginaProd = paginaProd - 1" [disabled]="paginaProd === 1" class="p-2 disabled:opacity-30"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+             <span class="text-xs font-bold text-slate-500 self-center">Página {{ paginaProd }} de {{ totalPaginasProd }}</span>
+             <button (click)="paginaProd = paginaProd + 1" [disabled]="paginaProd === totalPaginasProd" class="p-2 disabled:opacity-30"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
         </div>
 
         <!-- Recent Logs -->
-        <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
+        <div class="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden flex flex-col">
           <div class="p-8 border-b border-slate-50 flex justify-between items-center">
             <h3 class="text-lg font-bold text-slate-800">Últimas Visitas</h3>
             <span class="px-3 py-1 bg-slate-50 text-slate-400 text-[10px] font-bold uppercase rounded-full tracking-wider">Tiempo Real</span>
           </div>
-          <div class="overflow-x-auto">
+          <div class="overflow-x-auto flex-1">
             <table class="w-full text-left">
               <thead>
                 <tr class="bg-slate-50/50 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
@@ -119,7 +132,7 @@ import { ChartConfiguration, ChartOptions, ChartType, Chart, registerables } fro
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-50">
-                <tr *ngFor="let log of logs" class="hover:bg-slate-50/30 transition-colors group">
+                <tr *ngFor="let log of logsPaginados" class="hover:bg-slate-50/30 transition-colors group">
                   <td class="px-8 py-4">
                     <span class="text-sm font-mono text-slate-600">{{ log.ip_address }}</span>
                   </td>
@@ -130,6 +143,12 @@ import { ChartConfiguration, ChartOptions, ChartType, Chart, registerables } fro
                 </tr>
               </tbody>
             </table>
+          </div>
+          <!-- Pagination -->
+          <div class="p-4 bg-slate-50/30 border-t border-slate-50 flex justify-center gap-2" *ngIf="totalPaginasLogs > 1">
+             <button (click)="paginaLogs = paginaLogs - 1" [disabled]="paginaLogs === 1" class="p-2 disabled:opacity-30"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+             <span class="text-xs font-bold text-slate-500 self-center">Página {{ paginaLogs }} de {{ totalPaginasLogs }}</span>
+             <button (click)="paginaLogs = paginaLogs + 1" [disabled]="paginaLogs === totalPaginasLogs" class="p-2 disabled:opacity-30"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
         </div>
 
@@ -208,5 +227,40 @@ export class AdminStatsComponent implements OnInit {
       },
       error: (err) => console.error('Error grafica:', err)
     });
+  }
+
+  // Logic for Logs Pagination
+  paginaLogs = 1;
+  itemsPorPaginaLogs = 10;
+
+  get logsPaginados(): any[] {
+    const inicio = (this.paginaLogs - 1) * this.itemsPorPaginaLogs;
+    return this.logs.slice(inicio, inicio + this.itemsPorPaginaLogs);
+  }
+
+  get totalPaginasLogs(): number {
+    return Math.ceil(this.logs.length / this.itemsPorPaginaLogs);
+  }
+
+  // Logic for Products Stats
+  paginaProd = 1;
+  itemsPorPaginaProd = 10;
+  filtroProducto = '';
+
+  get productosFiltrados(): any[] {
+    if (!this.filtroProducto) return this.topProductos;
+    return this.topProductos.filter(p => 
+      p.nombre.toLowerCase().includes(this.filtroProducto.toLowerCase())
+    );
+  }
+
+  get productosPaginados(): any[] {
+    const filtrados = this.productosFiltrados;
+    const inicio = (this.paginaProd - 1) * this.itemsPorPaginaProd;
+    return filtrados.slice(inicio, inicio + this.itemsPorPaginaProd);
+  }
+
+  get totalPaginasProd(): number {
+    return Math.ceil(this.productosFiltrados.length / this.itemsPorPaginaProd);
   }
 }

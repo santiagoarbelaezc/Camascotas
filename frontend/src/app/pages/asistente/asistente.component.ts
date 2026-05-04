@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,6 +18,8 @@ import { GeminiService, ChatMessage } from '../../services/gemini.service';
 export class AsistenteComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('chatContainer') chatContainer!: ElementRef;
+  @Input() isFloating = false;
+  @Output() close = new EventEmitter<void>();
 
   messages: ChatMessage[] = [];
   inputText = '';
@@ -63,9 +65,12 @@ export class AsistenteComponent implements OnInit, AfterViewChecked {
     this.isMini = true; // Activar modo mini al chatear
     this.shouldScroll = true;
 
-    const { text: reply, redirect } = await this.geminiService.sendMessage(text);
+    // Forzar que se mantenga mini al menos durante el envío
+    // para evitar que onScroll lo revierta si el contenido es corto
 
-    this.messages.push({ text: reply, isBot: true });
+    const { text: reply, redirect, products } = await this.geminiService.sendMessage(text);
+    
+    this.messages.push({ text: reply, isBot: true, products });
     this.isLoading = false;
     this.shouldScroll = true;
 
@@ -106,18 +111,21 @@ export class AsistenteComponent implements OnInit, AfterViewChecked {
   }
 
   /** Manejar scroll para expandir a Husky de forma estable */
-  onScroll(event: Event): void {
-    const element = event.target as HTMLElement;
-    if (!element) return;
+  onScroll(): void {
+    if (!this.chatContainer) return;
 
+    const element = this.chatContainer.nativeElement;
     const scrollPos = element.scrollTop;
-    
-    // Solo expandir si estamos en el tope real y NO estamos cargando una respuesta
+
+    // Si hay carga o estamos procesando, no permitimos expandir
+    if (this.isLoading) return;
+
+    // Solo expandir si estamos en el tope real
     if (scrollPos <= 5) {
       this.isMini = false;
     } 
-    // Si bajamos un poco y ya hay conversación, minimizamos para dar foco al chat
-    else if (scrollPos > 40 && this.messages.length > 0) {
+    // Solo minimizar si hemos bajado lo suficiente para no parpadear
+    else if (scrollPos > 80) {
       this.isMini = true;
     }
   }
@@ -127,6 +135,12 @@ export class AsistenteComponent implements OnInit, AfterViewChecked {
       event.preventDefault();
       this.sendMessage();
     }
+  }
+
+  goToProduct(p: any): void {
+    // Redirigir a /compra/muebles-mascotas/slug-pid
+    const seoUrl = `/compra/muebles-mascotas/${p.slug}-p${p.id}`;
+    this.router.navigateByUrl(seoUrl);
   }
 
   private scrollToBottom(): void {

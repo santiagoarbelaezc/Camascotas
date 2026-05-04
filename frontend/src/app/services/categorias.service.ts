@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, catchError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 export interface Subcategoria {
   id: number;
@@ -17,22 +18,11 @@ export interface Categoria {
   subcategorias: Subcategoria[];
 }
 
-const MOCK_CATEGORIAS: Categoria[] = [
-  {
-    id: 1, nombre: 'Perros', imagen: 'assets/images/15.jpeg',
-    subcategorias: [{ id: 1, nombre: 'Cubos' }, { id: 2, nombre: 'Cuadradas' }, { id: 3, nombre: 'Sofás' }]
-  },
-  {
-    id: 2, nombre: 'Gatos', imagen: 'assets/images/other1.jpeg',
-    subcategorias: [{ id: 5, nombre: 'Rascadores' }, { id: 6, nombre: 'Cunas' }]
-  }
-];
-
 @Injectable({ providedIn: 'root' })
 export class CategoriasService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   getCategorias(): Observable<Categoria[]> {
     return this.http.get<Categoria[]>(`${this.apiUrl}/categoria/con-subcategorias`);
@@ -40,28 +30,40 @@ export class CategoriasService {
 
   // CRUD Categorías
   crearCategoria(fd: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/categoria`, fd);
+    return this.http.post(`${this.apiUrl}/categoria`, fd, {
+      headers: this.auth.getAuthHeaders()
+    });
   }
 
   actualizarCategoria(id: number, fd: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/categoria/${id}`, fd); // Usamos POST por el tema de archivos en PHP
+    return this.http.put(`${this.apiUrl}/categoria/${id}`, fd, {
+      headers: this.auth.getAuthHeaders()
+    });
   }
 
   eliminarCategoria(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/categoria/${id}`);
+    return this.http.delete(`${this.apiUrl}/categoria/${id}`, {
+      headers: this.auth.getAuthHeaders()
+    });
   }
 
   // CRUD Subcategorías
   crearSubcategoria(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/subcategoria`, data);
+    return this.http.post(`${this.apiUrl}/subcategoria`, data, {
+      headers: this.auth.getAuthHeaders()
+    });
   }
 
   actualizarSubcategoria(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/subcategoria/${id}`, data);
+    // Para JSON plano, PUT funciona bien en PHP sin spoofing
+    return this.http.put(`${this.apiUrl}/subcategoria/${id}`, data, {
+      headers: this.auth.getAuthHeaders()
+    });
   }
 
   eliminarSubcategoria(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/subcategoria/${id}`);
+    return this.http.delete(`${this.apiUrl}/subcategoria/${id}`, {
+      headers: this.auth.getAuthHeaders()
+    });
   }
 }
-

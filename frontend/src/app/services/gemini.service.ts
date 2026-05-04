@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 export interface ChatMessage {
   text: string;
   isBot: boolean;
+  products?: any[];
   created_at?: string;
 }
 
@@ -13,6 +14,7 @@ export interface ChatApiResponse {
   data: {
     response: string;
     redirect: string | null;
+    products?: any[];
     session_id: string;
   };
 }
@@ -37,7 +39,7 @@ export class GeminiService {
   }
 
   /** Enviar un mensaje y recibir respuesta */
-  async sendMessage(message: string): Promise<{ text: string; redirect: string | null }> {
+  async sendMessage(message: string): Promise<{ text: string; redirect: string | null; products?: any[] }> {
     try {
       const res = await fetch(`${environment.apiUrl}/chat`, {
         method: 'POST',
@@ -53,17 +55,18 @@ export class GeminiService {
         };
       }
 
-      const data: ChatApiResponse = await res.json();
+      const data: any = await res.json();
 
       // Actualizar session_id por si el servidor generó uno nuevo
-      if (data.data?.session_id) {
-        this.sessionId = data.data.session_id;
+      if (data.session_id) {
+        this.sessionId = data.session_id;
         localStorage.setItem('camascotas_chat_session', this.sessionId);
       }
 
       return {
-        text: data.data?.response ?? '¿Hay algo más en lo que pueda ayudarte?',
-        redirect: data.data?.redirect ?? null
+        text: data.response ?? '¿Hay algo más en lo que pueda ayudarte?',
+        redirect: data.redirect ?? null,
+        products: data.products ?? []
       };
 
     } catch (err) {
@@ -83,8 +86,8 @@ export class GeminiService {
       );
       if (!res.ok) return [];
 
-      const data: HistoryApiResponse = await res.json();
-      return data.data?.history ?? [];
+      const data: any = await res.json();
+      return data.history ?? [];
     } catch {
       return [];
     }

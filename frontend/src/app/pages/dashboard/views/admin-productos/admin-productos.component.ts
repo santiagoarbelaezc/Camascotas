@@ -15,6 +15,10 @@ export class AdminProductosComponent implements OnInit {
   productos: ProductoAdmin[] = [];
   categorias: Categoria[]    = [];
   cargando = true;
+  
+  // Paginación
+  paginaActual = 1;
+  itemsPorPagina = 8;
 
   mostrarFormulario = false;
   guardando         = false;
@@ -54,6 +58,28 @@ export class AdminProductosComponent implements OnInit {
     this.categoriasService.getCategorias().subscribe({
       next: c => this.categorias = c
     });
+  }
+
+  get productosPaginados(): ProductoAdmin[] {
+    const inicio = (this.paginaActual - 1) * this.itemsPorPagina;
+    const fin    = inicio + this.itemsPorPagina;
+    return this.productos.slice(inicio, fin);
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.productos.length / this.itemsPorPagina);
+  }
+
+  get paginas(): number[] {
+    const total = this.totalPaginas;
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  cambiarPagina(p: number): void {
+    if (p >= 1 && p <= this.totalPaginas) {
+      this.paginaActual = p;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   abrirFormulario(): void {

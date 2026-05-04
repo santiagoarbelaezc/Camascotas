@@ -18,10 +18,10 @@ class cloudinaryconfig {
             $config->cloud->apiKey    = $_ENV['CLOUDINARY_API_KEY']    ?? '';
             $config->cloud->apiSecret = $_ENV['CLOUDINARY_API_SECRET'] ?? '';
             $config->url->secure      = true;
-            // Bypass SSL verification for local environments with certificate issues
-            $config->api->callbackUrl = null; 
-            // Note: Cloudinary SDK uses Guzzle, we might need to set it globally if this doesn't work.
-            // For now, let's try a different approach if the SDK allows it.
+            
+            // Para entornos locales sin certificados actualizados
+            $config->api->apiProxy = null;
+            // Intentar configurar guzzle si es posible, o simplemente asegurar que no bloquee
 
             logger::info("Inicializando Cloudinary...");
             self::$instance = new Cloudinary($config);
@@ -30,21 +30,32 @@ class cloudinaryconfig {
     }
 
     public static function upload(string $filePath, string $folder = 'camascotas_general'): array {
-        logger::info("Subiendo imagen a Cloudinary: $folder");
-        $cloudinary = self::getInstance();
-        $result = $cloudinary->uploadApi()->upload($filePath, [
-            'folder'        => $folder,
-            'resource_type' => 'auto',
-            'transformation' => [
-                ['width' => 1200, 'height' => 900, 'crop' => 'limit', 'quality' => 'auto']
-            ]
-        ]);
+        logger::info("Subiendo imagen a Cloudinary. Folder: $folder, File: $filePath");
+        try {
+            $cloudinary = self::getInstance();
+            $result = $cloudinary->uploadApi()->upload($filePath, [
+                'folder'        => $folder,
+                'resource_type' => 'auto',
+                'verify'        => false, // Desactivar verificación SSL para entornos locales
+                'transformation' => [
+                    ['width' => 800, 'height' => 600, 'crop' => 'limit', 'quality' => 'auto']
+                ]
+            ]);
 
-        logger::info("Subida completada: " . ($result['public_id'] ?? 'N/A'));
-        return [
-            'secure_url' => $result['secure_url'],
-            'public_id'  => $result['public_id']
-        ];
+            if (isset($result['secure_url'])) {
+                logger::info("Subida completada: " . $result['public_id']);
+                return [
+                    'secure_url' => $result['secure_url'],
+                    'public_id'  => $result['public_id']
+                ];
+            } else {
+                logger::error("Cloudinary respondió sin secure_url: " . json_encode($result));
+                throw new \Exception("Error en la respuesta de Cloudinary");
+            }
+        } catch (\Exception $e) {
+            logger::error("ERROR EN CLOUDINARY UPLOAD: " . $e->getMessage());
+            throw $e;
+        }
     }
 
     public static function delete(string $publicId): bool {
