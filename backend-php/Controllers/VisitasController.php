@@ -42,10 +42,28 @@ class visitascontroller {
             // Total histórico
             $total = $db->query("SELECT COUNT(*) FROM visitas WHERE es_bot = 0")->fetchColumn();
 
+            // Visitas esta semana
+            $semana = $db->query("SELECT COUNT(*) FROM visitas WHERE fecha_visita >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND es_bot = 0")->fetchColumn();
+
+            // Página más visitada
+            $paginaTop = $db->query("SELECT pagina_visitada, COUNT(*) as total FROM visitas WHERE es_bot = 0 GROUP BY pagina_visitada ORDER BY total DESC LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+
+            // Tasa de bots
+            $totalConBots = $db->query("SELECT COUNT(*) FROM visitas")->fetchColumn();
+            $totalBots = $db->query("SELECT COUNT(*) FROM visitas WHERE es_bot = 1")->fetchColumn();
+            $tasaBots = $totalConBots > 0 ? round(($totalBots / $totalConBots) * 100, 1) : 0;
+
+            // Total mensajes en chat
+            $totalChat = $db->query("SELECT COUNT(*) FROM chat_historial WHERE is_bot = 0")->fetchColumn();
+
             response::success([
-                'hoy' => (int)$hoy,
-                'unicos' => (int)$unicos,
-                'total' => (int)$total
+                'hoy'        => (int)$hoy,
+                'unicos'     => (int)$unicos,
+                'total'      => (int)$total,
+                'semana'     => (int)$semana,
+                'paginaTop'  => $paginaTop['pagina_visitada'] ?? 'N/A',
+                'tasaBots'   => (float)$tasaBots,
+                'totalChat'  => (int)$totalChat,
             ]);
         } catch (\Exception $e) {
             response::error("Error al obtener resumen", 500, $e->getMessage());
@@ -95,6 +113,98 @@ class visitascontroller {
             response::success($data);
         } catch (\Exception $e) {
             response::error("Error al obtener top productos", 500, $e->getMessage());
+        }
+    }
+
+    /** Ranking de páginas más visitadas con porcentaje */
+    public function getPaginasRanking(): void {
+        try {
+            $db = database::getConnection();
+            $sql = "SELECT pagina_visitada, COUNT(*) as total 
+                    FROM visitas 
+                    WHERE es_bot = 0 
+                    GROUP BY pagina_visitada 
+                    ORDER BY total DESC 
+                    LIMIT 10";
+            $rows = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+            $max = count($rows) > 0 ? (int)$rows[0]['total'] : 1;
+            foreach ($rows as &$row) {
+                $row['total'] = (int)$row['total'];
+                $row['porcentaje'] = round(($row['total'] / $max) * 100, 1);
+            }
+
+            response::success($rows);
+        } catch (\Exception $e) {
+            response::error("Error al obtener ranking de páginas", 500, $e->getMessage());
+        }
+    }
+
+    /** Desglose de dispositivos y navegadores desde el user_agent */
+    public function getDispositivos(): void {
+        try {
+            $db = database::getConnection();
+            $rows = $db->query("SELECT user_agent FROM visitas WHERE es_bot = 0")->fetchAll(PDO::FETCH_COLUMN);
+
+            $dispositivos = ['Movil' => 0, 'Desktop' => 0];
+            $navegadores  = ['Chrome' => 0, 'Safari' => 0, 'Firefox' => 0, 'Edge' => 0, 'Otro' => 0];
+
+            foreach ($rows as $ua) {
+                // Dispositivo
+                if (preg_match('/Mobile|Android|iPhone|iPad/i', $ua)) {
+                    $dispositivos['Movil']++;
+                } else {
+                    $dispositivos['Desktop']++;
+                }
+                // Navegador (order matters: Edge before Chrome, Safari before Chrome on iOS)
+                if (preg_match('/Edg\//i', $ua)) {
+                    $navegadores['Edge']++;
+                } elseif (preg_match('/Firefox\//i', $ua)) {
+                    $navegadores['Firefox']++;
+                } elseif (preg_match('/Chrome\//i', $ua)) {
+                    $navegadores['Chrome']++;
+                } elseif (preg_match('/Safari\//i', $ua)) {
+                    $navegadores['Safari']++;
+                } else {
+                    $navegadores['Otro']++;
+                }
+            }
+
+            response::success([
+                'dispositivos' => $dispositivos,
+                'navegadores'  => $navegadores,
+            ]);
+        } catch (\Exception $e) {
+            response::error("Error al obtener dispositivos", 500, $e->getMessage());
+        }
+    }
+
+    /** Actividad del chat Husky por día (últimos 7 días) */
+    public function getChatActividad(): void {
+        try {
+            $db = database::getConnection();
+
+            // Totales generales
+            $totalMensajes  = $db->query("SELECT COUNT(*) FROM chat_historial")->fetchColumn();
+            $totalUsuario   = $db->query("SELECT COUNT(*) FROM chat_historial WHERE is_bot = 0")->fetchColumn();
+            $sesionesUnicas = $db->query("SELECT COUNT(DISTINCT session_id) FROM chat_historial")->fetchColumn();
+
+            // Gráfica por día
+            $sql = "SELECT DATE(created_at) as fecha, COUNT(*) as mensajes
+                    FROM chat_historial
+                    WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                    GROUP BY DATE(created_at)
+                    ORDER BY fecha ASC";
+            $grafica = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+            response::success([
+                'totalMensajes'  => (int)$totalMensajes,
+                'totalUsuario'   => (int)$totalUsuario,
+                'sesionesUnicas' => (int)$sesionesUnicas,
+                'grafica'        => $grafica,
+            ]);
+        } catch (\Exception $e) {
+            response::error("Error al obtener actividad del chat", 500, $e->getMessage());
         }
     }
 }

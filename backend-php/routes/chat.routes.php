@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\controllers\chatcontroller;
+use App\controllers\ChatController;
 
 return function ($router) {
-    $router->add('POST', '/chat', [chatcontroller::class, 'chat']);
-    $router->add('GET', '/chat/history', [chatcontroller::class, 'obtenerHistorial']);
-    $router->add('DELETE', '/chat/clear', [chatcontroller::class, 'borrarSesion']);
+    $router->add('POST', '/chat', [ChatController::class, 'chat']);
+    $router->add('GET', '/chat/history', [ChatController::class, 'obtenerHistorial']);
+    $router->add('DELETE', '/chat/clear', [ChatController::class, 'borrarSesion']);
 };

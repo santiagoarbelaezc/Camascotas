@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
@@ -49,5 +49,17 @@ export class ProductoAdminService {
     return this.http.delete(`${this.apiUrl}/producto/${id}`, {
       headers: this.auth.getAuthHeaders()
     }).pipe(catchError(err => throwError(() => err)));
+  }
+
+  /** Get N random products for carousels (public endpoint) */
+  getAleatorios(cantidad: number = 8): Observable<ProductoAdmin[]> {
+    return this.http.get<ProductoAdmin[]>(`${this.apiUrl}/producto/aleatorios?cantidad=${cantidad}`);
+  }
+
+  /** Get the most recent products (already ordered by id DESC by the backend) */
+  getRecientes(cantidad: number = 12): Observable<ProductoAdmin[]> {
+    return this.http.get<ProductoAdmin[]>(`${this.apiUrl}/producto`).pipe(
+      map(productos => productos.slice(0, cantidad))
+    );
   }
 }

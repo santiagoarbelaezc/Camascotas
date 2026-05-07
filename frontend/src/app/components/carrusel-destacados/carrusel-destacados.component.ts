@@ -25,25 +25,48 @@ export class CarruselDestacadosComponent {
   @Input() subtitulo: string = 'Los muebles más amados por peluditos y sus familias';
   @Input() todosLosItems: CarruselItem[] = [];
 
-  tabs = ['Todos', 'Perros', 'Gatos', 'Accesorios'];
+  /** How many items to show initially before "Ver más" */
+  @Input() itemsIniciales: number = 6;
+
+  tabs = ['Todos', 'Perros', 'Gatos'];
   tabActivo = 'Todos';
+  expandido = false;
 
   constructor(private router: Router) {}
 
-  get itemsFiltrados(): CarruselItem[] {
+  get itemsFiltradosPorTab(): CarruselItem[] {
     if (this.tabActivo === 'Todos') return this.todosLosItems;
     return this.todosLosItems.filter(i => i.categoria === this.tabActivo);
   }
 
-  setTab(tab: string) {
+  get itemsFiltrados(): CarruselItem[] {
+    const filtrados = this.itemsFiltradosPorTab;
+    if (this.expandido) return filtrados;
+    return filtrados.slice(0, this.itemsIniciales);
+  }
+
+  get hayMasItems(): boolean {
+    return this.itemsFiltradosPorTab.length > this.itemsIniciales && !this.expandido;
+  }
+
+  get itemsOcultos(): number {
+    return Math.max(0, this.itemsFiltradosPorTab.length - this.itemsIniciales);
+  }
+
+  setTab(tab: string): void {
     this.tabActivo = tab;
+    this.expandido = false; // Reset on tab change
+  }
+
+  toggleExpandir(): void {
+    this.expandido = !this.expandido;
   }
 
   formatPrecio(precio: number): string {
     return '$' + precio.toLocaleString('es-CO') + ' COP';
   }
 
-  verProducto(item: CarruselItem) {
+  verProducto(item: CarruselItem): void {
     const slug = item.nombre.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
     this.router.navigateByUrl(`/compra/muebles-mascotas/${slug}-p${item.id}`);
   }

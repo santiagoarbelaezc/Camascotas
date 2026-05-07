@@ -122,6 +122,7 @@
 }
 
 /* Responsive Hidden (Treated in HTML with md:hidden too) */
+/* Responsive Hidden (Treated in HTML with md:hidden too) */
 @media (min-width: 768px) {
   .bottom-nav {
     display: none !important;

@@ -35,4 +35,19 @@ export class StatsService {
   getTopProductos(): Observable<any> {
     return this.http.get(`${this.apiUrl}/visitas/productos`, { headers: this.auth.getAuthHeaders() });
   }
+
+  /** Ranking de páginas más visitadas */
+  getPaginasRanking(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/visitas/paginas`, { headers: this.auth.getAuthHeaders() });
+  }
+
+  /** Desglose de dispositivos y navegadores */
+  getDispositivos(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/visitas/dispositivos`, { headers: this.auth.getAuthHeaders() });
+  }
+
+  /** Actividad del chat Husky */
+  getChatActividad(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/visitas/chat`, { headers: this.auth.getAuthHeaders() });
+  }
 }

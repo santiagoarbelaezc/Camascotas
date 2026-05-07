@@ -111,6 +111,37 @@
   width: max-content;
 }
 
+/* Expanded state: Grid layout */
+.carrusel-track-wrapper.is-expanded {
+  overflow-x: hidden;
+  cursor: default;
+}
+
+.carrusel-track.is-expanded {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  width: 100%;
+  gap: 40px 30px;
+}
+
+@media (min-width: 640px) {
+  .carrusel-track.is-expanded {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .carrusel-track.is-expanded {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1440px) {
+  .carrusel-track.is-expanded {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 /* ===== CARD ===== */
 .carrusel-card {
   display: block;
@@ -121,6 +152,11 @@
   cursor: pointer;
   transition: transform 0.3s ease;
   will-change: transform;
+}
+
+.carrusel-track.is-expanded .carrusel-card {
+  width: 100%;
+  flex-shrink: 1;
 }
 
 .carrusel-card:hover {
@@ -266,7 +302,10 @@
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  padding: 20px 2rem 0;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 2rem 0;
+  flex-wrap: wrap;
 }
 
 .ver-todos-link {
@@ -296,6 +335,54 @@
 
 .ver-todos-arrow {
   font-size: 1.1rem;
+}
+
+/* Ver más / Colapsar button */
+.ver-mas-btn {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--turquesa);
+  background: rgba(0, 179, 188, 0.06);
+  border: 2px solid var(--turquesa);
+  padding: 12px 28px;
+  border-radius: 999px;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.35s ease;
+}
+
+.ver-mas-btn:hover {
+  background: var(--turquesa);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 179, 188, 0.25);
+}
+
+.ver-mas-btn.colapsar {
+  color: rgba(0,65,83,0.5);
+  border-color: rgba(0,65,83,0.2);
+  background: transparent;
+}
+
+.ver-mas-btn.colapsar:hover {
+  background: rgba(0,65,83,0.06);
+  color: var(--petrol);
+  box-shadow: none;
+}
+
+.btn-arrow-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.rotate-up {
+  transform: rotate(180deg);
 }
 
 /* ===== RESPONSIVE ===== */

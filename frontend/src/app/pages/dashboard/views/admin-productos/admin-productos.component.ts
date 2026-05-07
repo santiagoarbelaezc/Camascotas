@@ -34,6 +34,7 @@ export class AdminProductosComponent implements OnInit {
   };
 
   archivosSeleccionados: File[] = [];
+  imagePreviewUrls: string[] = []; // Live previews of selected files
 
   // Toast
   toastVisible = false;
@@ -86,6 +87,7 @@ export class AdminProductosComponent implements OnInit {
     this.productoEditando = null;
     this.form = { nombre: '', descripcion: '', precio: 0, desde: false, subcategoria_id: '', colores: '' };
     this.archivosSeleccionados = [];
+    this.imagePreviewUrls = [];
     this.mostrarFormulario = true;
   }
 
@@ -100,6 +102,7 @@ export class AdminProductosComponent implements OnInit {
       colores:         (prod.colores ?? []).join(', ')
     };
     this.archivosSeleccionados = [];
+    this.imagePreviewUrls = [];
     this.mostrarFormulario = true;
   }
 
@@ -110,9 +113,38 @@ export class AdminProductosComponent implements OnInit {
 
   onFilesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files) {
-      this.archivosSeleccionados = Array.from(input.files);
-    }
+    if (!input.files) return;
+
+    const newFiles = Array.from(input.files);
+    this.archivosSeleccionados = [...this.archivosSeleccionados, ...newFiles];
+
+    // Generate preview URLs for the new files
+    newFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => this.imagePreviewUrls.push(e.target?.result as string);
+      reader.readAsDataURL(file);
+    });
+
+    // Reset input so same file can be re-selected
+    input.value = '';
+  }
+
+  removeImage(index: number): void {
+    this.archivosSeleccionados.splice(index, 1);
+    this.imagePreviewUrls.splice(index, 1);
+  }
+
+  /** Move image at [index] to position 0 (making it the principal image) */
+  setPrincipal(index: number): void {
+    if (index === 0) return; // Already principal
+
+    // Move file
+    const [file] = this.archivosSeleccionados.splice(index, 1);
+    this.archivosSeleccionados.unshift(file);
+
+    // Move preview URL
+    const [url] = this.imagePreviewUrls.splice(index, 1);
+    this.imagePreviewUrls.unshift(url);
   }
 
   guardar(): void {

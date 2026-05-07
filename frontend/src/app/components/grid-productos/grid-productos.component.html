@@ -25,12 +25,12 @@
             </div>
 
             <!-- Content -->
-            <div class="p-10 flex-grow flex flex-col bg-white">
+            <div class="p-8 lg:p-10 flex-grow flex flex-col bg-white">
                 <div class="mb-6 space-y-3">
-                    <h3 class="text-2xl text-brand-petrol font-bold tracking-tight group-hover:text-brand-turquesa transition-colors duration-300">
+                    <h3 class="text-xl lg:text-2xl text-brand-petrol font-bold tracking-tight group-hover:text-brand-turquesa transition-colors duration-300 line-clamp-2 min-h-[3.5rem] lg:min-h-[4rem]">
                         {{ producto.nombre }}
                     </h3>
-                    <p class="text-gray-400 text-sm italic font-light line-clamp-2">
+                    <p class="text-gray-400 text-xs lg:text-sm italic font-light line-clamp-2 min-h-[2.5rem] lg:min-h-[3rem]">
                         "{{ producto.descripcion }}"
                     </p>
                 </div>

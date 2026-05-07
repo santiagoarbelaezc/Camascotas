@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderEnlacesComponent } from '../../components/header-enlaces/header-enlaces.component';
 import { MenuCategoriasComponent } from '../../components/menu-categorias/menu-categorias.component';
 import { GridProductosComponent } from '../../components/grid-productos/grid-productos.component';
@@ -11,8 +11,36 @@ import { BrandExperienceComponent } from '../../components/brand-experience/bran
 import { BannerDualHomeComponent } from '../../components/banner-dual-home/banner-dual-home.component';
 import { BrandStoryComponent } from '../../components/brand-story/brand-story.component';
 import { CustomServiceComponent } from '../../components/custom-service/custom-service.component';
+import { ProductoAdminService, ProductoAdmin } from '../../services/producto-admin.service';
 
+const FALLBACK_IMG = 'assets/images/placeholder.jpg';
 
+/**
+ * Map a ProductoAdmin to CarruselItem.
+ * - imagen      = imagenes[1] (second image, as requested)
+ * - imagenHover = imagenes[0] (principal, shown on hover)
+ */
+function toCarruselItem(p: ProductoAdmin): CarruselItem {
+  const imgs     = p.imagenes ?? [];
+  const segunda  = imgs[1] ?? imgs[0] ?? FALLBACK_IMG;
+  const primera  = imgs[0] ?? FALLBACK_IMG;
+
+  const catNombre = (p.categoria ?? '').toLowerCase();
+  let categoria = 'Todos';
+  if (catNombre.includes('perro')) categoria = 'Perros';
+  else if (catNombre.includes('gato')) categoria = 'Gatos';
+
+  return {
+    id:          p.id,
+    nombre:      p.nombre,
+    precio:      p.precio,
+    desde:       !!p.desde,
+    imagen:      segunda,
+    imagenHover: primera,
+    categoria,
+    colores:     p.colores ?? []
+  };
+}
 
 @Component({
   selector: 'app-home',
@@ -34,90 +62,31 @@ import { CustomServiceComponent } from '../../components/custom-service/custom-s
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
-  favoritosItems: CarruselItem[] = [
-    {
-      id: 1,
-      nombre: 'Cubo Premium Steel',
-      precio: 85000,
-      desde: false,
-      imagen: 'assets/images/11.jpeg',
-      imagenHover: 'assets/images/12.jpeg',
-      categoria: 'Perros',
-      colores: ['#8B7355', '#C4A882', '#6B6B6B']
-    },
-    {
-      id: 3,
-      nombre: 'Cama Cuadrada XL',
-      precio: 120000,
-      desde: true,
-      imagen: 'assets/images/13.jpeg',
-      imagenHover: 'assets/images/14.jpeg',
-      categoria: 'Perros',
-      colores: ['#D4B896', '#A0856C', '#8B6914']
-    },
-    {
-      id: 4,
-      nombre: 'Sofá Canino Elegance',
-      precio: 150000,
-      desde: true,
-      imagen: 'assets/images/15.jpeg',
-      imagenHover: 'assets/images/18.jpeg',
-      categoria: 'Perros',
-      colores: ['#4A4A4A', '#8B7355', '#C9B99A']
-    },
-    {
-      id: 6,
-      nombre: 'Rascador Multilevel',
-      precio: 180000,
-      desde: true,
-      imagen: 'assets/images/other1.jpeg',
-      imagenHover: 'assets/images/other2.jpeg',
-      categoria: 'Gatos',
-      colores: ['#C4A882', '#8B7355', '#6B6B6B']
-    }
-  ];
+export class HomeComponent implements OnInit {
 
-  novedadesItems: CarruselItem[] = [
-    {
-      id: 7,
-      nombre: 'Cuna Felina Moon',
-      precio: 75000,
-      desde: false,
-      imagen: 'assets/images/other3.jpeg',
-      imagenHover: 'assets/images/other4.jpeg',
-      categoria: 'Gatos',
-      colores: ['#E8D5C4', '#D4B896', '#A89880']
-    },
-    {
-      id: 9,
-      nombre: 'Puff Camascotas',
-      precio: 110000,
-      desde: false,
-      imagen: 'assets/images/other5.jpeg',
-      imagenHover: 'assets/images/other6.jpeg',
-      categoria: 'Accesorios',
-      colores: ['#6B8E9F', '#4A7A8E', '#8B7355']
-    },
-    {
-      id: 5,
-      nombre: 'Mini Sofá Toy',
-      precio: 95000,
-      desde: false,
-      imagen: 'assets/images/other7.jpeg',
-      imagenHover: 'assets/images/other8.jpeg',
-      categoria: 'Perros',
-      colores: ['#E8C4C4', '#D4A0A0', '#B87878']
-    },
-    {
-      id: 8,
-      nombre: 'Comedero Ergonómico',
-      precio: 45000,
-      desde: false,
-      imagen: 'assets/images/other9.jpeg',
-      imagenHover: 'assets/images/other10.jpeg',
-      categoria: 'Accesorios',
-      colores: ['#F5E6D3', '#E8D0B3', '#C4A882']
-    }
-  ];
+  /** Top carousel: most recently added products (ordered by id DESC) */
+  recientesItems: CarruselItem[] = [];
+
+  /** Bottom carousel: random discovery products */
+  novedadesItems: CarruselItem[] = [];
+
+  constructor(private productosService: ProductoAdminService) {}
+
+  ngOnInit(): void {
+    // Top carousel: 20 most recent products (user can expand to see all)
+    this.productosService.getRecientes(20).subscribe({
+      next: (productos) => {
+        this.recientesItems = productos.map(toCarruselItem);
+      },
+      error: (err) => console.warn('Error cargando recientes:', err)
+    });
+
+    // Bottom carousel: 16 random products for discovery
+    this.productosService.getAleatorios(16).subscribe({
+      next: (productos) => {
+        this.novedadesItems = productos.map(toCarruselItem);
+      },
+      error: (err) => console.warn('Error cargando novedades:', err)
+    });
+  }
 }

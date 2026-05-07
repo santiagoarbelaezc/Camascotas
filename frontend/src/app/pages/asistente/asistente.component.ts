@@ -75,7 +75,13 @@ export class AsistenteComponent implements OnInit, AfterViewChecked {
     this.shouldScroll = true;
 
     if (redirect) {
-      setTimeout(() => this.router.navigateByUrl(redirect), 1800);
+      setTimeout(() => {
+        if (redirect.startsWith('http')) {
+          window.open(redirect, '_blank');
+        } else {
+          this.router.navigateByUrl(redirect);
+        }
+      }, 1800);
     }
   }
 

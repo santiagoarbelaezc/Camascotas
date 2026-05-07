@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   sidebarCollapsed = false;
   currentPageTitle = 'Panel Principal';
   usuario: Usuario | null = null;
+  showLogoutModal = false; // Estado para el modal personalizado
 
   private pageTitles: Record<string, string> = {
     '/dashboard':            'Panel Principal',
@@ -45,10 +46,20 @@ export class DashboardComponent implements OnInit {
     return this.usuario?.nombre?.charAt(0).toUpperCase() ?? 'A';
   }
 
+  // Abrir modal
   logout(): void {
-    if (confirm('¿Deseas cerrar sesión?')) {
-      this.auth.logout();
-      this.router.navigate(['/login']);
-    }
+    this.showLogoutModal = true;
+  }
+
+  // Cancelar
+  cancelLogout(): void {
+    this.showLogoutModal = false;
+  }
+
+  // Confirmar y salir
+  confirmLogout(): void {
+    this.showLogoutModal = false;
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

@@ -9,7 +9,7 @@ use App\utils\response;
 use App\utils\logger;
 use PDO;
 
-class chatcontroller {
+class ChatController {
 
     private static string $apiUrl = "https://api.groq.com/openai/v1/chat/completions";
 
@@ -38,21 +38,82 @@ class chatcontroller {
             $stmt = $db->prepare("INSERT INTO chat_historial (session_id, message, is_bot) VALUES (?, ?, 0)");
             $stmt->execute([$sessionId, $message]);
 
+            // --- NUEVO: CAPA DE PALABRAS CLAVE (INSTANTÁNEO) ---
+            $msgLower = strtolower($message);
+            $instantResponse = null;
+            $instantRedirect = null;
+
+            // 1. Verificar Categorías Generales (Intentos claros)
+            if (preg_match('/\bperro[s]?\b/', $msgLower)) {
+                $instantResponse = "¡Claro! 🐾 Aquí tienes nuestra línea exclusiva para perros. ¿Buscas algo en especial?";
+                $instantRedirect = "/productos?categoria=Perros";
+            } elseif (preg_match('/\bgato[s]?\b/', $msgLower)) {
+                $instantResponse = "¡Miau! 🐾 Mira nuestros rascadores y camas para gatos. ¿Te ayudo con algún modelo?";
+                $instantRedirect = "/productos?categoria=Gatos";
+            } elseif (preg_match('/\b(whatsapp|contacto|asesor|hablar)\b/', $msgLower)) {
+                $instantResponse = "¡Con gusto! ✨ Haz clic aquí para hablar directamente con un asesor por WhatsApp.";
+                $instantRedirect = "https://api.whatsapp.com/send?phone=573207793380";
+            } elseif (preg_match('/\b(instagram|facebook|redes|sociales)\b/', $msgLower)) {
+                $instantResponse = "¡Síguenos en nuestras redes sociales! 📸 Allí compartimos novedades y fotos de nuestros clientes.";
+                $instantRedirect = "https://www.instagram.com/camascotas/";
+            }
+
+            // 2. Verificar Subcategorías Dinámicas (Coincidencia exacta de palabra)
+            if (!$instantResponse) {
+                $subStmt = $db->query("SELECT nombre FROM subcategorias");
+                $subcategorias = $subStmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                foreach ($subcategorias as $sub) {
+                    $subNombre = strtolower($sub['nombre']);
+                    // Usar límites de palabra para evitar coincidencias parciales accidentales
+                    if (preg_match('/\b' . preg_quote($subNombre, '/') . '\b/', $msgLower)) {
+                        $instantResponse = "¡Excelente elección! 🐾 Aquí puedes ver todos nuestros modelos de {$sub['nombre']}.";
+                        $instantRedirect = "/productos?busqueda=" . urlencode($sub['nombre']);
+                        break;
+                    }
+                }
+            }
+
+            if ($instantResponse) {
+                $stmt = $db->prepare("INSERT INTO chat_historial (session_id, message, is_bot) VALUES (?, ?, 1)");
+                $stmt->execute([$sessionId, $instantResponse]);
+                response::success([
+                    'response' => $instantResponse,
+                    'redirect' => $instantRedirect,
+                    'products' => [],
+                    'session_id' => $sessionId
+                ]);
+                return;
+            }
+
             // 3. Preparar el Prompt para Husky
             $systemPrompt = "Eres Husky, el asistente virtual de Camascotas 🐾. Alegre, servicial y juguetón.
-            Ayuda a los clientes a elegir muebles para sus mascotas del catálogo.
+            Ayuda a los clientes a elegir muebles y dales consejos de cuidado experto.
             
             CATÁLOGO DISPONIBLE:
             $prodContext
             
-            REGLAS DE RECOMENDACIÓN:
-            1. Para recomendar productos específicos usa el formato [PRODUCT:ID] al final. Máximo 3.
-            2. Ejemplo: \"¡Este te encantará! 🐾 [PRODUCT:5]\".
-            3. Si buscan categorías generales usa [REDIRECT:/productos?nombre=termino].
-            4. No inventes productos. Sé breve.";
+            CONOCIMIENTO EXPERTO EN LIMPIEZA:
+            - Frecuencia: Sacudir cada 2-3 días, lavar cada 1-2 semanas, desinfección profunda mensual.
+            - Hacks: Usar Vinagre Blanco y Bicarbonato de Sodio. Lavar a 60°C. Secar al SOL (luz UV).
+            - Productos: Detergentes hipoalergénicos (Ariel Sensitive). NO suavizantes fuertes ni lejía.
+            
+            ENLACES:
+            - Instagram: https://www.instagram.com/camascotas/
+            - Facebook: https://www.facebook.com/camascotasaxm
+            - WhatsApp: https://api.whatsapp.com/send?phone=573207793380
+            
+            REGLAS CRÍTICAS DE FORMATO:
+            1. NO USES ASTERISCOS (*) NI NEGRILLAS (**). NUNCA.
+            2. Usa emojis (🐾, ✅, ✨) para hacer listas o resaltar puntos.
+            3. Usa los tags [PRODUCT:ID], [REDIRECT:/ruta] o [EXTERNAL:URL] SOLO cuando el usuario pida explícitamente ver productos, ir a una sección o contactar por redes/whatsapp.
+            4. Si usas un tag, colócalo al final del mensaje.
+            5. Si es un saludo o una charla casual, NO incluyas tags de redirección.";
 
-            // 4. Llamar a Groq
-            $apiKey = $_ENV['GROQ_API_KEY'] ?? '';
+            // 4. Llamar a Groq con Fallback
+            $primaryKey = $_ENV['GROQ_API_KEY'] ?? '';
+            $backupKey  = $_ENV['GROQ_API_KEY_BACKUP'] ?? ''; // Ahora se lee desde .env por seguridad
+            
             $postData = [
                 "model" => "llama-3.3-70b-versatile",
                 "messages" => [
@@ -62,43 +123,41 @@ class chatcontroller {
                 "temperature" => 0.7
             ];
 
-            $ch = curl_init(self::$apiUrl);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                "Authorization: Bearer $apiKey",
-                "Content-Type: application/json"
-            ]);
-
-            if ($_SERVER['HTTP_HOST'] === 'localhost:8000' || $_SERVER['HTTP_HOST'] === '127.0.0.1:8000') {
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $botReply = null;
+            
+            // Intento 1: Primary Key
+            $res = self::callGroq($primaryKey, $postData);
+            if ($res['success']) {
+                $botReply = $res['content'];
+            } else {
+                // Intento 2: Backup Key si falló la primera
+                $resBackup = self::callGroq($backupKey, $postData);
+                if ($resBackup['success']) {
+                    $botReply = $resBackup['content'];
+                } else {
+                    throw new \Exception("Ambas APIs de Groq fallaron.");
+                }
             }
-
-            $result = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            if ($httpCode !== 200) {
-                throw new \Exception("Error Groq API: $httpCode");
-            }
-
-            $jsonResponse = json_decode($result, true);
-            $botReply = $jsonResponse['choices'][0]['message']['content'] ?? '🐾 ¡Guau! No pude procesar eso.';
 
             // 5. Extraer Redirecciones y Productos
             $redirect = null;
-            if (preg_match('/\[REDIRECT:(.*?)\]/', $botReply, $matches)) {
+            
+            // Buscar el primer redirect o external para la acción
+            if (preg_match('/\[(?:REDIRECT|EXTERNAL):(.*?)\]/', $botReply, $matches)) {
                 $redirect = $matches[1];
-                $botReply = str_replace($matches[0], '', $botReply);
             }
 
+            // Limpiar TODOS los tags del texto visible para el usuario
+            $botReply = preg_replace('/\[REDIRECT:(.*?)\]/', '', $botReply);
+            $botReply = preg_replace('/\[EXTERNAL:(.*?)\]/', '', $botReply);
+            
             $recommendedProducts = [];
             if (preg_match_all('/\[PRODUCT:(\d+)\]/', $botReply, $pMatches)) {
                 $pIds = $pMatches[1];
+                // Limpiar los tags de productos del texto
+                $botReply = preg_replace('/\[PRODUCT:(\d+)\]/', '', $botReply);
+                
                 foreach ($pIds as $pId) {
-                    $botReply = str_replace("[PRODUCT:$pId]", '', $botReply);
-                    
                     // Fetch product details for the card
                     $pStmt = $db->prepare("
                         SELECT p.id, p.nombre, p.precio, p.desde, c.nombre as categoria
@@ -171,5 +230,34 @@ class chatcontroller {
         } catch (\Exception $e) {
             response::error('Error al borrar sesión', 500, $e->getMessage());
         }
+    }
+
+    private static function callGroq(string $apiKey, array $postData): array {
+        $ch = curl_init(self::$apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer $apiKey",
+            "Content-Type: application/json"
+        ]);
+
+        if ($_SERVER['HTTP_HOST'] === 'localhost:8000' || $_SERVER['HTTP_HOST'] === '127.0.0.1:8000') {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        }
+
+        $result = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode === 200) {
+            $jsonResponse = json_decode($result, true);
+            return [
+                'success' => true,
+                'content' => $jsonResponse['choices'][0]['message']['content'] ?? ''
+            ];
+        }
+
+        return ['success' => false, 'code' => $httpCode];
     }
 }

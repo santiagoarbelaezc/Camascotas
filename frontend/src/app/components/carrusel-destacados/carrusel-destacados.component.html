@@ -19,8 +19,8 @@
   </div>
 
   <!-- Cards Scroll Track -->
-  <div class="carrusel-track-wrapper">
-    <div class="carrusel-track">
+  <div class="carrusel-track-wrapper" [class.is-expanded]="expandido">
+    <div class="carrusel-track" [class.is-expanded]="expandido">
       <div
         *ngFor="let item of itemsFiltrados"
         (click)="verProducto(item)"
@@ -53,8 +53,23 @@
     </div>
   </div>
 
-  <!-- Ver todos link -->
+  <!-- Footer -->
   <div class="carrusel-footer">
+    <!-- Expand/Collapse button -->
+    <button class="ver-mas-btn" *ngIf="hayMasItems" (click)="toggleExpandir()">
+      <span>Ver {{ itemsOcultos }} más</span>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="btn-arrow-icon">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7" />
+      </svg>
+    </button>
+
+    <button class="ver-mas-btn colapsar" *ngIf="expandido" (click)="toggleExpandir()">
+      <span>Colapsar</span>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="btn-arrow-icon rotate-up">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7" />
+      </svg>
+    </button>
+
     <a routerLink="/productos" class="ver-todos-link">
       Ver todos los productos
       <span class="ver-todos-arrow">→</span>
