@@ -53,8 +53,11 @@ class ChatController {
             } elseif (preg_match('/\b(whatsapp|contacto|asesor|hablar)\b/', $msgLower)) {
                 $instantResponse = "¡Con gusto! ✨ Haz clic aquí para hablar directamente con un asesor por WhatsApp.";
                 $instantRedirect = "https://api.whatsapp.com/send?phone=573207793380";
-            } elseif (preg_match('/\b(instagram|facebook|redes|sociales)\b/', $msgLower)) {
-                $instantResponse = "¡Síguenos en nuestras redes sociales! 📸 Allí compartimos novedades y fotos de nuestros clientes.";
+            } elseif (preg_match('/\b(facebook|fb)\b/', $msgLower)) {
+                $instantResponse = "¡Claro! 🐾 Visítanos en nuestra página de Facebook para conocer más de nuestra comunidad.";
+                $instantRedirect = "https://www.facebook.com/camascotasaxm";
+            } elseif (preg_match('/\b(instagram|ig|redes|sociales)\b/', $msgLower)) {
+                $instantResponse = "¡Síguenos en Instagram! 📸 Allí compartimos novedades y fotos de nuestros clientes.";
                 $instantRedirect = "https://www.instagram.com/camascotas/";
             }
 
