@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewChecked, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { GeminiService, ChatMessage } from '../../services/gemini.service';
   templateUrl: './asistente.component.html',
   styleUrl: './asistente.component.css'
 })
-export class AsistenteComponent implements OnInit, AfterViewChecked {
+export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   @Input() isFloating = false;
@@ -44,6 +44,16 @@ export class AsistenteComponent implements OnInit, AfterViewChecked {
       this.isMini = true;
     }
     this.shouldScroll = true;
+
+    // Bloquear scroll del body en móvil para experiencia de "App nativa"
+    if (window.innerWidth <= 768) {
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Restaurar scroll al salir
+    document.body.style.overflow = '';
   }
 
   ngAfterViewChecked(): void {
@@ -147,6 +157,17 @@ export class AsistenteComponent implements OnInit, AfterViewChecked {
     // Redirigir a /compra/muebles-mascotas/slug-pid
     const seoUrl = `/compra/muebles-mascotas/${p.slug}-p${p.id}`;
     this.router.navigateByUrl(seoUrl);
+  }
+
+  scrollToTop(): void {
+    if (this.chatContainer) {
+      this.chatContainer.nativeElement.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+    // Opcional: Expandir a Husky si estaba minimizado
+    this.isMini = false;
   }
 
   private scrollToBottom(): void {

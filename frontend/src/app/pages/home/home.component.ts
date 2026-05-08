@@ -11,6 +11,7 @@ import { BrandExperienceComponent } from '../../components/brand-experience/bran
 import { BannerDualHomeComponent } from '../../components/banner-dual-home/banner-dual-home.component';
 import { BrandStoryComponent } from '../../components/brand-story/brand-story.component';
 import { CustomServiceComponent } from '../../components/custom-service/custom-service.component';
+import { HuskyBannerComponent } from '../../components/husky-banner/husky-banner.component';
 import { ProductoAdminService, ProductoAdmin } from '../../services/producto-admin.service';
 
 const FALLBACK_IMG = 'assets/images/placeholder.jpg';
@@ -57,7 +58,8 @@ function toCarruselItem(p: ProductoAdmin): CarruselItem {
     BrandExperienceComponent,
     BannerDualHomeComponent,
     BrandStoryComponent,
-    CustomServiceComponent
+    CustomServiceComponent,
+    HuskyBannerComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

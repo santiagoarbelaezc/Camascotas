@@ -1,0 +1,45 @@
+<section class="husky-promo-section">
+  <!-- Background Elements (Orbs) -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+
+  <div class="promo-container">
+    <div class="promo-content">
+      
+      <!-- LEFT SIDE: HUSKY MASCOT (Clean PNG) -->
+      <div class="visual-side">
+        <div class="pulse-rings-container">
+          <div class="pulse-ring"></div>
+          <div class="pulse-ring delay-1"></div>
+        </div>
+
+        <img src="assets/videos/husky.png" alt="Husky Assistant" class="husky-img-hero">
+      </div>
+
+      <!-- RIGHT SIDE: TEXT & ACTIONS -->
+      <div class="text-side">
+        <span class="badge">Husky AI Assistant</span>
+        <h2 class="title">¿Tienes Dudas? <br> <span class="highlight">¿Buscas Algo?</span></h2>
+        <p class="description">
+          Habla con nuestro asistente <span class="husky-name">Husky</span>. 
+          Él conoce todo nuestro catálogo y puede asesorarte para encontrar el mueble perfecto para tu mascota.
+        </p>
+        
+        <div class="actions">
+          <button (click)="openAssistant()" class="btn-primary">
+            <span>Hablar con Husky</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </button>
+          
+          <div class="online-indicator">
+            <span class="dot"></span>
+            <span>Disponible Ahora</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
