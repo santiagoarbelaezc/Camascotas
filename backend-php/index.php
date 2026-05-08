@@ -37,10 +37,26 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
     return true;
 });
 
-// CORS
-header("Access-Control-Allow-Origin: *");
+// CORS - Configuración robusta para desarrollo y producción
+$allowed_origins = [
+    'http://localhost:4200',
+    'http://localhost:8000',
+    'https://camascotas.com',
+    'http://camascotas.com'
+];
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+if (in_array($origin, $allowed_origins)) {
+    header("Access-Control-Allow-Origin: $origin");
+} else {
+    // Fallback para producción si el origen no está en la lista pero es el mismo dominio
+    header("Access-Control-Allow-Origin: *");
+}
+
 header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Origin, Accept");
+header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Max-Age: 86400");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
