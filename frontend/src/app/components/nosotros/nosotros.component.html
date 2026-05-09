@@ -10,28 +10,43 @@
                 <!-- Decorative brand elements -->
                 <div class="absolute -top-10 -left-10 w-48 h-48 bg-brand-turquesa/10 rounded-full blur-[80px]"></div>
                 
-                <div class="team-grid-mobile lg:grid lg:grid-cols-12 lg:gap-6 items-end relative z-10">
-                    <!-- Mateo (Feature) -->
-                    <div class="main-member col-span-8 group relative overflow-hidden rounded-[40px] lg:rounded-huge shadow-2xl border-4 lg:border-8 border-white">
-                        <img src="assets/images/mateo.jpeg" alt="Mateo" class="w-full h-[450px] lg:h-[600px] object-cover transition-transform duration-1000 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-petrol/70 via-brand-petrol/20 to-transparent opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="absolute bottom-6 left-6 lg:bottom-10 lg:left-10 text-white transform-none lg:translate-y-4 lg:group-hover:translate-y-0 transition-transform duration-500">
-                           <div class="text-[10px] uppercase tracking-[0.3em] text-brand-lima font-bold mb-1">Fundador</div>
-                           <div class="text-2xl lg:text-3xl font-bold">Mateo</div>
-                        </div>
-                    </div>
+                <div class="grid grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-6 relative z-10">
                     
-                    <!-- supporting items -->
-                    <div class="supporting-members col-span-4 flex flex-row lg:flex-col gap-4 lg:gap-6 mt-6 lg:mt-0">
-                        <div class="member-small group relative overflow-hidden rounded-[30px] lg:rounded-[40px] shadow-xl border-4 border-white flex-1">
-                            <img src="assets/images/luisa.jpeg" alt="Luisa" class="w-full h-40 lg:h-64 object-cover transition-transform duration-700 group-hover:scale-125">
-                            <div class="absolute inset-0 bg-brand-turquesa/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        </div>
-                        <div class="member-small group relative overflow-hidden rounded-[30px] lg:rounded-[40px] shadow-xl border-4 border-white flex-1">
-                            <img src="assets/images/sebas.jpeg" alt="Sebas" class="w-full h-40 lg:h-64 object-cover transition-transform duration-700 group-hover:scale-125">
-                            <div class="absolute inset-0 bg-brand-lima/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <!-- LUISA: Main on both Mobile and Desktop -->
+                    <div class="col-span-2 lg:col-span-8 order-1 lg:order-1 lg:row-span-2">
+                        <div class="h-full group relative overflow-hidden rounded-[40px] lg:rounded-huge shadow-2xl border-4 lg:border-8 border-white bg-gray-100">
+                            <img src="assets/images/luisa.jpeg" alt="Luisa" 
+                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                            <div class="absolute bottom-6 left-6 lg:bottom-10 lg:left-10 text-white drop-shadow-lg z-20">
+                                <div class="text-[10px] uppercase tracking-[0.3em] text-brand-lima font-bold mb-1">Fundadora</div>
+                                <div class="text-2xl lg:text-3xl font-bold">Luisa</div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- MATEO: Supporting -->
+                    <div class="col-span-1 lg:col-span-4 order-2 lg:order-2">
+                        <div class="h-full group relative overflow-hidden rounded-[30px] lg:rounded-[40px] shadow-xl border-4 border-white bg-gray-100">
+                            <img src="assets/images/mateo.jpeg" alt="Mateo" 
+                                 class="w-full h-full min-h-[220px] lg:min-h-0 object-cover transition-transform duration-1000 group-hover:scale-110">
+                            <div class="absolute bottom-4 left-4 text-white drop-shadow-lg z-20">
+                                <div class="text-[10px] uppercase tracking-[0.3em] text-brand-lima font-bold mb-1">Fundador</div>
+                                <div class="text-lg lg:text-xl font-bold">Mateo</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SEBAS: Supporting -->
+                    <div class="col-span-1 lg:col-span-4 order-3 lg:order-3">
+                        <div class="h-full group relative overflow-hidden rounded-[30px] lg:rounded-[40px] shadow-xl border-4 border-white bg-gray-100">
+                            <img src="assets/images/sebas.jpeg" alt="Sebas" 
+                                 class="w-full h-full min-h-[220px] lg:min-h-0 object-cover transition-transform duration-1000 group-hover:scale-110">
+                            <div class="absolute bottom-4 left-4 text-white drop-shadow-lg z-20">
+                                <div class="text-lg lg:text-xl font-bold">Sebas</div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -57,19 +72,19 @@
                 <!-- Premium Stats -->
                 <div class="grid grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-6 lg:gap-8 pt-8 border-t border-gray-100">
                     <!-- Bloque Clientes -->
-                    <div class="flex flex-col items-center lg:items-start">
+                    <div class="flex flex-col items-center lg:items-start stats-reveal" style="animation-delay: 0.1s;">
                         <span class="text-3xl lg:text-4xl font-black text-brand-turquesa tracking-tighter uppercase leading-none">Clientes</span>
                         <span class="text-[9px] lg:text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold mt-2">Felices</span>
                     </div>
                     
                     <!-- Bloque 100% -->
-                    <div class="flex flex-col items-center lg:items-start">
+                    <div class="flex flex-col items-center lg:items-start stats-reveal" style="animation-delay: 0.2s;">
                         <span class="text-3xl lg:text-4xl font-black text-brand-lima tracking-tighter leading-none">100%</span>
                         <span class="text-[9px] lg:text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold mt-2">Calidad local</span>
                     </div>
                     
                     <!-- Bloque Hecho -->
-                    <div class="flex flex-col items-center lg:items-start col-span-2 lg:col-span-1 border-t lg:border-t-0 border-gray-50 pt-8 lg:pt-0">
+                    <div class="flex flex-col items-center lg:items-start col-span-2 lg:col-span-1 border-t lg:border-t-0 border-gray-50 pt-8 lg:pt-0 stats-reveal" style="animation-delay: 0.3s;">
                         <span class="text-3xl lg:text-4xl font-black text-brand-petrol tracking-tighter uppercase leading-none">Hecho</span>
                         <span class="text-[9px] lg:text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold mt-2">En Colombia</span>
                     </div>

@@ -1,35 +1,23 @@
-.team-montage {
-  transition: all 0.5s ease;
+/* Montage container transitions */
+.grid > div {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Montage container for mobile flex fallback */
-.team-grid-mobile {
-  display: flex;
-  flex-direction: column;
+.grid img {
+  box-shadow: 0 20px 40px rgba(0, 65, 83, 0.1);
 }
 
+/* Specific styling for the featured member on desktop */
 @media (min-width: 1024px) {
-  .team-grid-mobile {
-    display: grid;
+  .lg\:rounded-huge img {
+    box-shadow: 0 40px 80px rgba(0, 65, 83, 0.15);
   }
 }
 
-.main-member img {
-  box-shadow: 0 30px 60px rgba(0, 65, 83, 0.15);
-}
-
-.member-small img {
-  box-shadow: 0 15px 30px rgba(0, 65, 83, 0.1);
-}
-
 /* Reveal transition for stats */
-.space-y-1 {
+.stats-reveal {
   animation: slideUpFade 0.8s ease-out both;
 }
-
-.space-y-1:nth-child(1) { animation-delay: 0.1s; }
-.space-y-1:nth-child(2) { animation-delay: 0.2s; }
-.space-y-1:nth-child(3) { animation-delay: 0.3s; }
 
 @keyframes slideUpFade {
   from {
@@ -39,5 +27,17 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Hover effects for images */
+.group:hover img {
+  transform: scale(1.05);
+}
+
+/* Mobile specific height adjustment to ensure Luisa stands out */
+@media (max-width: 1023px) {
+  .order-1 img {
+    box-shadow: 0 30px 60px rgba(0, 179, 188, 0.2);
   }
 }
