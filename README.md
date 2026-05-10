@@ -14,7 +14,7 @@
 ---
 
 ### **PENDIENTE PARA EL PROYECTO**
-- Integración final de pasarela de pagos.
+- Integración final de pasarela de pagos (Epayco)
 - Optimización de carga de imágenes con Cloudinary.
 
 ## 📋 **Descripción del Proyecto**
