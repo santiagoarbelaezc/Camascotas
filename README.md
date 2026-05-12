@@ -18,6 +18,7 @@
 - Optimización de carga de imágenes con Cloudinary (Optimizacion de las imagenes)
 - Mejoras en el asistente IA
 - Mejoras en el icono cuando se descarga la app
+- Mejoras en el diseño de ciertas pantallas
 
 ## 📋 **Descripción del Proyecto**
 
