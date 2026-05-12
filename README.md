@@ -17,6 +17,7 @@
 - Integración final de pasarela de pagos (Epayco)
 - Optimización de carga de imágenes con Cloudinary (Optimizacion de las imagenes)
 - Mejoras en el asistente IA
+- Mejoras en el icono cuando se descarga la app
 
 ## 📋 **Descripción del Proyecto**
 
