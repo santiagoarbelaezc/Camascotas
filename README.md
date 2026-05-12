@@ -19,6 +19,7 @@
 - Mejoras en el asistente IA
 - Mejoras en el icono cuando se descarga la app
 - Mejoras en el diseño de ciertas pantallas
+- Mejoras Movil
 
 ## 📋 **Descripción del Proyecto**
 
