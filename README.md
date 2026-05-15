@@ -14,8 +14,12 @@
 ---
 
 ### **PENDIENTE PARA EL PROYECTO**
-- Integración final de pasarela de pagos.
-- Optimización de carga de imágenes con Cloudinary.
+- Integración final de pasarela de pagos (Epayco)
+- Optimización de carga de imágenes con Cloudinary (Optimizacion de las imagenes)
+- Mejoras en el asistente IA
+- Mejoras en el icono cuando se descarga la app
+- Mejoras en el diseño de ciertas pantallas
+- Mejoras Movil
 
 ## 📋 **Descripción del Proyecto**
 
