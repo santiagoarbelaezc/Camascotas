@@ -85,13 +85,16 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.shouldScroll = true;
 
     if (redirect) {
+      const isExternal = redirect.startsWith('http');
       setTimeout(() => {
-        if (redirect.startsWith('http')) {
-          window.open(redirect, '_blank');
+        if (isExternal) {
+          // En móviles, window.open suele ser bloqueado si ocurre dentro de un timeout.
+          // Usamos location.href para asegurar la redirección a WhatsApp/Redes.
+          window.location.href = redirect;
         } else {
           this.router.navigateByUrl(redirect);
         }
-      }, 1800);
+      }, 1500);
     }
   }
 
