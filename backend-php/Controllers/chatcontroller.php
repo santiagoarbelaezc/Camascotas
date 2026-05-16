@@ -52,7 +52,7 @@ class ChatController {
                 $instantRedirect = "/productos?categoria=Gatos";
             } elseif (preg_match('/\b(whatsapp|contacto|asesor|hablar)\b/', $msgLower)) {
                 $instantResponse = "¡Con gusto! ✨ Haz clic aquí para hablar directamente con un asesor por WhatsApp.";
-                $instantRedirect = "https://api.whatsapp.com/send?phone=573207793380";
+                $instantRedirect = "https://wa.me/573207793380";
             } elseif (preg_match('/\b(facebook|fb)\b/', $msgLower)) {
                 $instantResponse = "¡Claro! 🐾 Visítanos en nuestra página de Facebook para conocer más de nuestra comunidad.";
                 $instantRedirect = "https://www.facebook.com/camascotasaxm";
@@ -104,7 +104,7 @@ class ChatController {
             ENLACES:
             - Instagram: https://www.instagram.com/camascotas/
             - Facebook: https://www.facebook.com/camascotasaxm
-            - WhatsApp: https://api.whatsapp.com/send?phone=573207793380
+            - WhatsApp: https://wa.me/573207793380
             
             REGLAS CRÍTICAS DE FORMATO:
             1. NO USES ASTERISCOS (*) NI NEGRILLAS (**). NUNCA.
