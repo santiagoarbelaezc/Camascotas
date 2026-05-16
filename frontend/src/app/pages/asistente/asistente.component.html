@@ -1,7 +1,7 @@
 <div class="chat-shell font-poppins" [class.chat-shell-floating]="isFloating">
 
   <!-- ── HEADER ── -->
-  <header class="chat-header" (click)="scrollToTop()">
+  <header class="chat-header" [class.header-hidden]="isMini && messages.length > 0" (click)="scrollToTop()">
     <div class="header-brand">
       <div class="avatar-ring">
         <img src="assets/videos/husky.png" alt="Husky" class="avatar-img">

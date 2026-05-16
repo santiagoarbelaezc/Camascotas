@@ -166,7 +166,7 @@
   align-items: center;
   gap: 15px;
   padding: 20px 0;
-  transition: all 2.0s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   opacity: 1;
   will-change: transform, opacity;
@@ -175,7 +175,7 @@
 .mascot-wrap {
   width: 280px;
   height: 280px;
-  transition: transform 2.0s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   background: #000000;
   border-radius: 20px;
@@ -399,9 +399,8 @@
   .chat-header, .chat-footer { background: #000000 !important; border-color: rgba(255,255,255,0.1) !important; }
   .chat-header { padding: 15px 20px; }
 
-  /* FADE OUT EFFECT on Scroll Down (Elegant Version) */
   .mascot-container {
-    transition: all 2.0s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     transform: translateY(0) scale(1);
     will-change: transform, opacity, max-height;
@@ -451,6 +450,23 @@
 
   .chat-body.chat-active { padding-top: 10px; }
   .chat-input { font-size: 16px; }
+
+  /* HEADER HIDING LOGIC */
+  .chat-header {
+    transition: transform 0.4s ease, opacity 0.4s ease, height 0.4s ease;
+    transform-origin: top;
+  }
+
+  .chat-header.header-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    overflow: hidden;
+    pointer-events: none;
+  }
 }
 
 /* ── PRODUCT CARDS ── */
