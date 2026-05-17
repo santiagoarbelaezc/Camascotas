@@ -129,26 +129,22 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  private lastScrollTop = 0;
-
   /** Manejar scroll para expandir a Husky de forma estable */
   onScroll(): void {
     if (!this.chatContainer) return;
 
     const element = this.chatContainer.nativeElement;
     const scrollPos = element.scrollTop;
-    const scrollDelta = scrollPos - this.lastScrollTop;
-    this.lastScrollTop = scrollPos;
 
     // Si hay carga o estamos procesando, no permitimos expandir
     if (this.isLoading) return;
 
-    // Si el usuario hace scroll hacia ARRIBA de forma significativa o llega al tope
-    if (scrollDelta < -10 || scrollPos <= 5) {
+    // Solo expandir si estamos en el tope real
+    if (scrollPos <= 5) {
       this.isMini = false;
     } 
-    // Si el usuario hace scroll hacia ABAJO y ya hay mensajes
-    else if (scrollDelta > 10 && scrollPos > 50) {
+    // Solo minimizar si hemos bajado lo suficiente para no parpadear
+    else if (scrollPos > 80) {
       this.isMini = true;
     }
   }
