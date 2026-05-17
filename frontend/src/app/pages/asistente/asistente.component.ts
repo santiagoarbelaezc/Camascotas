@@ -72,11 +72,13 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.messages.push({ text, isBot: false });
     this.inputText = '';
     this.isLoading = true;
-    this.isMini = true; // Activar modo mini al chatear
+    
+    // Solo ocultar si NO están jugando activamente con el Husky
+    if (!this.isPlaying) {
+      this.isMini = true;
+    }
+    
     this.shouldScroll = true;
-
-    // Forzar que se mantenga mini al menos durante el envío
-    // para evitar que onScroll lo revierta si el contenido es corto
 
     const { text: reply, redirect, products } = await this.geminiService.sendMessage(text);
     
@@ -129,23 +131,29 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
+  private lastScrollTop = 0;
+
   /** Manejar scroll para expandir a Husky de forma estable */
   onScroll(): void {
     if (!this.chatContainer) return;
 
     const element = this.chatContainer.nativeElement;
     const scrollPos = element.scrollTop;
+    const delta = scrollPos - this.lastScrollTop;
+    this.lastScrollTop = scrollPos;
 
     // Si hay carga o estamos procesando, no permitimos expandir
     if (this.isLoading) return;
 
-    // Solo expandir si estamos en el tope real
-    if (scrollPos <= 5) {
+    // Mostrar si hace scroll rápido hacia arriba o llega al tope
+    if (delta < -10 || scrollPos <= 5) {
       this.isMini = false;
     } 
-    // Solo minimizar si hemos bajado lo suficiente para no parpadear
-    else if (scrollPos > 80) {
-      this.isMini = true;
+    // Ocultar si hace scroll hacia abajo y NO está jugando
+    else if (delta > 10 && scrollPos > 50) {
+      if (!this.isPlaying) {
+        this.isMini = true;
+      }
     }
   }
 

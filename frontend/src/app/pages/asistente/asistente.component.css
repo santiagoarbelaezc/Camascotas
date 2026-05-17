@@ -38,6 +38,15 @@
   padding-bottom: 20px;
 }
 
+/* ── TOP SECTION ── */
+.top-section {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
 /* ── HEADER ── */
 .chat-header {
   display: flex;
@@ -400,23 +409,17 @@
   .chat-header { padding: 15px 20px; }
 
   /* FADE OUT EFFECT on Scroll Down (Elegant Version) */
-  .mascot-container {
-    transition: all 2.0s cubic-bezier(0.4, 0, 0.2, 1);
+  .top-section {
+    max-height: 1000px;
     opacity: 1;
-    transform: translateY(0) scale(1);
-    will-change: transform, opacity, max-height;
-    max-height: 800px; /* Valor suficiente para mostrar todo */
-    overflow: hidden;
+    transform: translateY(0);
+    will-change: max-height, opacity, transform;
   }
 
-  .mascot-container.mini-mode {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-20px) scale(0.95);
+  .top-section.collapsed {
     max-height: 0;
-    min-height: 0; /* Necesario para que max-height: 0 funcione */
-    padding: 0;
-    margin: 0;
+    opacity: 0;
+    transform: translateY(-20px);
     pointer-events: none;
   }
 

@@ -1,37 +1,36 @@
 <div class="chat-shell font-poppins" [class.chat-shell-floating]="isFloating">
 
-  <!-- ── HEADER ── -->
-  <header class="chat-header" (click)="scrollToTop()">
-    <div class="header-brand">
-      <div class="avatar-ring">
-        <img src="assets/videos/husky.png" alt="Husky" class="avatar-img">
-        <span class="online-dot"></span>
+  <!-- TOP SECTION -->
+  <div class="top-section" [class.collapsed]="isMini && messages.length > 0">
+    <!-- ── HEADER ── -->
+    <header class="chat-header" (click)="scrollToTop()">
+      <div class="header-brand">
+        <div class="avatar-ring">
+          <img src="assets/videos/husky.png" alt="Husky" class="avatar-img">
+          <span class="online-dot"></span>
+        </div>
+        <div>
+          <p class="agent-name">Husky</p>
+          <p class="agent-status">Pregúntame y juega conmigo</p>
+        </div>
       </div>
-      <div>
-        <p class="agent-name">Husky</p>
-        <p class="agent-status">Pregúntame y juega conmigo</p>
+      <div class="header-actions">
+        <button (click)="clearChat()" class="new-chat-btn" title="Nueva conversación">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+          </svg>
+        </button>
+
+        <button *ngIf="isFloating" (click)="close.emit()" class="close-chat-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
       </div>
-    </div>
-    <div class="header-actions">
-      <button (click)="clearChat()" class="new-chat-btn" title="Nueva conversación">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-        </svg>
-      </button>
-
-      <button *ngIf="isFloating" (click)="close.emit()" class="close-chat-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 6L6 18M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
-  </header>
-
-  <!-- ── CHAT BODY ── -->
-  <div class="chat-body" [class.chat-active]="messages.length > 0" (scroll)="onScroll()" #chatContainer>
+    </header>
 
     <!-- Mascot Display (Dynamic) -->
-    <div class="mascot-container" [class.mini-mode]="isMini">
+    <div class="mascot-container">
       <div class="mascot-wrap" (click)="toggleMascot()">
         <!-- Imagen base (siempre presente como fallback o fondo) -->
         <img [src]="idleImage" alt="Husky" class="mascot-img base-img" 
@@ -49,7 +48,7 @@
         </video>
       </div>
 
-      <!-- Husky Action Buttons (Mini Version) -->
+      <!-- Husky Action Buttons -->
       <div class="mascot-actions" *ngIf="messages.length === 0 || !isMini">
         <button (click)="playMascotVideo('video-husky.mp4')" class="action-btn">🧸 Tierno</button>
         <button (click)="playMascotVideo('video-husky2.mp4')" class="action-btn">🎾 Jugar</button>
@@ -78,6 +77,10 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- ── CHAT BODY ── -->
+  <div class="chat-body" [class.chat-active]="messages.length > 0" (scroll)="onScroll()" #chatContainer>
 
     <!-- Historial de mensajes -->
     <div class="messages-list">
