@@ -20,6 +20,7 @@
 - Mejoras en el icono cuando se descarga la app
 - Mejoras en el diseño de ciertas pantallas
 - Mejoras Movil
+- Mejoras en las repsuestas de IA del agente
 
 ## 📋 **Descripción del Proyecto**
 
