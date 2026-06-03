@@ -9,7 +9,7 @@ use App\utils\response;
 use App\utils\logger;
 use PDO;
 
-class ChatController {
+class chatcontroller {
 
     private static string $apiUrl = "https://api.groq.com/openai/v1/chat/completions";
 
