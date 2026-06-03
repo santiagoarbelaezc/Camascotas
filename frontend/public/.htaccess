@@ -1,0 +1,6 @@
+RewriteEngine On
+# If an actual file or directory is requested, serve it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Otherwise, redirect all other requests to index.html
+RewriteRule ^ index.html [L]
