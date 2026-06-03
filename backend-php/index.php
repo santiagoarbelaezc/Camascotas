@@ -38,19 +38,11 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 });
 
 // CORS - Configuración robusta para desarrollo y producción
-$allowed_origins = [
-    'http://localhost:4200',
-    'http://localhost:8000',
-    'https://camascotas.com',
-    'http://camascotas.com'
-];
-
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
-if (in_array($origin, $allowed_origins)) {
+if ($origin) {
     header("Access-Control-Allow-Origin: $origin");
 } else {
-    // Fallback para producción si el origen no está en la lista pero es el mismo dominio
     header("Access-Control-Allow-Origin: *");
 }
 
