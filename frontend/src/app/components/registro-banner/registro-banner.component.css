@@ -1,0 +1,9 @@
+.registration-banner {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+}
+
+.registration-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 40px rgba(177, 214, 22, 0.1);
+}

@@ -6,16 +6,20 @@
 <!-- HUSKY PROMO: AI ASSISTANT BANNER -->
 <app-husky-banner></app-husky-banner>
 
+<!-- REGISTRATION ANNOUNCEMENT BANNER -->
+<app-registro-banner></app-registro-banner>
+
+<!-- VALORES: INTERACTIVE BANNER -->
+<app-banner-valores></app-banner-valores>
+
 <!-- CUSTOM SERVICE: PERSONALIZACIÓN -->
 <app-custom-service></app-custom-service>
 
 
 <!-- HIGHLIGHTS SECTION: LO MÁS NUEVO -->
 <div class="py-12 bg-white overflow-hidden">
-  <app-carrusel-destacados
-    [titulo]="'Lo Más Reciente'"
-    [subtitulo]="'Los últimos muebles incorporados a nuestro catálogo'"
-    [todosLosItems]="recientesItems"
+  <app-carrusel-destacados [titulo]="'Lo Más Reciente'"
+    [subtitulo]="'Los últimos muebles incorporados a nuestro catálogo'" [todosLosItems]="recientesItems"
     [itemsIniciales]="6">
   </app-carrusel-destacados>
 </div>
@@ -23,22 +27,33 @@
 <!-- ─── ZONA SUPERIOR DE COMPONENTES DINÁMICOS ─── -->
 <ng-container *ngFor="let comp of componentesDinamicos">
   <div class="dynamic-wrapper" *ngIf="comp.contenido?.posicion !== 'inferior'">
-    
+
     <!-- Banner -->
-    <div class="my-12 px-4 md:px-8 max-w-7xl mx-auto overflow-hidden rounded-2xl relative group cursor-pointer" [routerLink]="comp.contenido?.linkUrl" *ngIf="comp.tipo === 'banner' && comp.contenido?.imageUrl">
-      <img [src]="comp.contenido?.imageUrl" class="w-full h-[350px] md:h-[450px] object-cover transition-transform duration-700 group-hover:scale-105" alt="Banner">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent flex flex-col justify-end p-6 md:p-12 text-white">
-        <p class="max-w-2xl text-lg md:text-xl font-medium leading-relaxed" *ngIf="comp.contenido?.descripcion">{{ comp.contenido?.descripcion }}</p>
+    <div class="my-12 px-4 md:px-8 max-w-7xl mx-auto overflow-hidden rounded-2xl relative group cursor-pointer"
+      [routerLink]="comp.contenido?.linkUrl" *ngIf="comp.tipo === 'banner' && comp.contenido?.imageUrl">
+      <img [src]="comp.contenido?.imageUrl"
+        class="w-full h-[350px] md:h-[450px] object-cover transition-transform duration-700 group-hover:scale-105"
+        alt="Banner">
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent flex flex-col justify-end p-6 md:p-12 text-white">
+        <p class="max-w-2xl text-lg md:text-xl font-medium leading-relaxed" *ngIf="comp.contenido?.descripcion">{{
+          comp.contenido?.descripcion }}</p>
       </div>
     </div>
 
     <!-- Anuncio -->
-    <div class="my-12 px-4 md:px-8 max-w-7xl mx-auto bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200/80 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center justify-between shadow-sm" *ngIf="comp.tipo === 'anuncio'">
+    <div
+      class="my-12 px-4 md:px-8 max-w-7xl mx-auto bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200/80 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center justify-between shadow-sm"
+      *ngIf="comp.tipo === 'anuncio'">
       <div class="flex-1 space-y-4">
-        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider rounded-full" *ngIf="comp.contenido?.badge">{{ comp.contenido?.badge }}</span>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 leading-tight">{{ comp.contenido?.titulo1 }} <span class="text-sky-600" *ngIf="comp.contenido?.titulo2">{{ comp.contenido?.titulo2 }}</span></h2>
+        <span
+          class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider rounded-full"
+          *ngIf="comp.contenido?.badge">{{ comp.contenido?.badge }}</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 leading-tight">{{ comp.contenido?.titulo1 }} <span
+            class="text-sky-600" *ngIf="comp.contenido?.titulo2">{{ comp.contenido?.titulo2 }}</span></h2>
         <p class="text-slate-600 text-lg leading-relaxed">{{ comp.contenido?.descripcion1 }}</p>
-        <p class="text-slate-500 text-base leading-relaxed" *ngIf="comp.contenido?.descripcion2">{{ comp.contenido?.descripcion2 }}</p>
+        <p class="text-slate-500 text-base leading-relaxed" *ngIf="comp.contenido?.descripcion2">{{
+          comp.contenido?.descripcion2 }}</p>
       </div>
       <div class="w-full md:w-auto flex flex-col gap-4">
         <ul class="space-y-2 text-slate-700 font-medium mb-2" *ngIf="comp.contenido?.caracteristicas">
@@ -46,14 +61,21 @@
             <span class="text-green-500">✓</span> {{ feat.trim() }}
           </li>
         </ul>
-        <a [routerLink]="comp.contenido?.linkBoton" class="inline-block text-center px-8 py-3 bg-[#5B8FA8] hover:bg-[#48758c] text-white font-semibold rounded-lg shadow transition-all duration-300 transform hover:-translate-y-0.5" *ngIf="comp.contenido?.textoBoton">{{ comp.contenido?.textoBoton }}</a>
+        <a [routerLink]="comp.contenido?.linkBoton"
+          class="inline-block text-center px-8 py-3 bg-[#5B8FA8] hover:bg-[#48758c] text-white font-semibold rounded-lg shadow transition-all duration-300 transform hover:-translate-y-0.5"
+          *ngIf="comp.contenido?.textoBoton">{{ comp.contenido?.textoBoton }}</a>
       </div>
     </div>
 
     <!-- Texto -->
-    <div class="my-12 px-4 md:px-8 max-w-4xl mx-auto space-y-4" [class.text-left]="comp.contenido?.alineacion === 'left'" [class.text-center]="comp.contenido?.alineacion === 'center'" [class.text-right]="comp.contenido?.alineacion === 'right'" *ngIf="comp.tipo === 'texto'">
-      <h2 class="text-2xl md:text-3xl font-bold text-slate-800" *ngIf="comp.contenido?.titulo">{{ comp.contenido?.titulo }}</h2>
-      <p class="text-slate-600 text-base md:text-lg leading-relaxed whitespace-pre-line" *ngIf="comp.contenido?.texto">{{ comp.contenido?.texto }}</p>
+    <div class="my-12 px-4 md:px-8 max-w-4xl mx-auto space-y-4"
+      [class.text-left]="comp.contenido?.alineacion === 'left'"
+      [class.text-center]="comp.contenido?.alineacion === 'center'"
+      [class.text-right]="comp.contenido?.alineacion === 'right'" *ngIf="comp.tipo === 'texto'">
+      <h2 class="text-2xl md:text-3xl font-bold text-slate-800" *ngIf="comp.contenido?.titulo">{{ comp.contenido?.titulo
+        }}</h2>
+      <p class="text-slate-600 text-base md:text-lg leading-relaxed whitespace-pre-line" *ngIf="comp.contenido?.texto">
+        {{ comp.contenido?.texto }}</p>
     </div>
 
     <!-- Testimonios -->
@@ -63,10 +85,12 @@
         <p class="text-slate-500 text-lg" *ngIf="comp.contenido?.subtitulo">{{ comp.contenido?.subtitulo }}</p>
       </div>
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between" *ngFor="let t of comp.contenido?.testimonios">
+        <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between"
+          *ngFor="let t of comp.contenido?.testimonios">
           <p class="text-slate-600 italic mb-6">"{{ t.comentario }}"</p>
           <div class="flex items-center gap-4">
-            <img [src]="t.avatar || 'assets/images/placeholder.jpg'" class="w-12 h-12 rounded-full object-cover" alt="Avatar">
+            <img [src]="t.avatar || 'assets/images/placeholder.jpg'" class="w-12 h-12 rounded-full object-cover"
+              alt="Avatar">
             <div>
               <h4 class="font-bold text-slate-800">{{ t.nombre }}</h4>
               <span class="text-xs text-slate-500 block">{{ t.puesto }}</span>
@@ -84,14 +108,20 @@
         <p class="text-slate-500 text-lg" *ngIf="comp.contenido?.subtitulo">{{ comp.contenido?.subtitulo }}</p>
       </div>
       <div class="space-y-4">
-        <details class="group bg-white border border-slate-200/80 rounded-lg p-5 [&_summary::-webkit-details-marker]:hidden" *ngFor="let f of comp.contenido?.faqs">
+        <details
+          class="group bg-white border border-slate-200/80 rounded-lg p-5 [&_summary::-webkit-details-marker]:hidden"
+          *ngFor="let f of comp.contenido?.faqs">
           <summary class="flex items-center justify-between cursor-pointer focus:outline-none">
             <h3 class="font-semibold text-slate-800 text-base md:text-lg">{{ f.pregunta }}</h3>
             <span class="transition-transform duration-300 group-open:rotate-180">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-500"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-5 h-5 text-slate-500">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
             </span>
           </summary>
-          <p class="mt-4 text-slate-600 leading-relaxed text-sm md:text-base border-t border-slate-100 pt-4">{{ f.respuesta }}</p>
+          <p class="mt-4 text-slate-600 leading-relaxed text-sm md:text-base border-t border-slate-100 pt-4">{{
+            f.respuesta }}</p>
         </details>
       </div>
     </div>
@@ -103,9 +133,13 @@
         <p class="text-slate-500 text-lg" *ngIf="comp.contenido?.subtitulo">{{ comp.contenido?.subtitulo }}</p>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="group relative overflow-hidden rounded-xl border border-slate-100 shadow-sm" *ngFor="let g of comp.contenido?.imagenes">
-          <img [src]="g.imageUrl" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105" alt="Gallery Photo">
-          <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 text-white">
+        <div class="group relative overflow-hidden rounded-xl border border-slate-100 shadow-sm"
+          *ngFor="let g of comp.contenido?.imagenes">
+          <img [src]="g.imageUrl"
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+            alt="Gallery Photo">
+          <div
+            class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 text-white">
             <span class="text-sm font-medium">{{ g.caption }}</span>
           </div>
         </div>
@@ -114,11 +148,9 @@
 
     <!-- Carrusel de Productos -->
     <div class="py-12 bg-white overflow-hidden" *ngIf="comp.tipo === 'carrusel_productos'">
-      <app-carrusel-destacados
-        [titulo]="comp.contenido?.titulo || 'Productos'"
+      <app-carrusel-destacados [titulo]="comp.contenido?.titulo || 'Productos'"
         [subtitulo]="comp.contenido?.subtitulo || 'Nuestra selección destacada'"
-        [todosLosItems]="filtrarProductosPorCategoria(comp.contenido?.categoria)"
-        [itemsIniciales]="6">
+        [todosLosItems]="filtrarProductosPorCategoria(comp.contenido?.categoria)" [itemsIniciales]="6">
       </app-carrusel-destacados>
     </div>
 
@@ -131,17 +163,14 @@
 <!-- NOSOTROS: BRAND SOUL -->
 <app-nosotros></app-nosotros>
 
-<!-- VALORES: INTERACTIVE BANNER -->
-<app-banner-valores></app-banner-valores>
+
 
 
 
 <!-- NEW RELEASES: DESCUBRIMIENTO -->
 <div class="py-12 bg-white overflow-hidden">
-  <app-carrusel-destacados
-    [titulo]="'Descubre el Catálogo'"
-    [subtitulo]="'Explora nuestra selección completa de muebles para mascotas'"
-    [todosLosItems]="novedadesItems"
+  <app-carrusel-destacados [titulo]="'Descubre el Catálogo'"
+    [subtitulo]="'Explora nuestra selección completa de muebles para mascotas'" [todosLosItems]="novedadesItems"
     [itemsIniciales]="6">
   </app-carrusel-destacados>
 </div>
@@ -155,22 +184,33 @@
 <!-- ─── ZONA INFERIOR DE COMPONENTES DINÁMICOS ─── -->
 <ng-container *ngFor="let comp of componentesDinamicos">
   <div class="dynamic-wrapper" *ngIf="comp.contenido?.posicion === 'inferior'">
-    
+
     <!-- Banner -->
-    <div class="my-12 px-4 md:px-8 max-w-7xl mx-auto overflow-hidden rounded-2xl relative group cursor-pointer" [routerLink]="comp.contenido?.linkUrl" *ngIf="comp.tipo === 'banner' && comp.contenido?.imageUrl">
-      <img [src]="comp.contenido?.imageUrl" class="w-full h-[350px] md:h-[450px] object-cover transition-transform duration-700 group-hover:scale-105" alt="Banner">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent flex flex-col justify-end p-6 md:p-12 text-white">
-        <p class="max-w-2xl text-lg md:text-xl font-medium leading-relaxed" *ngIf="comp.contenido?.descripcion">{{ comp.contenido?.descripcion }}</p>
+    <div class="my-12 px-4 md:px-8 max-w-7xl mx-auto overflow-hidden rounded-2xl relative group cursor-pointer"
+      [routerLink]="comp.contenido?.linkUrl" *ngIf="comp.tipo === 'banner' && comp.contenido?.imageUrl">
+      <img [src]="comp.contenido?.imageUrl"
+        class="w-full h-[350px] md:h-[450px] object-cover transition-transform duration-700 group-hover:scale-105"
+        alt="Banner">
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent flex flex-col justify-end p-6 md:p-12 text-white">
+        <p class="max-w-2xl text-lg md:text-xl font-medium leading-relaxed" *ngIf="comp.contenido?.descripcion">{{
+          comp.contenido?.descripcion }}</p>
       </div>
     </div>
 
     <!-- Anuncio -->
-    <div class="my-12 px-4 md:px-8 max-w-7xl mx-auto bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200/80 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center justify-between shadow-sm" *ngIf="comp.tipo === 'anuncio'">
+    <div
+      class="my-12 px-4 md:px-8 max-w-7xl mx-auto bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200/80 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center justify-between shadow-sm"
+      *ngIf="comp.tipo === 'anuncio'">
       <div class="flex-1 space-y-4">
-        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider rounded-full" *ngIf="comp.contenido?.badge">{{ comp.contenido?.badge }}</span>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 leading-tight">{{ comp.contenido?.titulo1 }} <span class="text-sky-600" *ngIf="comp.contenido?.titulo2">{{ comp.contenido?.titulo2 }}</span></h2>
+        <span
+          class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider rounded-full"
+          *ngIf="comp.contenido?.badge">{{ comp.contenido?.badge }}</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 leading-tight">{{ comp.contenido?.titulo1 }} <span
+            class="text-sky-600" *ngIf="comp.contenido?.titulo2">{{ comp.contenido?.titulo2 }}</span></h2>
         <p class="text-slate-600 text-lg leading-relaxed">{{ comp.contenido?.descripcion1 }}</p>
-        <p class="text-slate-500 text-base leading-relaxed" *ngIf="comp.contenido?.descripcion2">{{ comp.contenido?.descripcion2 }}</p>
+        <p class="text-slate-500 text-base leading-relaxed" *ngIf="comp.contenido?.descripcion2">{{
+          comp.contenido?.descripcion2 }}</p>
       </div>
       <div class="w-full md:w-auto flex flex-col gap-4">
         <ul class="space-y-2 text-slate-700 font-medium mb-2" *ngIf="comp.contenido?.caracteristicas">
@@ -178,14 +218,21 @@
             <span class="text-green-500">✓</span> {{ feat.trim() }}
           </li>
         </ul>
-        <a [routerLink]="comp.contenido?.linkBoton" class="inline-block text-center px-8 py-3 bg-[#5B8FA8] hover:bg-[#48758c] text-white font-semibold rounded-lg shadow transition-all duration-300 transform hover:-translate-y-0.5" *ngIf="comp.contenido?.textoBoton">{{ comp.contenido?.textoBoton }}</a>
+        <a [routerLink]="comp.contenido?.linkBoton"
+          class="inline-block text-center px-8 py-3 bg-[#5B8FA8] hover:bg-[#48758c] text-white font-semibold rounded-lg shadow transition-all duration-300 transform hover:-translate-y-0.5"
+          *ngIf="comp.contenido?.textoBoton">{{ comp.contenido?.textoBoton }}</a>
       </div>
     </div>
 
     <!-- Texto -->
-    <div class="my-12 px-4 md:px-8 max-w-4xl mx-auto space-y-4" [class.text-left]="comp.contenido?.alineacion === 'left'" [class.text-center]="comp.contenido?.alineacion === 'center'" [class.text-right]="comp.contenido?.alineacion === 'right'" *ngIf="comp.tipo === 'texto'">
-      <h2 class="text-2xl md:text-3xl font-bold text-slate-800" *ngIf="comp.contenido?.titulo">{{ comp.contenido?.titulo }}</h2>
-      <p class="text-slate-600 text-base md:text-lg leading-relaxed whitespace-pre-line" *ngIf="comp.contenido?.texto">{{ comp.contenido?.texto }}</p>
+    <div class="my-12 px-4 md:px-8 max-w-4xl mx-auto space-y-4"
+      [class.text-left]="comp.contenido?.alineacion === 'left'"
+      [class.text-center]="comp.contenido?.alineacion === 'center'"
+      [class.text-right]="comp.contenido?.alineacion === 'right'" *ngIf="comp.tipo === 'texto'">
+      <h2 class="text-2xl md:text-3xl font-bold text-slate-800" *ngIf="comp.contenido?.titulo">{{ comp.contenido?.titulo
+        }}</h2>
+      <p class="text-slate-600 text-base md:text-lg leading-relaxed whitespace-pre-line" *ngIf="comp.contenido?.texto">
+        {{ comp.contenido?.texto }}</p>
     </div>
 
     <!-- Testimonios -->
@@ -195,10 +242,12 @@
         <p class="text-slate-500 text-lg" *ngIf="comp.contenido?.subtitulo">{{ comp.contenido?.subtitulo }}</p>
       </div>
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between" *ngFor="let t of comp.contenido?.testimonios">
+        <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between"
+          *ngFor="let t of comp.contenido?.testimonios">
           <p class="text-slate-600 italic mb-6">"{{ t.comentario }}"</p>
           <div class="flex items-center gap-4">
-            <img [src]="t.avatar || 'assets/images/placeholder.jpg'" class="w-12 h-12 rounded-full object-cover" alt="Avatar">
+            <img [src]="t.avatar || 'assets/images/placeholder.jpg'" class="w-12 h-12 rounded-full object-cover"
+              alt="Avatar">
             <div>
               <h4 class="font-bold text-slate-800">{{ t.nombre }}</h4>
               <span class="text-xs text-slate-500 block">{{ t.puesto }}</span>
@@ -216,14 +265,20 @@
         <p class="text-slate-500 text-lg" *ngIf="comp.contenido?.subtitulo">{{ comp.contenido?.subtitulo }}</p>
       </div>
       <div class="space-y-4">
-        <details class="group bg-white border border-slate-200/80 rounded-lg p-5 [&_summary::-webkit-details-marker]:hidden" *ngFor="let f of comp.contenido?.faqs">
+        <details
+          class="group bg-white border border-slate-200/80 rounded-lg p-5 [&_summary::-webkit-details-marker]:hidden"
+          *ngFor="let f of comp.contenido?.faqs">
           <summary class="flex items-center justify-between cursor-pointer focus:outline-none">
             <h3 class="font-semibold text-slate-800 text-base md:text-lg">{{ f.pregunta }}</h3>
             <span class="transition-transform duration-300 group-open:rotate-180">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-500"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-5 h-5 text-slate-500">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
             </span>
           </summary>
-          <p class="mt-4 text-slate-600 leading-relaxed text-sm md:text-base border-t border-slate-100 pt-4">{{ f.respuesta }}</p>
+          <p class="mt-4 text-slate-600 leading-relaxed text-sm md:text-base border-t border-slate-100 pt-4">{{
+            f.respuesta }}</p>
         </details>
       </div>
     </div>
@@ -235,9 +290,13 @@
         <p class="text-slate-500 text-lg" *ngIf="comp.contenido?.subtitulo">{{ comp.contenido?.subtitulo }}</p>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="group relative overflow-hidden rounded-xl border border-slate-100 shadow-sm" *ngFor="let g of comp.contenido?.imagenes">
-          <img [src]="g.imageUrl" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105" alt="Gallery Photo">
-          <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 text-white">
+        <div class="group relative overflow-hidden rounded-xl border border-slate-100 shadow-sm"
+          *ngFor="let g of comp.contenido?.imagenes">
+          <img [src]="g.imageUrl"
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+            alt="Gallery Photo">
+          <div
+            class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 text-white">
             <span class="text-sm font-medium">{{ g.caption }}</span>
           </div>
         </div>
@@ -246,11 +305,9 @@
 
     <!-- Carrusel de Productos -->
     <div class="py-12 bg-white overflow-hidden" *ngIf="comp.tipo === 'carrusel_productos'">
-      <app-carrusel-destacados
-        [titulo]="comp.contenido?.titulo || 'Productos'"
+      <app-carrusel-destacados [titulo]="comp.contenido?.titulo || 'Productos'"
         [subtitulo]="comp.contenido?.subtitulo || 'Nuestra selección destacada'"
-        [todosLosItems]="filtrarProductosPorCategoria(comp.contenido?.categoria)"
-        [itemsIniciales]="6">
+        [todosLosItems]="filtrarProductosPorCategoria(comp.contenido?.categoria)" [itemsIniciales]="6">
       </app-carrusel-destacados>
     </div>
 
@@ -260,4 +317,4 @@
 <!-- MISION & VISION: CORE BELIEFS -->
 <section class="py-12 bg-gray-50/50 overflow-hidden">
   <app-mision-vision></app-mision-vision>
-</section>
+</section>

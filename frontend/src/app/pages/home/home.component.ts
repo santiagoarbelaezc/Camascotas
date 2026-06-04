@@ -12,6 +12,7 @@ import { BannerDualHomeComponent } from '../../components/banner-dual-home/banne
 import { BrandStoryComponent } from '../../components/brand-story/brand-story.component';
 import { CustomServiceComponent } from '../../components/custom-service/custom-service.component';
 import { HuskyBannerComponent } from '../../components/husky-banner/husky-banner.component';
+import { RegistroBannerComponent } from '../../components/registro-banner/registro-banner.component';
 import { ProductoAdminService, ProductoAdmin } from '../../services/producto-admin.service';
 import { CommonModule } from '@angular/common';
 import { ComponentesService, ComponenteDinamico } from '../../services/componentes.service';
@@ -64,7 +65,8 @@ function toCarruselItem(p: ProductoAdmin): CarruselItem {
     BannerDualHomeComponent,
     BrandStoryComponent,
     CustomServiceComponent,
-    HuskyBannerComponent
+    HuskyBannerComponent,
+    RegistroBannerComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
