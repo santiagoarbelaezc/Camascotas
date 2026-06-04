@@ -13,6 +13,8 @@ import { BrandStoryComponent } from '../../components/brand-story/brand-story.co
 import { CustomServiceComponent } from '../../components/custom-service/custom-service.component';
 import { HuskyBannerComponent } from '../../components/husky-banner/husky-banner.component';
 import { ProductoAdminService, ProductoAdmin } from '../../services/producto-admin.service';
+import { CommonModule } from '@angular/common';
+import { ComponentesService, ComponenteDinamico } from '../../services/componentes.service';
 
 const FALLBACK_IMG = 'assets/images/placeholder.jpg';
 
@@ -47,6 +49,7 @@ function toCarruselItem(p: ProductoAdmin): CarruselItem {
   selector: 'app-home',
   standalone: true,
   imports: [
+    CommonModule,
     HeaderEnlacesComponent,
     MenuCategoriasComponent,
     GridProductosComponent,
@@ -72,9 +75,30 @@ export class HomeComponent implements OnInit {
   /** Bottom carousel: random discovery products */
   novedadesItems: CarruselItem[] = [];
 
-  constructor(private productosService: ProductoAdminService) {}
+  /** Dynamic customizable landing components */
+  componentesDinamicos: ComponenteDinamico[] = [];
+
+  constructor(
+    private productosService: ProductoAdminService,
+    private componentesService: ComponentesService
+  ) {}
+
+  filtrarProductosPorCategoria(categoriaName: string): CarruselItem[] {
+    if (!categoriaName) return this.recientesItems;
+    // Normalize string match
+    const search = categoriaName.toLowerCase();
+    return this.recientesItems.filter(item => (item.categoria ?? '').toLowerCase().includes(search));
+  }
 
   ngOnInit(): void {
+    // Cargar componentes dinámicos activos
+    this.componentesService.getComponentes().subscribe({
+      next: (res) => {
+        this.componentesDinamicos = res.filter(c => c.activo == 1 || c.activo === true);
+      },
+      error: (err) => console.warn('Error cargando componentes dinámicos:', err)
+    });
+
     // Top carousel: 20 most recent products (user can expand to see all)
     this.productosService.getRecientes(20).subscribe({
       next: (productos) => {
