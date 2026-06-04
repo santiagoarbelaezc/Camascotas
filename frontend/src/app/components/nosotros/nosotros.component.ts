@@ -80,20 +80,29 @@ export class NosotrosComponent implements OnInit, OnDestroy {
     if (currentPath !== '/nosotros') {
       this.router.navigate(['/nosotros'], { queryParams: { founder: key } });
     } else {
+      // Guardar posición de scroll actual
+      const scrollY = window.scrollY;
       // Si ya estamos en /nosotros, simplemente actualizamos el query param
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: { founder: key },
         queryParamsHandling: 'merge'
+      }).then(() => {
+        // Restaurar posición de scroll de inmediato
+        window.scrollTo(0, scrollY);
       });
     }
   }
 
   closeFounderModal(): void {
+    const scrollY = window.scrollY;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { founder: null },
       queryParamsHandling: 'merge'
+    }).then(() => {
+      // Restaurar posición de scroll de inmediato
+      window.scrollTo(0, scrollY);
     });
   }
 }

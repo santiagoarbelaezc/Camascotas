@@ -1,35 +1,45 @@
-<section class="banner-container">
-  
-  <!-- Background Layers for Smooth Transitions -->
-  <div class="background-layers">
-    <div 
-      *ngFor="let val of values; let i = index"
-      class="bg-layer"
-      [class.active]="activeIndex === i"
-      [style.background-image]="'url(' + val.image + ')'">
-      <div class="overlay"></div>
+<div class="sticky-scroll-wrapper" #stickyWrapper>
+  <section class="banner-container">
+    
+    <!-- Background Layers for Smooth Transitions -->
+    <div class="background-layers">
+      <div 
+        *ngFor="let val of values; let i = index"
+        class="bg-layer"
+        [class.active]="activeIndex === i"
+        [style.background-image]="'url(' + val.image + ')'">
+        <div class="overlay"></div>
+      </div>
     </div>
-  </div>
 
-  <!-- Content Columns -->
-  <div class="content-wrapper" (scroll)="onScroll($event)">
-    <div 
-      *ngFor="let val of values; let i = index"
-      class="value-column"
-      (mouseenter)="setActive(i)"
-      [class.active-column]="activeIndex === i">
-      
-      <div class="text-content">
-        <p class="subtitle">{{ val.subtitle }}</p>
-        <h2 class="title">{{ val.title }}</h2>
-        <p class="description">{{ val.description }}</p>
+    <!-- Center Content Overlay (Pinnable layout) -->
+    <div class="content-wrapper-pin">
+      <div 
+        *ngFor="let val of values; let i = index"
+        class="value-content-pin"
+        [class.active]="activeIndex === i">
         
-        <!-- Optional Button for the active section -->
-        <div class="action-wrap" [class.show]="activeIndex === i && i === 1">
-          <a routerLink="/nosotros" class="btn-outline">CONOCE MÁS</a>
+        <div class="text-content">
+          <p class="subtitle">{{ val.subtitle }}</p>
+          <h2 class="title">{{ val.title }}</h2>
+          <p class="description">{{ val.description }}</p>
+          
+          <div class="action-wrap" [class.show]="activeIndex === i">
+            <a routerLink="/nosotros" class="btn-outline">CONOCE MÁS</a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-</section>
+    <!-- Scroll Indicators / Navigation Dots -->
+    <div class="scroll-dots">
+      <span 
+        *ngFor="let val of values; let i = index" 
+        class="dot" 
+        [class.active]="activeIndex === i"
+        (click)="scrollToIndex(i)">
+      </span>
+    </div>
+
+  </section>
+</div>
