@@ -61,3 +61,16 @@
   animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Scoped height for the modal image */
+.modal-founder-img-container {
+  height: 380px !important;
+  flex-shrink: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .modal-founder-img-container {
+    height: auto !important;
+  }
+}
+
+
