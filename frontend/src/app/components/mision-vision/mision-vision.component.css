@@ -1,14 +1,14 @@
 .mision-vision-wrapper {
-  padding: 100px 0;
+  padding: 80px 0;
   background-color: var(--cream);
   position: relative;
   overflow: hidden;
 }
 
 .container-custom {
-  max-width: 1600px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 4%;
+  padding: 0 6%;
 }
 
 .section-tag {
@@ -23,11 +23,11 @@
 }
 
 .section-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
   color: var(--azul-oscuro);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.15;
   margin-bottom: 20px;
 }
 
@@ -40,83 +40,110 @@
 
 .mvv-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
 
 .mvv-card {
   background: white;
-  padding: 50px 40px;
-  border-radius: 40px;
-  box-shadow: 0 20px 40px rgba(0, 65, 83, 0.05);
+  padding: 50px 35px;
+  border-radius: 32px;
+  box-shadow: 0 15px 35px rgba(0, 65, 83, 0.04);
   position: relative;
   overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  border: 1px solid rgba(0, 65, 83, 0.05);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 1px solid rgba(0, 65, 83, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  z-index: 1;
 }
 
 .mvv-card:hover {
-  transform: translateY(-15px);
-  box-shadow: 0 30px 60px rgba(0, 65, 83, 0.12);
-  border-color: var(--turquesa);
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px rgba(0, 65, 83, 0.1);
+  border-color: rgba(0, 179, 188, 0.2);
 }
 
 .card-icon-box {
-  width: 80px;
-  height: 80px;
+  width: 76px;
+  height: 76px;
   background-color: var(--cream);
-  border-radius: 24px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--turquesa);
-  margin-bottom: 30px;
-  transition: all 0.5s ease;
+  margin-bottom: 25px;
+  transition: all 0.4s ease;
 }
 
 .mvv-card:hover .card-icon-box {
   background-color: var(--turquesa);
   color: white;
-  transform: rotate(10deg);
+  transform: scale(1.05) rotate(8deg);
 }
 
 .mvv-card h3 {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.8rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.6rem;
   color: var(--azul-oscuro);
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .mvv-card p {
-  color: #666;
-  line-height: 1.8;
-  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.7;
+  font-size: 0.92rem;
+  font-weight: 300;
 }
 
-.values-list {
-  list-style: none;
-  padding: 0;
-  text-align: left;
-}
-
-.values-list li {
-  margin-bottom: 12px;
-  color: #666;
-  font-size: 0.9rem;
+/* ===== VALUES CHIPS LAYOUT ===== */
+.values-chips {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 5px;
 }
 
-.values-list li::before {
-  content: '✓';
-  color: var(--verde-principal);
-  font-weight: bold;
+.value-chip {
+  background: var(--cream);
+  border: 1px solid rgba(0, 65, 83, 0.04);
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.mvv-card:hover .value-chip {
+  background: white;
+  border-color: rgba(0, 179, 188, 0.12);
+}
+
+.chip-bullet {
+  width: 7px;
+  height: 7px;
+  background: var(--verde-principal);
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px var(--verde-principal);
+}
+
+.chip-text {
+  font-size: 0.82rem;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.chip-text strong {
+  color: var(--azul-oscuro);
+  font-weight: 600;
 }
 
 .card-bg-glow {
@@ -127,23 +154,25 @@
   height: 150px;
   background: radial-gradient(circle, var(--turquesa) 0%, transparent 70%);
   opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
   pointer-events: none;
 }
 
 .mvv-card:hover .card-bg-glow {
-  opacity: 0.1;
+  opacity: 0.08;
 }
 
+/* ===== COMMITMENT BANNER ===== */
 .commitment-banner {
   background: var(--azul-oscuro);
-  border-radius: 40px;
-  padding: 60px;
+  border-radius: 32px;
+  padding: 50px 30px;
   color: white;
   position: relative;
   overflow: hidden;
   text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .commitment-banner::before {
@@ -151,7 +180,12 @@
   position: absolute;
   inset: 0;
   background: url('https://www.transparenttextures.com/patterns/cubes.png');
-  opacity: 0.1;
+  opacity: 0.05;
+}
+
+.commitment-content {
+  position: relative;
+  z-index: 5;
 }
 
 .badge {
@@ -160,34 +194,75 @@
   background-color: var(--verde-principal);
   color: var(--azul-oscuro);
   border-radius: 99px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
   margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(177, 214, 22, 0.25);
 }
 
 .commitment-banner h4 {
-  font-family: 'Outfit', sans-serif;
-  font-size: 2.2rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 15px;
+  letter-spacing: -0.5px;
 }
 
 .commitment-banner p {
-  font-size: 1.1rem;
+  font-size: 1rem;
   opacity: 0.8;
   max-width: 600px;
   margin: 0 auto;
+  font-weight: 300;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .mvv-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  
+  .mvv-card:last-child {
+    grid-column: span 2;
+  }
 }
 
 @media (max-width: 768px) {
+  .mision-vision-wrapper {
+    padding: 60px 0;
+  }
+
+  .container-custom {
+    padding: 0 5%;
+  }
+
+  .mvv-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .mvv-card:last-child {
+    grid-column: span 1;
+  }
+
   .mvv-card {
-    padding: 40px 30px;
+    padding: 35px 24px;
+    border-radius: 24px;
   }
+
   .commitment-banner {
-    padding: 40px 24px;
+    border-radius: 24px;
+    padding: 40px 20px;
+    margin-top: 40px;
   }
+
   .commitment-banner h4 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
+  }
+
+  .commitment-banner p {
+    font-size: 0.9rem;
   }
 }

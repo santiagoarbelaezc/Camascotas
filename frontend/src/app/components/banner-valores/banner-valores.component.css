@@ -5,7 +5,7 @@
 
 .sticky-scroll-wrapper {
   position: relative;
-  height: 250vh; /* Altura suficiente para permitir el recorrido del scroll */
+  height: 190vh; /* Reducido de 250vh para mayor sensibilidad al scroll */
 }
 
 .banner-container {
