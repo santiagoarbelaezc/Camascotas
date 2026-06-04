@@ -28,22 +28,28 @@
       </p>
     </div>
 
-    <!-- Tab Switcher -->
-    <div class="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
-      <button type="button" (click)="cambiarModo('login')" 
-              class="flex-1 py-3 text-[10px] uppercase tracking-[0.15em] font-black rounded-xl transition-all" 
-              [class.bg-white]="modo === 'login'" 
-              [class.shadow-sm]="modo === 'login'" 
-              [class.text-brand-petrol]="modo === 'login'" 
-              [class.text-gray-400]="modo !== 'login'">
+    <!-- Tab Switcher: visualmente diferenciados -->
+    <div class="flex bg-gray-100 p-1 rounded-2xl gap-1">
+      <!-- INGRESAR tab -->
+      <button type="button" (click)="cambiarModo('login')"
+              class="tab-btn flex-1 flex items-center justify-center gap-2 py-3.5 text-[10px] uppercase tracking-[0.18em] font-black rounded-xl transition-all duration-300"
+              [ngClass]="modo === 'login'
+                ? 'bg-brand-petrol text-white shadow-lg shadow-brand-petrol/30'
+                : 'text-gray-400 hover:text-gray-600'">
+        <svg *ngIf="modo === 'login'" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+        </svg>
         Ingresar
       </button>
-      <button type="button" (click)="cambiarModo('registro')" 
-              class="flex-1 py-3 text-[10px] uppercase tracking-[0.15em] font-black rounded-xl transition-all" 
-              [class.bg-white]="modo === 'registro'" 
-              [class.shadow-sm]="modo === 'registro'" 
-              [class.text-brand-petrol]="modo === 'registro'" 
-              [class.text-gray-400]="modo !== 'registro'">
+      <!-- REGISTRARSE tab -->
+      <button type="button" (click)="cambiarModo('registro')"
+              class="tab-btn flex-1 flex items-center justify-center gap-2 py-3.5 text-[10px] uppercase tracking-[0.18em] font-black rounded-xl transition-all duration-300"
+              [ngClass]="modo === 'registro'
+                ? 'bg-brand-lima text-brand-petrol shadow-lg shadow-brand-lima/40'
+                : 'text-gray-400 hover:text-gray-600'">
+        <svg *ngIf="modo === 'registro'" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+        </svg>
         Registrarse
       </button>
     </div>
@@ -100,15 +106,6 @@
         </button>
       </div>
 
-      <!-- Google Sign In Button -->
-      <div class="relative flex items-center justify-center my-4">
-        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-100"></div></div>
-        <span class="relative bg-white px-3 text-[9px] uppercase tracking-widest text-gray-400 font-bold">o continúa con</span>
-      </div>
-
-      <div class="flex justify-center w-full">
-        <div id="googleBtn" class="w-full flex justify-center"></div>
-      </div>
     </form>
 
     <!-- REGISTRATION FORM -->
