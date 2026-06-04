@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductosService, Producto } from '../../../services/productos.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -24,7 +25,8 @@ export class NavbarComponent {
 
   constructor(
     private router: Router,
-    private productosService: ProductosService
+    private productosService: ProductosService,
+    public auth: AuthService
   ) {}
 
   ngOnInit() {

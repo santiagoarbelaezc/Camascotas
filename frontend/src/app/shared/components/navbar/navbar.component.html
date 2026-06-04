@@ -66,8 +66,23 @@
         </div>
       </div>
 
+      <!-- Registro / Sesión de Cliente Desktop -->
+      <ng-container *ngIf="!auth.isLoggedIn(); else userSession">
+        <a [routerLink]="['/login']" [queryParams]="{ mode: 'registro' }" class="nav-register-btn-desktop">
+          Registrarse
+        </a>
+      </ng-container>
+      <ng-template #userSession>
+        <div class="user-session-wrap">
+          <span class="user-name">Hola, {{ auth.getUsuario()?.nombre }}</span>
+          <button (click)="auth.logout()" class="nav-logout-btn">
+            Salir
+          </button>
+        </div>
+      </ng-template>
+
       <!-- Llave de Dashboard -->
-      <a routerLink="/login" class="nav-admin-btn" aria-label="Ingreso Administrativo">
+      <a routerLink="/login" class="nav-admin-btn" aria-label="Ingreso Administrativo" title="Ingreso Administrativo">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -76,13 +91,30 @@
       </a>
     </nav>
 
-    <!-- Botón Hamburguesa MOBILE -->
-    <button class="hamburger desktop-hidden" (click)="toggleMenu()" aria-label="Abrir Menú"
-      [class.abierto]="menuAbierto">
-      <span class="line"></span>
-      <span class="line"></span>
-      <span class="line"></span>
-    </button>
+    <!-- Lado Derecho Mobile (Registro & Hamburguesa) -->
+    <div class="mobile-actions desktop-hidden">
+      <!-- Registro / Sesión de Cliente Mobile -->
+      <ng-container *ngIf="!auth.isLoggedIn(); else userSessionMobile">
+        <a [routerLink]="['/login']" [queryParams]="{ mode: 'registro' }" class="nav-register-btn-mobile">
+          Registrarse
+        </a>
+      </ng-container>
+      <ng-template #userSessionMobile>
+        <button (click)="auth.logout()" class="nav-logout-btn-mobile" title="Cerrar Sesión">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+          </svg>
+        </button>
+      </ng-template>
+
+      <!-- Botón Hamburguesa MOBILE -->
+      <button class="hamburger" (click)="toggleMenu()" aria-label="Abrir Menú"
+        [class.abierto]="menuAbierto">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </button>
+    </div>
   </div>
 </header>
 

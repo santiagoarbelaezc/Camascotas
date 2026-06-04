@@ -549,3 +549,97 @@
     transform: translateY(0);
   }
 }
+
+/* =========================================================
+   REGISTRATION & USER SESSION BUTTONS
+   ========================================================= */
+.nav-register-btn-desktop {
+  font-size: 0.85rem;
+  color: var(--azul-oscuro);
+  background-color: var(--verde-principal);
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 20px;
+  border-radius: 99px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--verde-principal);
+}
+
+.nav-register-btn-desktop:hover {
+  background-color: transparent;
+  color: var(--verde-principal);
+  box-shadow: 0 0 15px rgba(177, 214, 22, 0.3);
+}
+
+.user-session-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-name {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nav-logout-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.nav-logout-btn:hover {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* Mobile Actions Layout */
+.mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-register-btn-mobile {
+  font-size: 0.75rem;
+  color: var(--azul-oscuro);
+  background-color: var(--verde-principal);
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 99px;
+  transition: all 0.2s ease;
+}
+
+.nav-register-btn-mobile:active {
+  transform: scale(0.95);
+}
+
+.nav-logout-btn-mobile {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #ffffff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.nav-logout-btn-mobile:active {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
