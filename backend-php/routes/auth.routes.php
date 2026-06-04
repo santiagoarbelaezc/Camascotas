@@ -8,4 +8,5 @@ return function($router) {
     $router->add('POST', '/auth/login',    [authcontroller::class, 'login']);
     $router->add('POST', '/auth/register', [authcontroller::class, 'register']);
     $router->add('POST', '/auth/logout',   [authcontroller::class, 'logout']);
+    $router->add('POST', '/auth/google',   [authcontroller::class, 'googleLogin']);
 };

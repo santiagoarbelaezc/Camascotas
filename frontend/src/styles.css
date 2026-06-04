@@ -63,3 +63,53 @@ p {
 .organic-circle {
   @apply absolute bg-brand-turquesa/15 rounded-full blur-3xl;
 }
+
+/* ── NATIVE MOBILE APP UX OPTIMIZATIONS ── */
+* {
+  -webkit-tap-highlight-color: transparent; /* Elimina el cuadro gris parpadeante al tocar en móviles */
+}
+
+/* Prevenir selección de texto accidental en elementos interactivos */
+button,
+a,
+.btn-primary,
+.btn-secondary,
+.btn-outline,
+.nav-item,
+.value-column,
+.mvv-card,
+.avatar-ring {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Evitar arrastre accidental de imágenes */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Scroll fluido con inercia nativa en dispositivos iOS/Safari */
+.chat-body,
+.overflow-y-auto,
+.overflow-x-auto,
+main {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Feedback táctil interactivo (Efecto de presión activa en botones) */
+.btn-primary:active,
+.btn-secondary:active,
+.btn-outline:active,
+button:active {
+  transform: scale(0.96) !important;
+  opacity: 0.92;
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Ajustes de áreas seguras para dispositivos con Notch / Barra de inicio */
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+

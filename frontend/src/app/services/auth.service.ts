@@ -20,6 +20,18 @@ export class AuthService {
     );
   }
 
+  registroCliente(datos: any): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/register`, datos).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  loginConGoogle(googleToken: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/google`, { credential: googleToken }).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
