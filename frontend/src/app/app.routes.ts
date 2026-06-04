@@ -56,6 +56,10 @@ export const routes: Routes = [
       {
         path: 'stats',
         loadComponent: () => import('./pages/dashboard/views/admin-stats/admin-stats.component').then(m => m.AdminStatsComponent)
+      },
+      {
+        path: 'personalizar',
+        loadComponent: () => import('./pages/dashboard/views/personalizar-web/personalizar-web.component').then(m => m.PersonalizarWebComponent)
       }
     ]
   },
