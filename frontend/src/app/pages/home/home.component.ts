@@ -15,6 +15,7 @@ import { HuskyBannerComponent } from '../../components/husky-banner/husky-banner
 import { ProductoAdminService, ProductoAdmin } from '../../services/producto-admin.service';
 import { CommonModule } from '@angular/common';
 import { ComponentesService, ComponenteDinamico } from '../../services/componentes.service';
+import { RouterModule } from '@angular/router';
 
 const FALLBACK_IMG = 'assets/images/placeholder.jpg';
 
@@ -50,6 +51,7 @@ function toCarruselItem(p: ProductoAdmin): CarruselItem {
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     HeaderEnlacesComponent,
     MenuCategoriasComponent,
     GridProductosComponent,
