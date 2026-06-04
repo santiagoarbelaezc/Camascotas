@@ -14,7 +14,7 @@
                     
                     <!-- LUISA: Main on both Mobile and Desktop -->
                     <div class="col-span-2 lg:col-span-8 order-1 lg:order-1 lg:row-span-2">
-                        <div class="h-full group relative overflow-hidden rounded-[40px] lg:rounded-huge shadow-2xl border-4 lg:border-8 border-white bg-gray-100">
+                        <div (click)="selectFounder('luisa')" class="h-full group relative overflow-hidden rounded-[40px] lg:rounded-huge shadow-2xl border-4 lg:border-8 border-white bg-gray-100 cursor-pointer">
                             <img src="assets/images/luisa.jpeg" alt="Luisa" 
                                  class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                             <div class="absolute bottom-6 left-6 lg:bottom-10 lg:left-10 text-white drop-shadow-lg z-20">
@@ -26,7 +26,7 @@
 
                     <!-- MATEO: Supporting -->
                     <div class="col-span-1 lg:col-span-4 order-2 lg:order-2">
-                        <div class="h-full group relative overflow-hidden rounded-[30px] lg:rounded-[40px] shadow-xl border-4 border-white bg-gray-100">
+                        <div (click)="selectFounder('mateo')" class="h-full group relative overflow-hidden rounded-[30px] lg:rounded-[40px] shadow-xl border-4 border-white bg-gray-100 cursor-pointer">
                             <img src="assets/images/mateo.jpeg" alt="Mateo" 
                                  class="w-full h-full min-h-[220px] lg:min-h-0 object-cover transition-transform duration-1000 group-hover:scale-110">
                             <div class="absolute bottom-4 left-4 text-white drop-shadow-lg z-20">
@@ -38,10 +38,11 @@
 
                     <!-- SEBAS: Supporting -->
                     <div class="col-span-1 lg:col-span-4 order-3 lg:order-3">
-                        <div class="h-full group relative overflow-hidden rounded-[30px] lg:rounded-[40px] shadow-xl border-4 border-white bg-gray-100">
+                        <div (click)="selectFounder('sebas')" class="h-full group relative overflow-hidden rounded-[30px] lg:rounded-[40px] shadow-xl border-4 border-white bg-gray-100 cursor-pointer">
                             <img src="assets/images/sebas.jpeg" alt="Sebas" 
                                  class="w-full h-full min-h-[220px] lg:min-h-0 object-cover transition-transform duration-1000 group-hover:scale-110">
                             <div class="absolute bottom-4 left-4 text-white drop-shadow-lg z-20">
+                                <div class="text-[10px] uppercase tracking-[0.3em] text-brand-lima font-bold mb-1">Equipo</div>
                                 <div class="text-lg lg:text-xl font-bold">Sebas</div>
                             </div>
                         </div>
@@ -96,4 +97,59 @@
             </div>
         </div>
     </div>
+
+    <!-- ── DETALLE DE FUNDADORES (MODAL PREMIUM) ── -->
+    <div *ngIf="selectedFounder" 
+         class="fixed inset-0 bg-brand-petrol/60 backdrop-blur-md z-[100003] flex items-center justify-center p-4 md:p-6 animate-fade-in"
+         (click)="closeFounderModal()">
+         
+        <div class="bg-white rounded-[32px] md:rounded-[48px] max-w-4xl w-full overflow-hidden shadow-2xl border border-white/20 relative animate-slide-up flex flex-col md:flex-row max-h-[90vh] md:max-h-none overflow-y-auto md:overflow-visible"
+             (click)="$event.stopPropagation()">
+            
+            <!-- Botón de Cierre -->
+            <button (click)="closeFounderModal()" 
+                    class="absolute top-6 right-6 z-30 bg-gray-100 hover:bg-brand-turquesa hover:text-white text-gray-500 rounded-full p-2 transition-all duration-300 shadow-md">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Imagen Izquierda -->
+            <div class="w-full md:w-2/5 h-64 md:h-auto min-h-[250px] relative overflow-hidden bg-gray-100">
+                <img [src]="selectedFounder.image" [alt]="selectedFounder.name" 
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent md:hidden"></div>
+                <div class="absolute bottom-6 left-6 text-white md:hidden">
+                    <span class="text-[10px] uppercase tracking-[0.3em] text-brand-lima font-bold block mb-1">
+                        {{ selectedFounder.role }}
+                    </span>
+                    <h3 class="text-3xl font-bold">{{ selectedFounder.name }}</h3>
+                </div>
+            </div>
+
+            <!-- Contenido Derecho -->
+            <div class="p-8 md:p-12 flex-1 flex flex-col justify-between space-y-6">
+                <div>
+                    <span class="hidden md:inline-block text-xs uppercase tracking-[0.3em] text-brand-turquesa font-bold">
+                        {{ selectedFounder.role }}
+                    </span>
+                    <h3 class="hidden md:block text-4xl font-extrabold text-brand-petrol mt-2 mb-6">
+                        {{ selectedFounder.name }}
+                    </h3>
+                    <p class="text-gray-500 text-base md:text-lg leading-relaxed font-light">
+                        {{ selectedFounder.description }}
+                    </p>
+                </div>
+                
+                <div class="bg-brand-turquesa/5 border-l-4 border-brand-lima p-6 rounded-r-2xl">
+                    <p class="italic text-brand-petrol font-medium text-sm md:text-base leading-relaxed">
+                        {{ selectedFounder.quote }}
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
 </section>
+

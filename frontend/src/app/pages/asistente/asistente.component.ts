@@ -54,6 +54,7 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngOnDestroy(): void {
     // Restaurar scroll al salir
     document.body.style.overflow = '';
+    document.body.classList.remove('chat-keyboard-open');
   }
 
   ngAfterViewChecked(): void {
@@ -133,6 +134,13 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
   onScroll(): void {
     if (!this.chatContainer) return;
 
+    // Si ya hay mensajes en el chat, el Husky se mantiene en modo mini (oculto en móvil)
+    // para evitar que al subir el scroll a leer el historial vuelva a expandirse y cause fallos.
+    if (this.messages.length > 0) {
+      this.isMini = true;
+      return;
+    }
+
     const element = this.chatContainer.nativeElement;
     const scrollPos = element.scrollTop;
 
@@ -143,10 +151,26 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (scrollPos <= 5) {
       this.isMini = false;
     } 
-    // Solo minimizar si hemos bajado lo suficiente para no parpadear
-    else if (scrollPos > 80) {
+    // Solo minimizar si hemos bajado un poco (umbral reducido de 80 a 15)
+    else if (scrollPos > 15) {
       this.isMini = true;
     }
+  }
+
+  onInputFocus(): void {
+    document.body.classList.add('chat-keyboard-open');
+    this.shouldScroll = true;
+    // Forzar scroll al fondo después del reajuste del viewport por el teclado virtual
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 100);
+  }
+
+  onInputBlur(): void {
+    // Retrasar levemente para permitir clicks en el botón de enviar
+    setTimeout(() => {
+      document.body.classList.remove('chat-keyboard-open');
+    }, 150);
   }
 
   onEnter(event: KeyboardEvent): void {

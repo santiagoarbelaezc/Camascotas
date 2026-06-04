@@ -15,6 +15,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   background: var(--bg);
   color: var(--text);
   overflow: hidden;
@@ -166,7 +167,7 @@
   align-items: center;
   gap: 15px;
   padding: 20px 0;
-  transition: all 2.0s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   opacity: 1;
   will-change: transform, opacity;
@@ -175,7 +176,7 @@
 .mascot-wrap {
   width: 280px;
   height: 280px;
-  transition: transform 2.0s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   background: #000000;
   border-radius: 20px;
@@ -401,7 +402,7 @@
 
   /* FADE OUT EFFECT on Scroll Down (Elegant Version) */
   .mascot-container {
-    transition: all 2.0s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     transform: translateY(0) scale(1);
     will-change: transform, opacity, max-height;
@@ -495,3 +496,13 @@
   .cp-img-wrap { width: 100%; height: 120px; }
   .cp-content { padding: 12px; }
 }
+
+/* ── KEYBOARD STATE ON MOBILE ── */
+body.chat-keyboard-open .bottom-nav {
+  display: none !important;
+}
+
+body.chat-keyboard-open .chat-footer {
+  padding-bottom: 12px !important;
+}
+

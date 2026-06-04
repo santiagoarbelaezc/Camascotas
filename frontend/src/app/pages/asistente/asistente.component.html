@@ -138,6 +138,8 @@
       <textarea
         [(ngModel)]="inputText"
         (keydown)="onEnter($event)"
+        (focus)="onInputFocus()"
+        (blur)="onInputBlur()"
         placeholder="Escribe tu pregunta aquí..."
         rows="1"
         class="chat-input"
