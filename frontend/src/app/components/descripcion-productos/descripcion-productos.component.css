@@ -17,7 +17,7 @@
     transition: background-position 0.1s ease-out;
 }
 
-/* Personalización de scrollbars para la galería si fuera necesario */
+/* Personalización de scrollbars */
 .overflow-y-auto {
     scrollbar-width: thin;
     scrollbar-color: #5B8FA8 transparent;
@@ -30,4 +30,102 @@
 .overflow-y-auto::-webkit-scrollbar-thumb {
     background-color: #5B8FA8;
     border-radius: 20px;
+}
+
+/* ===================================================
+   MOBILE STYLING OVERRIDES (max-width: 768px)
+   =================================================== */
+@media (max-width: 768px) {
+    .desc-page-wrap {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-bottom: 24px !important;
+    }
+
+    .desc-card {
+        border-radius: 28px !important;
+        box-shadow: 0 10px 30px rgba(0, 65, 83, 0.05) !important;
+    }
+
+    .desc-gallery {
+        padding: 16px !important;
+        gap: 16px !important;
+    }
+
+    /* Convert thumb container to horizontal list */
+    .desc-thumbnails {
+        flex-direction: row !important;
+        justify-content: center !important;
+        overflow-x: auto !important;
+        width: 100% !important;
+        padding: 4px 0 !important;
+        gap: 12px !important;
+    }
+
+    .desc-thumb {
+        width: 64px !important;
+        height: 64px !important;
+        border-radius: 14px !important;
+    }
+
+    .desc-main-image-frame {
+        border-radius: 24px !important;
+    }
+
+    .desc-zoom-hint {
+        margin-top: 12px !important;
+    }
+
+    .desc-info-section {
+        padding: 24px 20px !important;
+    }
+
+    .desc-breadcrumb {
+        margin-bottom: 16px !important;
+        letter-spacing: 0.25em !important;
+    }
+
+    .desc-title {
+        font-size: 1.85rem !important;
+        margin-bottom: 12px !important;
+        line-height: 1.2 !important;
+    }
+
+    .desc-price-row {
+        margin-bottom: 16px !important;
+        gap: 16px !important;
+    }
+
+    .desc-price {
+        font-size: 1.8rem !important;
+    }
+
+    .desc-divider-bar {
+        margin-bottom: 20px !important;
+    }
+
+    .desc-text-box {
+        margin-bottom: 20px !important;
+    }
+
+    .desc-p {
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Compact Actions Button Sizes on Mobile */
+    .desc-btn-whatsapp, .desc-btn-share {
+        padding-top: 14px !important;
+        padding-bottom: 14px !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        border-radius: 16px !important;
+        font-size: 0.8rem !important;
+        box-shadow: none !important;
+    }
+
+    .desc-btn-whatsapp svg, .desc-btn-share svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
 }

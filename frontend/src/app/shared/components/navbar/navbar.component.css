@@ -58,7 +58,7 @@
 .navbar-desktop {
   display: flex;
   align-items: center;
-  gap: 50px;
+  gap: 28px;
 }
 
 .nav-link {
@@ -602,11 +602,17 @@
   border-color: #ef4444;
 }
 
-/* Mobile Actions Layout */
+/* Mobile Actions Layout — solo visible en mobile */
 .mobile-actions {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .mobile-actions {
+    display: flex;
+  }
 }
 
 .nav-register-btn-mobile {
