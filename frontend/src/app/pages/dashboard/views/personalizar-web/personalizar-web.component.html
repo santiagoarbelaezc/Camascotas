@@ -1,0 +1,374 @@
+<div class="customizer-container">
+  <div class="page-header">
+    <div class="header-info">
+      <h1>Personalizar Landing Page</h1>
+      <p>Modifica el diseño, contenido y secciones de la página de inicio en tiempo real sin tocar código.</p>
+    </div>
+    <button class="btn-primary" (click)="abrirNuevoModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+      Añadir Nueva Sección
+    </button>
+  </div>
+
+  <!-- Listado de Secciones Existentes -->
+  <div class="sections-card">
+    <div class="card-header">
+      <h2>Secciones Activas e Historial</h2>
+      <p>Organiza la jerarquía visual de la landing page arrastrando u ordenando con los controles.</p>
+    </div>
+    
+    <div class="sections-list" *ngIf="componentes.length > 0; else noSections">
+      <div class="section-item" *ngFor="let comp of componentes; let idx = index" [class.inactive]="!comp.activo">
+        
+        <!-- Reorder Handles -->
+        <div class="order-controls">
+          <button (click)="moverArriba(idx)" [disabled]="idx === 0" title="Subir sección">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" /></svg>
+          </button>
+          <span class="order-number">{{ idx + 1 }}</span>
+          <button (click)="moverAbajo(idx)" [disabled]="idx === componentes.length - 1" title="Bajar sección">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+          </button>
+        </div>
+
+        <!-- Section Details -->
+        <div class="section-details">
+          <div class="type-badge" [class]="comp.tipo">{{ comp.tipo | uppercase }}</div>
+          <div class="section-summary">
+            <h3>{{ comp.contenido?.titulo || comp.contenido?.badge || 'Sección sin título principal' }}</h3>
+            <p>{{ comp.contenido?.subtitulo || comp.contenido?.descripcion || 'Contenido configurado' }}</p>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="section-actions">
+          <button class="btn-toggle" [class.active]="comp.activo" (click)="toggleActivo(comp)" [title]="comp.activo ? 'Desactivar sección' : 'Activar sección'">
+            <div class="toggle-track">
+              <div class="toggle-thumb"></div>
+            </div>
+            <span>{{ comp.activo ? 'Público' : 'Borrador' }}</span>
+          </button>
+          
+          <button class="btn-icon edit" (click)="abrirEditarModal(comp)" title="Editar contenido">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+          </button>
+          
+          <button class="btn-icon delete" (click)="eliminarComponente(comp.id)" title="Eliminar sección">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+    
+    <ng-template #noSections>
+      <div class="empty-state">
+        <div class="empty-icon">🎨</div>
+        <h3>No hay componentes configurados</h3>
+        <p>Añade tu primera sección dinámica para personalizar la landing page.</p>
+        <button class="btn-primary" (click)="abrirNuevoModal()">Comenzar ahora</button>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- ── Modal Editor de Componentes ── -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="cerrarModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingComponente ? 'Editar Sección' : 'Nueva Sección Dinámica' }}</h2>
+        <button class="btn-close" (click)="cerrarModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="guardarComponente()">
+          <!-- Tipo y Visibilidad -->
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Tipo de Sección</label>
+              <select name="tipo" [(ngModel)]="tipoSeleccionado" (change)="onTipoChange()" [disabled]="editingComponente !== null">
+                <option value="banner">Banner Publicitario</option>
+                <option value="anuncio">Tarjeta de Novedad / Anuncio</option>
+                <option value="texto">Bloque de Texto</option>
+                <option value="testimonios">Carrusel de Testimonios</option>
+                <option value="faq">Preguntas Frecuentes (FAQ)</option>
+                <option value="galeria">Galería de Imágenes</option>
+                <option value="carrusel_productos">Carrusel de Productos (Filtrado)</option>
+              </select>
+            </div>
+            
+            <div class="form-group toggle-group">
+              <label>Estado Inicial</label>
+              <label class="switch">
+                <input type="checkbox" name="activo" [(ngModel)]="activoSeleccionado">
+                <span class="slider round"></span>
+              </label>
+              <span class="toggle-text">{{ activoSeleccionado ? 'Activo (Visible)' : 'Borrador (Oculto)' }}</span>
+            </div>
+          </div>
+
+          <hr class="form-separator">
+
+          <!-- ── CAMPOS DE BANNER ── -->
+          <div *ngIf="tipoSeleccionado === 'banner'">
+            <div class="form-group">
+              <label>Imagen del Banner (Cloudinary)</label>
+              <div class="image-uploader">
+                <img [src]="contenido.imageUrl || 'assets/images/placeholder.jpg'" class="preview-img" alt="Vista previa">
+                <input type="file" (change)="subirBannerImg($event)" accept="image/*">
+                <span class="upload-tip">Formatos: JPG, PNG, WEBP. Máx 5MB.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Descripción / Texto del Banner</label>
+              <textarea name="desc" [(ngModel)]="contenido.descripcion" rows="3" placeholder="Mensaje que aparecerá sobre la imagen..."></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Enlace de redirección (URL)</label>
+                <input type="text" name="link" [(ngModel)]="contenido.linkUrl" placeholder="Ej: /productos?categoria=Perros">
+              </div>
+              <div class="form-group">
+                <label>Ubicación</label>
+                <select name="posicion" [(ngModel)]="contenido.posicion">
+                  <option value="superior">Zona Superior</option>
+                  <option value="inferior">Zona Inferior (Pie de Página)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CAMPOS DE ANUNCIO ── -->
+          <div *ngIf="tipoSeleccionado === 'anuncio'">
+            <div class="form-group">
+              <label>Texto de la etiqueta superior (Badge)</label>
+              <input type="text" name="badge" [(ngModel)]="contenido.badge" placeholder="Ej: ¡NUEVO LANZAMIENTO!">
+            </div>
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Título Novedad 1</label>
+                <input type="text" name="title1" [(ngModel)]="contenido.titulo1" placeholder="Ej: Rascadores Premium">
+              </div>
+              <div class="form-group flex-1">
+                <label>Título Novedad 2 (Opcional)</label>
+                <input type="text" name="title2" [(ngModel)]="contenido.titulo2" placeholder="Ej: Camas Especiales">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Descripción 1</label>
+                <textarea name="desc1" [(ngModel)]="contenido.descripcion1" rows="2" placeholder="Detalle de novedad 1..."></textarea>
+              </div>
+              <div class="form-group flex-1">
+                <label>Descripción 2</label>
+                <textarea name="desc2" [(ngModel)]="contenido.descripcion2" rows="2" placeholder="Detalle de novedad 2..."></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Características clave (Separadas por comas)</label>
+              <input type="text" name="features" [(ngModel)]="contenido.caracteristicas" placeholder="Ej: 100% Madera, Tela Antirasguños, Garantía 1 año">
+            </div>
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Texto del Botón</label>
+                <input type="text" name="btnText" [(ngModel)]="contenido.textoBoton" placeholder="Ej: Ver Colección">
+              </div>
+              <div class="form-group flex-1">
+                <label>Enlace del Botón</label>
+                <input type="text" name="btnLink" [(ngModel)]="contenido.linkBoton" placeholder="Ej: /productos">
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CAMPOS DE TEXTO ── -->
+          <div *ngIf="tipoSeleccionado === 'texto'">
+            <div class="form-group">
+              <label>Título de la Sección</label>
+              <input type="text" name="textTitle" [(ngModel)]="contenido.titulo" placeholder="Ej: Diseñado por expertos para la comodidad de tu mascota">
+            </div>
+            <div class="form-group">
+              <label>Cuerpo de Texto</label>
+              <textarea name="textBody" [(ngModel)]="contenido.texto" rows="4" placeholder="Escribe el párrafo aquí..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Alineación</label>
+              <select name="align" [(ngModel)]="contenido.alineacion">
+                <option value="left">Izquierda</option>
+                <option value="center">Centrado</option>
+                <option value="right">Derecha</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ── CAMPOS DE TESTIMONIOS ── -->
+          <div *ngIf="tipoSeleccionado === 'testimonios'">
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Título Sección</label>
+                <input type="text" name="tTitle" [(ngModel)]="contenido.titulo">
+              </div>
+              <div class="form-group flex-1">
+                <label>Subtítulo Sección</label>
+                <input type="text" name="tSub" [(ngModel)]="contenido.subtitulo">
+              </div>
+            </div>
+            
+            <div class="sub-list-manager">
+              <h3>Testimonios Añadidos</h3>
+              <div class="list-preview" *ngIf="contenido.testimonios?.length > 0">
+                <div class="preview-item" *ngFor="let t of contenido.testimonios; let idx = index">
+                  <img [src]="t.avatar || 'assets/images/placeholder.jpg'" class="avatar-preview-sm" alt="Avatar">
+                  <div class="item-text">
+                    <strong>{{ t.nombre }}</strong> ({{ t.puesto }}) - {{ t.estrellas }}★
+                    <p class="truncate">{{ t.comentario }}</p>
+                  </div>
+                  <button type="button" class="btn-remove" (click)="eliminarTestimonio(idx)">✕</button>
+                </div>
+              </div>
+              
+              <div class="add-item-form">
+                <h4>Añadir Testimonio</h4>
+                <div class="form-row">
+                  <div class="form-group flex-1">
+                    <label>Nombre del Cliente</label>
+                    <input type="text" name="tName" [(ngModel)]="nuevoTestimonio.nombre">
+                  </div>
+                  <div class="form-group flex-1">
+                    <label>Puesto / Ciudad</label>
+                    <input type="text" name="tRole" [(ngModel)]="nuevoTestimonio.puesto" placeholder="Ej: Dueño de Pug, Armenia">
+                  </div>
+                  <div class="form-group">
+                    <label>Estrellas</label>
+                    <select name="tStars" [(ngModel)]="nuevoTestimonio.estrellas">
+                      <option [value]="5">5 estrellas</option>
+                      <option [value]="4">4 estrellas</option>
+                      <option [value]="3">3 estrellas</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Avatar / Foto (Opcional)</label>
+                  <input type="file" (change)="subirAvatarTestimonio($event)" accept="image/*">
+                </div>
+                <div class="form-group">
+                  <label>Comentario</label>
+                  <textarea name="tComment" [(ngModel)]="nuevoTestimonio.comentario" rows="2"></textarea>
+                </div>
+                <button type="button" class="btn-secondary" (click)="agregarTestimonio()">Agregar a la lista</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CAMPOS DE FAQ ── -->
+          <div *ngIf="tipoSeleccionado === 'faq'">
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Título Sección</label>
+                <input type="text" name="fTitle" [(ngModel)]="contenido.titulo">
+              </div>
+              <div class="form-group flex-1">
+                <label>Subtítulo Sección</label>
+                <input type="text" name="fSub" [(ngModel)]="contenido.subtitulo">
+              </div>
+            </div>
+            
+            <div class="sub-list-manager">
+              <h3>Preguntas Configuradas</h3>
+              <div class="list-preview" *ngIf="contenido.faqs?.length > 0">
+                <div class="preview-item" *ngFor="let f of contenido.faqs; let idx = index">
+                  <div class="item-text">
+                    <strong>P: {{ f.pregunta }}</strong>
+                    <p>R: {{ f.respuesta }}</p>
+                  </div>
+                  <button type="button" class="btn-remove" (click)="eliminarFaq(idx)">✕</button>
+                </div>
+              </div>
+              
+              <div class="add-item-form">
+                <h4>Añadir Pregunta</h4>
+                <div class="form-group">
+                  <label>Pregunta</label>
+                  <input type="text" name="fQ" [(ngModel)]="nuevoFaq.pregunta">
+                </div>
+                <div class="form-group">
+                  <label>Respuesta</label>
+                  <textarea name="fA" [(ngModel)]="nuevoFaq.respuesta" rows="2"></textarea>
+                </div>
+                <button type="button" class="btn-secondary" (click)="agregarFaq()">Agregar Pregunta</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CAMPOS DE GALERIA ── -->
+          <div *ngIf="tipoSeleccionado === 'galeria'">
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Título Sección</label>
+                <input type="text" name="gTitle" [(ngModel)]="contenido.titulo">
+              </div>
+              <div class="form-group flex-1">
+                <label>Subtítulo Sección</label>
+                <input type="text" name="gSub" [(ngModel)]="contenido.subtitulo">
+              </div>
+            </div>
+            
+            <div class="sub-list-manager">
+              <h3>Fotos de la Galería</h3>
+              <div class="list-preview" *ngIf="contenido.imagenes?.length > 0">
+                <div class="preview-item-grid">
+                  <div class="grid-img-card" *ngFor="let img of contenido.imagenes; let idx = index">
+                    <img [src]="img.imageUrl" class="gallery-preview-thumb" alt="Thumb">
+                    <span class="caption-text">{{ img.caption || 'Sin pie de foto' }}</span>
+                    <button type="button" class="btn-remove-abs" (click)="eliminarImagenGaleria(idx)">✕</button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="add-item-form">
+                <h4>Añadir Imagen</h4>
+                <div class="form-group">
+                  <label>Subir Imagen</label>
+                  <input type="file" (change)="subirGaleriaImg($event)" accept="image/*">
+                </div>
+                <div class="form-group">
+                  <label>Pie de Foto (Caption)</label>
+                  <input type="text" name="gCap" [(ngModel)]="nuevaGaleriaImg.caption" placeholder="Ej: Rascador de madera instalado en sala">
+                </div>
+                <button type="button" class="btn-secondary" (click)="agregarImagenGaleria()">Agregar Imagen</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CAMPOS DE CARRUSEL PRODUCTOS ── -->
+          <div *ngIf="tipoSeleccionado === 'carrusel_productos'">
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Título Sección</label>
+                <input type="text" name="cpTitle" [(ngModel)]="contenido.titulo">
+              </div>
+              <div class="form-group flex-1">
+                <label>Subtítulo Sección</label>
+                <input type="text" name="cpSub" [(ngModel)]="contenido.subtitulo">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Categoría a Filtrar</label>
+              <select name="cpCat" [(ngModel)]="contenido.categoria">
+                <option value="">Todos los Productos</option>
+                <option *ngFor="let cat of categorias" [value]="cat.nombre">{{ cat.nombre }}</option>
+              </select>
+              <span class="upload-tip">Cargará y filtrará los productos de esta categoría dinámicamente en el carrusel.</span>
+            </div>
+          </div>
+
+          <!-- Acciones Guardar / Cancelar -->
+          <div class="modal-footer">
+            <button type="button" class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+            <button type="submit" class="btn-confirm">Guardar Sección</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
