@@ -1,0 +1,131 @@
+<!-- Header de la vista -->
+<div class="usuarios-view">
+
+  <!-- Top Bar -->
+  <div class="view-header">
+    <div class="view-header-left">
+      <h1 class="view-title">Usuarios Registrados</h1>
+      <p class="view-subtitle">
+        Clientes que se han registrado en el sitio
+        <span class="badge-total" *ngIf="!cargando">{{ filtrados.length }} usuario{{ filtrados.length !== 1 ? 's' : '' }}</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Buscador -->
+  <div class="search-bar-wrap">
+    <div class="search-input-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="search-icon">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Buscar por nombre, correo o ciudad..."
+        [(ngModel)]="busqueda"
+        (ngModelChange)="filtrar()"
+      />
+    </div>
+  </div>
+
+  <!-- Estado: Cargando -->
+  <div class="loading-state" *ngIf="cargando">
+    <div class="spinner"></div>
+    <p>Cargando usuarios...</p>
+  </div>
+
+  <!-- Estado: Error -->
+  <div class="error-state" *ngIf="error">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+    </svg>
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <div class="table-card" *ngIf="!cargando && !error">
+
+    <!-- Sin resultados -->
+    <div class="empty-state" *ngIf="filtrados.length === 0">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+      </svg>
+      <p>No se encontraron usuarios{{ busqueda ? ' con ese criterio' : '' }}</p>
+    </div>
+
+    <table class="usuarios-table" *ngIf="filtrados.length > 0">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Correo</th>
+          <th>Ciudad</th>
+          <th>Registro</th>
+          <th>Método</th>
+          <th>Registrado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cliente of paginados" class="table-row">
+          <!-- Avatar + nombre -->
+          <td class="td-usuario">
+            <div class="user-avatar-wrap">
+              <div class="user-avatar-letter">{{ inicial(cliente.nombre) }}</div>
+              <div class="user-name-info">
+                <span class="user-fullname">{{ cliente.nombre }} {{ cliente.apellidos }}</span>
+                <span class="user-edad" *ngIf="cliente.edad">{{ cliente.edad }} años</span>
+              </div>
+            </div>
+          </td>
+
+          <!-- Correo -->
+          <td class="td-correo">{{ cliente.correo }}</td>
+
+          <!-- Ciudad -->
+          <td class="td-ciudad">{{ cliente.ciudad ?? '—' }}</td>
+
+          <!-- Rol badge -->
+          <td>
+            <span class="badge-rol badge-cliente">Cliente</span>
+          </td>
+
+          <!-- Método de auth -->
+          <td>
+            <span class="badge-auth" [ngClass]="cliente.auth_method === 'google' ? 'badge-google' : 'badge-form'">
+              <svg *ngIf="cliente.auth_method === 'google'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="badge-icon">
+                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+                <path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+                <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+                <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+              </svg>
+              <svg *ngIf="cliente.auth_method === 'formulario'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="badge-icon-mono">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+              {{ cliente.auth_method === 'google' ? 'Google' : 'Formulario' }}
+            </span>
+          </td>
+
+          <!-- Fecha -->
+          <td class="td-fecha">{{ formatFecha(cliente.created_at) }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div class="pagination" *ngIf="totalPaginas > 1">
+      <button class="page-btn" [disabled]="pagina === 1" (click)="pagina = pagina - 1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+      </button>
+      <button
+        *ngFor="let p of pages"
+        class="page-btn"
+        [class.active]="p === pagina"
+        (click)="pagina = p">
+        {{ p }}
+      </button>
+      <button class="page-btn" [disabled]="pagina === totalPaginas" (click)="pagina = pagina + 1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit {
     '/dashboard/productos':  'Gestión de Productos',
     '/dashboard/categorias': 'Gestión de Categorías',
     '/dashboard/stats':      'Estadísticas y Analíticas',
+    '/dashboard/usuarios':   'Usuarios Registrados',
   };
 
   constructor(private auth: AuthService, private router: Router) {}

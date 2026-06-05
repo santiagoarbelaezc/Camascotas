@@ -1,0 +1,317 @@
+/* ============================================================
+   ADMIN USUARIOS VIEW
+   ============================================================ */
+
+.usuarios-view {
+  padding: 32px 28px;
+  max-width: 1200px;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.view-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.view-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.view-subtitle {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.badge-total {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 99px;
+}
+
+/* ── Buscador ──────────────────────────────────────────────── */
+.search-bar-wrap {
+  margin-bottom: 20px;
+}
+
+.search-input-wrap {
+  position: relative;
+  max-width: 400px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: #94a3b8;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: #1e293b;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.search-input:focus {
+  border-color: #00b3bc;
+  box-shadow: 0 0 0 3px rgba(0, 179, 188, 0.1);
+}
+
+.search-input::placeholder {
+  color: #c8d4de;
+}
+
+/* ── Table Card ────────────────────────────────────────────── */
+.table-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 2px 12px rgba(0, 65, 83, 0.04);
+  overflow: hidden;
+}
+
+/* ── Table ─────────────────────────────────────────────────── */
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.usuarios-table thead th {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fafbfc;
+}
+
+.table-row {
+  border-bottom: 1px solid #f8fafc;
+  transition: background 0.15s;
+}
+
+.table-row:hover {
+  background: #f8fffe;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.usuarios-table td {
+  padding: 14px 20px;
+  font-size: 0.84rem;
+  color: #334155;
+  vertical-align: middle;
+}
+
+/* ── Usuario cell ──────────────────────────────────────────── */
+.td-usuario { min-width: 200px; }
+
+.user-avatar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-letter {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00b3bc, #004153);
+  color: white;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-name-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-fullname {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.85rem;
+}
+
+.user-edad {
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+/* ── Other cells ───────────────────────────────────────────── */
+.td-correo {
+  color: #475569;
+  font-size: 0.82rem;
+}
+
+.td-ciudad, .td-fecha {
+  color: #64748b;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+/* ── Badges ─────────────────────────────────────────────────── */
+.badge-rol {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-cliente {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.badge-auth {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge-google {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+.badge-form {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.badge-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.badge-icon-mono {
+  width: 14px;
+  height: 14px;
+  stroke: #64748b;
+}
+
+/* ── Estados vacíos / loading / error ──────────────────────── */
+.loading-state,
+.error-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  gap: 12px;
+  color: #94a3b8;
+  font-size: 0.88rem;
+}
+
+.loading-state svg,
+.error-state svg,
+.empty-state svg {
+  width: 40px;
+  height: 40px;
+  opacity: 0.4;
+}
+
+.error-state {
+  color: #ef4444;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #00b3bc;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Paginación ──────────────────────────────────────────────── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.page-btn {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: #00b3bc;
+  color: #00b3bc;
+}
+
+.page-btn.active {
+  background: #00b3bc;
+  border-color: #00b3bc;
+  color: white;
+}
+
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

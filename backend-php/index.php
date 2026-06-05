@@ -119,6 +119,8 @@ $router = new Router();
 (require __DIR__ . '/routes/visitas.routes.php')($router);
 (require __DIR__ . '/routes/chat.routes.php')($router);
 (require __DIR__ . '/routes/componente.routes.php')($router);
+(require __DIR__ . '/routes/usuarios.routes.php')($router);
+
 
 $router->add('GET', '/health', function() {
     App\utils\response::success(['status' => 'ok', 'app' => 'Camascotas API', 'version' => '2.0']);
