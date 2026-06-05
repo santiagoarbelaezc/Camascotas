@@ -7,6 +7,7 @@ import { AuthService, Usuario } from '../../../../services/auth.service';
 import { ProductoAdminService } from '../../../../services/producto-admin.service';
 import { CategoriasService } from '../../../../services/categorias.service';
 import { StatsService } from '../../../../services/stats.service';
+import { UsuariosService } from '../../../../services/usuarios.service';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -52,7 +53,8 @@ export class DashboardHomeComponent implements OnInit {
     private auth: AuthService,
     private productosService: ProductoAdminService,
     private categoriasService: CategoriasService,
-    private statsService: StatsService
+    private statsService: StatsService,
+    private usuariosService: UsuariosService
   ) {}
 
   ngOnInit(): void {
@@ -62,8 +64,7 @@ export class DashboardHomeComponent implements OnInit {
       next: p => {
         this.totalProductos = p.length;
         this.procesarDatosGraficaCategorias(p);
-        // Deshabilitado temporalmente a petición del usuario para evitar confusión con ingresos financieros
-        this.setGraficaVacia(); 
+        this.procesarDatosGraficaCrecimiento(p); 
       },
       error: () => {}
     });
@@ -73,8 +74,8 @@ export class DashboardHomeComponent implements OnInit {
       error: () => {}
     });
 
-    this.statsService.getResumen().subscribe({
-      next: res => this.totalClientes = res.total || 0,
+    this.usuariosService.getClientes().subscribe({
+      next: users => this.totalClientes = users.length,
       error: () => {}
     });
   }

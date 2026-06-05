@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsistenteComponent } from '../../pages/asistente/asistente.component';
@@ -14,7 +14,11 @@ import { Subscription } from 'rxjs';
 })
 export class WhatsappComponent implements OnInit, OnDestroy {
   isChatOpen = false;
+  isVisible = false;
   private sub = new Subscription();
+  private showTimer: any;
+
+  @ViewChild('huskyVideo') huskyVideoRef?: ElementRef<HTMLVideoElement>;
 
   constructor(private uiService: UiService) {}
 
@@ -24,10 +28,20 @@ export class WhatsappComponent implements OnInit, OnDestroy {
         this.isChatOpen = open;
       })
     );
+
+    // El splash dura 4s — mostramos el flotante justo despues
+    this.showTimer = setTimeout(() => {
+      this.isVisible = true;
+      // Reproducir el video una sola vez tras el pop-in
+      setTimeout(() => {
+        this.huskyVideoRef?.nativeElement?.play().catch(() => {});
+      }, 500);
+    }, 4100);
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+    clearTimeout(this.showTimer);
   }
 
   toggleChat() {
