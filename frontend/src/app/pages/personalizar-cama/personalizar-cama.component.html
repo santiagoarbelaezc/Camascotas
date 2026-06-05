@@ -1,0 +1,277 @@
+<div class="customizer-page">
+  <div class="customizer-container">
+    
+    <!-- Botón Volver -->
+    <div class="back-nav animate-fade-in">
+      <a routerLink="/" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+        Volver a la Tienda
+      </a>
+    </div>
+
+    <div class="customizer-grid">
+      <!-- PANEL IZQUIERDO: PREVIEW VIVA -->
+      <div class="preview-panel">
+        <div class="preview-card">
+          <div class="badge-premium">Vista Previa Interactiva</div>
+          
+          <div class="bed-viewer-container">
+            <!-- Capa 1: Cojín Base Fluffy (Fondo interno de la cama) -->
+            <img 
+              src="assets/images/prototipo-cojinbase.png" 
+              alt="Cojín Base" 
+              class="bed-layer cushion-layer"
+              [style.filter]="selectedCushion.filter"
+            />
+
+            <!-- Capa 2: Estructura Sofa Principal -->
+            <img 
+              src="assets/images/prototipo-estructura.png" 
+              alt="Estructura Cama" 
+              class="bed-layer base-layer"
+              [style.filter]="selectedBase.filter"
+            />
+
+            <!-- Capa 3: Cojín de Corazón Auxiliar (Opcional, encima) -->
+            <img 
+              *ngIf="showPillow"
+              src="assets/images/prototipo-corazon.png" 
+              alt="Cojín Corazón" 
+              class="bed-layer pillow-layer animate-pop"
+              [style.filter]="selectedPillow.filter"
+            />
+
+            <!-- Capa 4: Nombre Bordado en el Frente -->
+            <div 
+              *ngIf="petName" 
+              class="embroidery-overlay-wrapper"
+            >
+              <div 
+                class="embroidery-text animate-fade-in"
+                [style.font-family]="selectedFont.fontFamily"
+                [style.color]="selectedEmbroideryColor.value"
+                [style.text-shadow]="'0 1px 2px rgba(0,0,0,0.3), 0 0 1px ' + selectedEmbroideryColor.value"
+              >
+                {{ petName }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Consejos/Información interactiva -->
+          <div class="preview-info-footer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-turquesa"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 21l8.982-8.982m-9 9 1.344-3.136C9.747 16.7 9.353 15.688 9 14.5m1.308-4.521c-.424.162-.843.404-1.234.721m0 0C7.942 12.014 7 13.9 7 16c0 1.25.297 2.43.824 3.479m0 0 .5-1.5M9.813 15.904L13 12.75m-3.187 3.154a3 3 0 1 1 4.243-4.243m0 0L17.25 8.25" /></svg>
+            <span>Los tonos son aproximados al producto final textil.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL DERECHO: OPCIONES DE PERSONALIZACIÓN -->
+      <div class="options-panel">
+        <div class="config-header">
+          <span class="category-tag">Exclusivo</span>
+          <h1>Configura su Sofá Cuna</h1>
+          <p class="desc">Personaliza los colores de cada sección, agrega el nombre de tu peludito bordado y llévate una pieza de diseño única.</p>
+        </div>
+
+        <!-- TABS DE NAVEGACIÓN DE CONFIGURACIÓN -->
+        <div class="tabs-nav">
+          <button 
+            [class.active]="activeTab === 'estructura'" 
+            (click)="selectTab('estructura')"
+            class="tab-btn"
+          >
+            Estructura
+          </button>
+          <button 
+            [class.active]="activeTab === 'cojin'" 
+            (click)="selectTab('cojin')"
+            class="tab-btn"
+          >
+            Cojín Base
+          </button>
+          <button 
+            [class.active]="activeTab === 'corazon'" 
+            (click)="selectTab('corazon')"
+            class="tab-btn"
+          >
+            Corazón
+          </button>
+          <button 
+            [class.active]="activeTab === 'nombre'" 
+            (click)="selectTab('nombre')"
+            class="tab-btn"
+          >
+            Bordado
+          </button>
+        </div>
+
+        <!-- CONTENIDO DE LOS TABS -->
+        <div class="tab-content-container">
+          
+          <!-- TAB 1: ESTRUCTURA EXTERIOR -->
+          <div *ngIf="activeTab === 'estructura'" class="tab-pane animate-fade-in">
+            <h3 class="step-title">1. Color de la Estructura Exterior</h3>
+            <p class="step-desc">El cuerpo principal del sofá cama. Está fabricado en tela de alta resistencia y tacto súper suave.</p>
+            
+            <div class="color-picker-grid">
+              <button 
+                *ngFor="let col of baseColors"
+                [class.selected]="selectedBase === col"
+                (click)="selectedBase = col"
+                class="color-option-btn"
+                [attr.title]="col.name"
+              >
+                <span class="color-swatch" [style.background-color]="col.value"></span>
+                <span class="color-name">{{ col.name }}</span>
+                <span class="check-icon" *ngIf="selectedBase === col">✓</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 2: COJÍN BASE -->
+          <div *ngIf="activeTab === 'cojin'" class="tab-pane animate-fade-in">
+            <h3 class="step-title">2. Color del Cojín Fluffy Principal</h3>
+            <p class="step-desc">El cojín donde descansa el cuerpo de tu mascota. Elaborado con fibras térmicas hipoalergénicas.</p>
+            
+            <div class="color-picker-grid">
+              <button 
+                *ngFor="let col of cushionColors"
+                [class.selected]="selectedCushion === col"
+                (click)="selectedCushion = col"
+                class="color-option-btn"
+                [attr.title]="col.name"
+              >
+                <span class="color-swatch" [style.background-color]="col.value"></span>
+                <span class="color-name">{{ col.name }}</span>
+                <span class="check-icon" *ngIf="selectedCushion === col">✓</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 3: COJÍN CORAZÓN -->
+          <div *ngIf="activeTab === 'corazon'" class="tab-pane animate-fade-in">
+            <div class="title-with-switch">
+              <h3 class="step-title">3. Cojín de Corazón Decorativo</h3>
+              <label class="switch-container">
+                <input type="checkbox" [(ngModel)]="showPillow">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <p class="step-desc">Un accesorio hermoso que sirve de almohadilla de apoyo para la cabeza de tu perrito o gatito.</p>
+            
+            <div *ngIf="showPillow; else noPillowMessage" class="color-picker-grid animate-fade-in">
+              <button 
+                *ngFor="let col of pillowColors"
+                [class.selected]="selectedPillow === col"
+                (click)="selectedPillow = col"
+                class="color-option-btn"
+                [attr.title]="col.name"
+              >
+                <span class="color-swatch" [style.background-color]="col.value"></span>
+                <span class="color-name">{{ col.name }}</span>
+                <span class="check-icon" *ngIf="selectedPillow === col">✓</span>
+              </button>
+            </div>
+            
+            <ng-template #noPillowMessage>
+              <div class="info-alert">
+                <span>Has deshabilitado el cojín de corazón. Si deseas incluirlo en tu diseño, actívalo arriba.</span>
+              </div>
+            </ng-template>
+          </div>
+
+          <!-- TAB 4: NOMBRE BORDADO -->
+          <div *ngIf="activeTab === 'nombre'" class="tab-pane animate-fade-in">
+            <h3 class="step-title">4. Personalización del Bordado</h3>
+            <p class="step-desc">Escribe el nombre de tu mascota para que lo bordemos a mano en la parte frontal inferior.</p>
+            
+            <!-- Campo de Texto -->
+            <div class="input-group">
+              <label for="pet-name">Nombre de tu Mascota</label>
+              <input 
+                id="pet-name" 
+                type="text" 
+                maxLength="12" 
+                [(ngModel)]="petName" 
+                placeholder="Ej. Milo, Luna, Bruno..."
+                class="custom-input"
+              />
+              <span class="char-count">{{ petName.length }}/12 caracteres</span>
+            </div>
+
+            <div *ngIf="petName" class="embroidery-options animate-fade-in">
+              <!-- Selección de Tipografía -->
+              <div class="embroidery-subsection">
+                <h4 class="sub-step-title">Estilo de Letra</h4>
+                <div class="font-selector-grid">
+                  <button 
+                    *ngFor="let font of fonts"
+                    [class.selected]="selectedFont === font"
+                    (click)="selectedFont = font"
+                    class="font-option-btn"
+                    [style.font-family]="font.fontFamily"
+                  >
+                    <span class="font-sample">Aa</span>
+                    <span class="font-name-label">{{ font.name }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Selección de Color de Hilo -->
+              <div class="embroidery-subsection">
+                <h4 class="sub-step-title">Color de Hilo</h4>
+                <div class="thread-selector-grid">
+                  <button 
+                    *ngFor="let thread of embroideryColors"
+                    [class.selected]="selectedEmbroideryColor === thread"
+                    (click)="selectedEmbroideryColor = thread"
+                    class="thread-option-btn"
+                    [attr.title]="thread.name"
+                  >
+                    <span class="thread-swatch" [style.background-color]="thread.value"></span>
+                    <span class="thread-name">{{ thread.name }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PANEL DE ACCIÓN Y RESUMEN -->
+        <div class="summary-card">
+          <div class="summary-details">
+            <div class="spec-row">
+              <span class="spec-label">Estructura:</span>
+              <span class="spec-val">{{ selectedBase.name }}</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Cojín Fluffy:</span>
+              <span class="spec-val">{{ selectedCushion.name }}</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Cojín Corazón:</span>
+              <span class="spec-val">{{ showPillow ? selectedPillow.name : 'No incluido' }}</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Bordado:</span>
+              <span class="spec-val" [style.color]="petName ? selectedEmbroideryColor.value : '#a3a3a3'">
+                {{ petName ? ('"' + petName + '" (' + selectedFont.name + ')') : 'No solicitado' }}
+              </span>
+            </div>
+          </div>
+
+          <a 
+            [href]="generarEnlaceWhatsApp()" 
+            target="_blank" 
+            class="whatsapp-checkout-btn"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24" class="mr-2"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/></svg>
+            Enviar Diseño por WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

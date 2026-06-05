@@ -32,6 +32,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/contacto/contacto.component').then(m => m.ContactoComponent)
   },
   {
+    path: 'personalizar-cama',
+    loadComponent: () => import('./pages/personalizar-cama/personalizar-cama.component').then(m => m.PersonalizarCamaComponent)
+  },
+  {
     path: 'compra/muebles-mascotas/:slugId',
     loadComponent: () => import('./pages/descripcion/descripcion.component').then(m => m.DescripcionComponent)
   },

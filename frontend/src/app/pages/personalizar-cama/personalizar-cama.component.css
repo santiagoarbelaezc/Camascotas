@@ -1,0 +1,578 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Great+Vibes&family=Montserrat:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Fuentes del Bordado */
+.font-cursive {
+  font-family: 'Great Vibes', cursive;
+}
+.font-modern {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+.font-classic {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+.font-playful {
+  font-family: 'Fredoka One', cursive;
+}
+
+.customizer-page {
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  background-color: #f7f9fa;
+  padding: 80px 20px 40px 20px;
+}
+
+.customizer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.back-nav {
+  margin-bottom: 24px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.back-link:hover {
+  color: #00B3BC;
+}
+
+.customizer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 968px) {
+  .customizer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* PANEL IZQUIERDO: PREVIEW */
+.preview-panel {
+  position: sticky;
+  top: 100px;
+}
+
+@media (max-width: 968px) {
+  .preview-panel {
+    position: relative;
+    top: 0;
+  }
+}
+
+.preview-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  padding: 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.badge-premium {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0, 179, 188, 0.1);
+  color: #00B3BC;
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Contenedor de Capas */
+.bed-viewer-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 4/3;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bed-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: filter 0.5s ease-in-out, transform 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+/* Z-Indices de Capas para composición perfecta */
+.cushion-layer {
+  z-index: 1;
+}
+
+.base-layer {
+  z-index: 2;
+}
+
+.pillow-layer {
+  z-index: 3;
+}
+
+/* Superposición de bordado en la estructura del sofá */
+.embroidery-overlay-wrapper {
+  position: absolute;
+  z-index: 4;
+  bottom: 23%;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1deg);
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.embroidery-text {
+  font-size: 1.8rem;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+  transform: scale(1);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (max-width: 480px) {
+  .embroidery-text {
+    font-size: 1.2rem;
+  }
+}
+
+.preview-info-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 20px;
+}
+
+/* PANEL DERECHO: CONTROLES */
+.options-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.config-header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 8px 0;
+}
+
+.config-header .desc {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.category-tag {
+  color: #B1D616;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+/* Tabs */
+.tabs-nav {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 6px;
+  gap: 4px;
+}
+
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px 4px;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tab-content-container {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+  min-height: 280px;
+}
+
+.step-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.step-desc {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+/* Grilla de Colores */
+.color-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+
+.color-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 6px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.color-option-btn:hover {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+}
+
+.color-option-btn.selected {
+  border-color: #00B3BC;
+  background: rgba(0, 179, 188, 0.02);
+}
+
+.color-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.color-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #334155;
+  text-align: center;
+}
+
+.check-icon {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  color: #00B3BC;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+/* Switch & Alerts */
+.title-with-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.title-with-switch .step-title {
+  margin-bottom: 0;
+}
+
+.switch-container {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.switch-container input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  transition: .3s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #00B3BC;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+.info-alert {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+/* Inputs de Bordado */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.custom-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.custom-input:focus {
+  border-color: #00B3BC;
+}
+
+.char-count {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  align-self: flex-end;
+}
+
+.embroidery-subsection {
+  margin-top: 20px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 20px;
+}
+
+.sub-step-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+/* Selector de Fuentes */
+.font-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.font-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.font-option-btn.selected {
+  border-color: #00B3BC;
+  background: rgba(0, 179, 188, 0.02);
+}
+
+.font-sample {
+  font-size: 1.8rem;
+  color: #0f172a;
+}
+
+.font-name-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* Hilos de Bordado */
+.thread-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.thread-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.thread-option-btn.selected {
+  border-color: #00B3BC;
+  background: rgba(0, 179, 188, 0.02);
+}
+
+.thread-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.thread-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tarjeta Resumen Final */
+.summary-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 6px;
+}
+
+.spec-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.spec-label {
+  color: #64748b;
+}
+
+.spec-val {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.whatsapp-checkout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #25d366;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 14px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+  transition: all 0.3s;
+}
+
+.whatsapp-checkout-btn:hover {
+  background: #20ba59;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+}
+
+/* Animations */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-pop {
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
