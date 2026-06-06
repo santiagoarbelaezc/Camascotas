@@ -60,6 +60,20 @@
   }
 }
 
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+    margin-bottom: 24px;
+  }
+  .desktop-only {
+    display: none;
+  }
+}
+
 /* PANEL IZQUIERDO: PREVIEW */
 .preview-panel {
   position: sticky;
@@ -87,9 +101,9 @@
 }
 
 .badge-premium {
-  position: absolute;
-  top: 20px;
-  left: 20px;
+  position: relative;
+  align-self: flex-start;
+  margin-bottom: 8px;
   background: rgba(0, 179, 188, 0.1);
   color: #00B3BC;
   padding: 6px 12px;
@@ -183,6 +197,8 @@
   font-weight: 700;
   color: #0f172a;
   margin: 8px 0;
+  letter-spacing: -0.02em;
+  text-transform: none;
 }
 
 .config-header .desc {
@@ -671,5 +687,97 @@ input:checked + .slider:before {
     padding: 0 !important;
     margin: 0 auto !important;
     max-width: 800px !important;
+  }
+}
+
+/* Mejoras para Móviles */
+@media (max-width: 768px) {
+  .customizer-page {
+    padding: 80px 10px 120px 10px;
+  }
+  
+  .customizer-grid {
+    gap: 16px;
+  }
+  
+  .preview-card {
+    padding: 12px;
+  }
+  
+  .bed-viewer-container {
+    margin: 0;
+  }
+  
+  .preview-info-footer {
+    margin-top: 8px;
+    font-size: 0.75rem;
+  }
+
+  .config-header h1 {
+    font-size: 1.4rem;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  
+  .config-header .desc {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+  }
+
+  .options-panel {
+    gap: 12px;
+  }
+  
+  .tabs-nav {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px;
+  }
+  
+  .tab-btn {
+    flex: 1 1 45%;
+    padding: 6px 4px;
+    font-size: 0.8rem;
+  }
+  
+  .tab-content-container {
+    padding: 16px 12px;
+    min-height: auto;
+  }
+  
+  .step-title {
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  
+  .step-desc {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+  
+  .color-picker-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  
+  .color-option-btn {
+    padding: 8px 4px;
+  }
+  
+  .color-swatch {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .color-name {
+    font-size: 0.65rem;
+  }
+  
+  .font-selector-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-card {
+    padding: 16px 12px;
   }
 }

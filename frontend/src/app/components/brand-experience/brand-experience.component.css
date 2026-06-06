@@ -193,7 +193,8 @@
   }
 
   .full-width-img {
-    height: 450px;
+    height: auto;
+    aspect-ratio: 864 / 1821;
   }
 
   .floating-badge {
