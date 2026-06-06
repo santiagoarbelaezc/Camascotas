@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CamasPersonalizadasService, CamaPersonalizada } from '../../services/camas-personalizadas.service';
+import { CamasPersonalizadasService, CamaPersonalizada, BED_CONFIG } from '../../services/camas-personalizadas.service';
 import { LoadingService } from '../../services/loading.service';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-camas',
@@ -17,7 +17,8 @@ export class MisCamasComponent implements OnInit {
 
   constructor(
     private camasService: CamasPersonalizadasService,
-    private loading: LoadingService
+    private loading: LoadingService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +39,36 @@ export class MisCamasComponent implements OnInit {
     });
   }
 
+  editarDiseno(cama: CamaPersonalizada): void {
+    this.router.navigate(['/personalizar-cama'], { state: { camaEdit: cama } });
+  }
+
   imprimirDiseno(): void {
     window.print();
+  }
+
+  getBaseFilter(colorName: string): string {
+    const col = BED_CONFIG.baseColors.find(c => c.name === colorName);
+    return col ? col.filter : 'none';
+  }
+
+  getCushionFilter(colorName: string): string {
+    const col = BED_CONFIG.cushionColors.find(c => c.name === colorName);
+    return col ? col.filter : 'none';
+  }
+
+  getPillowFilter(colorName: string): string {
+    const col = BED_CONFIG.pillowColors.find(c => c.name === colorName);
+    return col ? col.filter : 'none';
+  }
+
+  getFontFamily(fontName: string): string {
+    const font = BED_CONFIG.fonts.find(f => f.name === fontName);
+    return font ? font.fontFamily : 'inherit';
+  }
+
+  getEmbroideryColor(colorName: string): string {
+    const col = BED_CONFIG.embroideryColors.find(c => c.name === colorName);
+    return col ? col.value : '#000000';
   }
 }
