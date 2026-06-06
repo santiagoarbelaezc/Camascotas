@@ -94,6 +94,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/terminos/terminos.component').then(m => m.TerminosComponent)
   },
   {
+    path: 'perfil',
+    loadComponent: () => import('./pages/perfil/perfil.component').then(m => m.PerfilComponent)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }

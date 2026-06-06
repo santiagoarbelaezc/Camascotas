@@ -95,3 +95,26 @@
     display: none !important;
   }
 }
+
+/* Ajustes Móvil */
+@media (max-width: 768px) {
+  .mis-camas-page {
+    padding-top: 60px;
+    padding-bottom: 120px; /* Espacio para barra inferior */
+  }
+
+  .header-print {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 16px;
+    margin-bottom: 24px !important;
+  }
+
+  h1.text-3xl {
+    font-size: 1.8rem !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.02em !important;
+    text-transform: none !important;
+    margin: 0;
+  }
+}

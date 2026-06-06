@@ -17,6 +17,6 @@ export class BottomNavComponent {
     { label: 'Productos', icon: 'shopping-bag', link: '/productos' },
     { label: 'Asistente', icon: 'sparkles', link: '/asistente' },
     { label: 'Contacto', icon: 'chat-bubble', link: '/contacto' },
-    { label: 'Nosotros', icon: 'users', link: '/nosotros' }
+    { label: 'Mi Perfil', icon: 'user', link: '/perfil' }
   ];
 }
