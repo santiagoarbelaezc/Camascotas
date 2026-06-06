@@ -634,22 +634,42 @@ input:checked + .slider:before {
 
 /* Estilos de impresión */
 @media print {
-  body * {
-    visibility: hidden;
+  :host {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: white !important;
+    z-index: 999999 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
   }
-  .preview-panel, .preview-panel * {
-    visibility: visible;
+  
+  .customizer-page {
+    padding: 0 !important;
+    background: white !important;
   }
-  .preview-panel {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    transform: scale(1.2);
-    transform-origin: top left;
-  }
-  .badge-premium, .preview-info-footer {
+
+  .options-panel, .back-nav, .badge-premium, .preview-info-footer {
     display: none !important;
   }
-}
 
+  .customizer-grid {
+    display: block !important;
+  }
+
+  .preview-panel {
+    position: static !important;
+    width: 100% !important;
+  }
+
+  .preview-card {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    max-width: 800px !important;
+  }
+}
