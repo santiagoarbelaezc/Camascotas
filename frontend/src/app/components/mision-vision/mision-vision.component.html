@@ -10,19 +10,20 @@
     <div class="mvv-grid">
       
       <!-- Misión -->
-      <div class="mvv-card">
+      <div class="mvv-card interactive-card" (click)="abrirModal('mision')">
         <div class="card-icon-box">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
         </div>
         <h3>Misión</h3>
+        <p class="click-hint">Haz clic para leer nuestra misión</p>
         <p>Transformar el descanso de las mascotas en una experiencia de lujo y bienestar, ofreciendo mobiliario artesanal de la más alta calidad que armonice con los espacios más exigentes.</p>
         <div class="card-bg-glow"></div>
       </div>
 
       <!-- Visión -->
-      <div class="mvv-card">
+      <div class="mvv-card interactive-card" (click)="abrirModal('vision')">
         <div class="card-icon-box">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -30,12 +31,13 @@
           </svg>
         </div>
         <h3>Visión</h3>
+        <p class="click-hint">Haz clic para leer nuestra visión</p>
         <p>Consolidarnos para el 2030 como la marca líder en mobiliario premium para mascotas en Latinoamérica, siendo referentes en innovación, sostenibilidad y diseño atemporal.</p>
         <div class="card-bg-glow"></div>
       </div>
 
       <!-- Valores -->
-      <div class="mvv-card interactive-card" (click)="abrirModalValores()">
+      <div class="mvv-card interactive-card" (click)="abrirModal('valores')">
         <div class="card-icon-box">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
@@ -79,48 +81,94 @@
 
   </div>
 
-  <!-- MODAL DE VALORES -->
-  <div class="modal-overlay" *ngIf="mostrarModalValores" (click)="cerrarModalValores()">
+  <!-- MODAL DINÁMICO -->
+  <div class="modal-overlay" *ngIf="modalActivo !== null" (click)="cerrarModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
-      <button class="modal-close" (click)="cerrarModalValores()">
+      <button class="modal-close" (click)="cerrarModal()">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
       </button>
       
-      <div class="modal-header text-center">
-        <div class="modal-icon mx-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-          </svg>
-        </div>
-        <h3 class="modal-title">Nuestros Valores Fundamentales</h3>
-        <p class="modal-subtitle">Lo que nos impulsa a crear lo mejor para tu mascota.</p>
-      </div>
-
-      <div class="modal-body">
-        <div class="valor-detalle">
-          <div class="valor-header">
-            <span class="valor-bullet"></span>
-            <h4>Excelencia Artesanal</h4>
+      <!-- CONTENIDO MISIÓN -->
+      <ng-container *ngIf="modalActivo === 'mision'">
+        <div class="modal-header text-center">
+          <div class="modal-icon mx-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
           </div>
-          <p>Cada cama es elaborada a mano con materiales de primera calidad. Cuidamos hasta la última costura porque sabemos que cada detalle importa para la durabilidad y estética del producto final en tu hogar.</p>
+          <h3 class="modal-title">Nuestra Misión</h3>
+          <p class="modal-subtitle">Nuestra razón de ser y nuestro enfoque diario.</p>
+        </div>
+        <div class="modal-body text-center">
+          <p class="text-slate-600 text-lg leading-relaxed mb-6">
+            Transformar el descanso de las mascotas en una experiencia de lujo y bienestar, ofreciendo mobiliario artesanal de la más alta calidad que armonice con los espacios más exigentes.
+          </p>
+          <p class="text-slate-500 text-md leading-relaxed">
+            Creemos firmemente que nuestras mascotas son parte de nuestra familia y merecen lo mejor. Cada diseño que creamos busca la intersección perfecta entre la ergonomía animal y la elegancia del diseño interior moderno.
+          </p>
+        </div>
+      </ng-container>
+
+      <!-- CONTENIDO VISIÓN -->
+      <ng-container *ngIf="modalActivo === 'vision'">
+        <div class="modal-header text-center">
+          <div class="modal-icon mx-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </div>
+          <h3 class="modal-title">Nuestra Visión</h3>
+          <p class="modal-subtitle">Hacia dónde nos dirigimos en el futuro.</p>
+        </div>
+        <div class="modal-body text-center">
+          <p class="text-slate-600 text-lg leading-relaxed mb-6">
+            Consolidarnos para el 2030 como la marca líder en mobiliario premium para mascotas en Latinoamérica, siendo referentes en innovación, sostenibilidad y diseño atemporal.
+          </p>
+          <p class="text-slate-500 text-md leading-relaxed">
+            Nuestro objetivo a largo plazo es expandir nuestra artesanía, llevando la calidad inigualable de nuestros productos a más hogares, y seguir investigando nuevos materiales que cuiden tanto del medio ambiente como de la comodidad de tu mejor amigo.
+          </p>
+        </div>
+      </ng-container>
+
+      <!-- CONTENIDO VALORES -->
+      <ng-container *ngIf="modalActivo === 'valores'">
+        <div class="modal-header text-center">
+          <div class="modal-icon mx-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+            </svg>
+          </div>
+          <h3 class="modal-title">Nuestros Valores Fundamentales</h3>
+          <p class="modal-subtitle">Lo que nos impulsa a crear lo mejor para tu mascota.</p>
         </div>
 
-        <div class="valor-detalle">
-          <div class="valor-header">
-            <span class="valor-bullet"></span>
-            <h4>Sostenibilidad</h4>
+        <div class="modal-body">
+          <div class="valor-detalle">
+            <div class="valor-header">
+              <span class="valor-bullet"></span>
+              <h4>Excelencia Artesanal</h4>
+            </div>
+            <p>Cada cama es elaborada a mano con materiales de primera calidad. Cuidamos hasta la última costura porque sabemos que cada detalle importa para la durabilidad y estética del producto final en tu hogar.</p>
           </div>
-          <p>Nos enorgullece implementar procesos de fabricación conscientes. Minimizamos desperdicios y utilizamos insumos que respetan el medio ambiente, contribuyendo a un futuro mejor para todos.</p>
-        </div>
 
-        <div class="valor-detalle">
-          <div class="valor-header">
-            <span class="valor-bullet"></span>
-            <h4>Confort Real</h4>
+          <div class="valor-detalle">
+            <div class="valor-header">
+              <span class="valor-bullet"></span>
+              <h4>Sostenibilidad</h4>
+            </div>
+            <p>Nos enorgullece implementar procesos de fabricación conscientes. Minimizamos desperdicios y utilizamos insumos que respetan el medio ambiente, contribuyendo a un futuro mejor para todos.</p>
           </div>
-          <p>No se trata solo de que se vea bien, sino de que realmente brinde descanso. Nuestros diseños están pensados ergonómicamente por expertos para cuidar las articulaciones y favorecer el sueño profundo de tu peludito.</p>
+
+          <div class="valor-detalle">
+            <div class="valor-header">
+              <span class="valor-bullet"></span>
+              <h4>Confort Real</h4>
+            </div>
+            <p>No se trata solo de que se vea bien, sino de que realmente brinde descanso. Nuestros diseños están pensados ergonómicamente por expertos para cuidar las articulaciones y favorecer el sueño profundo de tu peludito.</p>
+          </div>
         </div>
-      </div>
+      </ng-container>
       
     </div>
   </div>

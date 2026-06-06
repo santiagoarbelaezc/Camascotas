@@ -9,15 +9,15 @@ import { CommonModule } from '@angular/common';
   styleUrl: './mision-vision.component.css'
 })
 export class MisionVisionComponent {
-  mostrarModalValores = false;
+  modalActivo: 'mision' | 'vision' | 'valores' | null = null;
 
-  abrirModalValores() {
-    this.mostrarModalValores = true;
+  abrirModal(tipo: 'mision' | 'vision' | 'valores') {
+    this.modalActivo = tipo;
     document.body.style.overflow = 'hidden'; // Prevent scrolling
   }
 
-  cerrarModalValores() {
-    this.mostrarModalValores = false;
+  cerrarModal() {
+    this.modalActivo = null;
     document.body.style.overflow = 'auto'; // Restore scrolling
   }
 }
