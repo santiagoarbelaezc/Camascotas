@@ -48,12 +48,14 @@
         <div class="husky-video-btn">
             <video
                 #huskyVideo
-                src="assets/videos/video-husky10.mp4"
+                [src]="currentVideoSrc"
                 [muted]="true"
                 volume="0"
                 playsinline
                 preload="auto"
-                class="husky-video-circle">
+                (ended)="onVideoEnded()"
+                class="husky-video-circle"
+                [class.fade-out]="isFading">
             </video>
         </div>
     </div>

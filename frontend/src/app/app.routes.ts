@@ -82,6 +82,18 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'faq',
+    loadComponent: () => import('./pages/faq/faq.component').then(m => m.FaqComponent)
+  },
+  {
+    path: 'politicas-envio',
+    loadComponent: () => import('./pages/politicas-envio/politicas-envio.component').then(m => m.PoliticasEnvioComponent)
+  },
+  {
+    path: 'terminos',
+    loadComponent: () => import('./pages/terminos/terminos.component').then(m => m.TerminosComponent)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }
