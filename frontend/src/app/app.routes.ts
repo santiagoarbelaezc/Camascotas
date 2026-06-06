@@ -33,7 +33,13 @@ export const routes: Routes = [
   },
   {
     path: 'personalizar-cama',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/personalizar-cama/personalizar-cama.component').then(m => m.PersonalizarCamaComponent)
+  },
+  {
+    path: 'mis-camas',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/mis-camas/mis-camas.component').then(m => m.MisCamasComponent)
   },
   {
     path: 'compra/muebles-mascotas/:slugId',
@@ -64,6 +70,10 @@ export const routes: Routes = [
       {
         path: 'personalizar',
         loadComponent: () => import('./pages/dashboard/views/personalizar-web/personalizar-web.component').then(m => m.PersonalizarWebComponent)
+      },
+      {
+        path: 'camas-disenadas',
+        loadComponent: () => import('./pages/dashboard/views/admin-camas-personalizadas/admin-camas-personalizadas.component').then(m => m.AdminCamasPersonalizadasComponent)
       },
       {
         path: 'usuarios',

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-
+import { RouterLink, Router } from '@angular/router';
+import { CamasPersonalizadasService, CamaPersonalizada } from '../../services/camas-personalizadas.service';
 interface ColorOption {
   name: string;
   value: string; // CSS color representation for selector
@@ -98,6 +98,15 @@ export class PersonalizarCamaComponent {
   showPillow = true;
   activeTab = 'estructura'; // 'estructura', 'cojin', 'corazon', 'nombre'
 
+  guardando = false;
+  mensajeExito = '';
+  mensajeError = '';
+
+  constructor(
+    private camasService: CamasPersonalizadasService,
+    private router: Router
+  ) {}
+
   selectTab(tab: string) {
     this.activeTab = tab;
   }
@@ -117,5 +126,41 @@ export class PersonalizarCamaComponent {
 ¿Me podrían confirmar el precio y el tiempo de entrega? ¡Gracias!`;
 
     return `https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(texto)}`;
+  }
+
+  guardarDiseno(): void {
+    this.guardando = true;
+    this.mensajeExito = '';
+    this.mensajeError = '';
+
+    const diseno: CamaPersonalizada = {
+      base_color_name: this.selectedBase.name,
+      base_color_value: this.selectedBase.value,
+      cushion_color_name: this.selectedCushion.name,
+      cushion_color_value: this.selectedCushion.value,
+      pillow_color_name: this.selectedPillow.name,
+      pillow_color_value: this.selectedPillow.value,
+      show_pillow: this.showPillow,
+      font_name: this.selectedFont.name,
+      embroidery_color_name: this.selectedEmbroideryColor.name,
+      pet_name: this.petName
+    };
+
+    this.camasService.guardarDiseño(diseno).subscribe({
+      next: (res) => {
+        this.guardando = false;
+        this.mensajeExito = '¡Tu diseño se ha guardado correctamente!';
+        setTimeout(() => this.router.navigate(['/mis-camas']), 2000);
+      },
+      error: (err) => {
+        this.guardando = false;
+        this.mensajeError = 'Error al guardar el diseño. Intenta nuevamente.';
+        console.error(err);
+      }
+    });
+  }
+
+  imprimirDiseno(): void {
+    window.print();
   }
 }

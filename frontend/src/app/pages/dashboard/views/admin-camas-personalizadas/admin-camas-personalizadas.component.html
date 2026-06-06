@@ -1,0 +1,57 @@
+<div class="admin-view-container p-6 bg-slate-50 min-h-screen">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-slate-800">Camas Diseñadas por Clientes</h1>
+    <button (click)="cargarCamas()" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg hover:bg-slate-50 shadow-sm transition">
+      Actualizar
+    </button>
+  </div>
+
+  <div *ngIf="cargando" class="flex justify-center p-12">
+    <svg class="animate-spin h-8 w-8 text-turquesa" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+  </div>
+
+  <div *ngIf="!cargando && camas.length === 0" class="bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center text-slate-500">
+    No hay camas diseñadas registradas.
+  </div>
+
+  <div *ngIf="!cargando && camas.length > 0" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
+    <table class="w-full text-left text-sm text-slate-600">
+      <thead class="bg-slate-50 text-slate-700 uppercase font-semibold text-xs border-b border-slate-200">
+        <tr>
+          <th class="px-6 py-4">ID</th>
+          <th class="px-6 py-4">Cliente</th>
+          <th class="px-6 py-4">Configuración Cama</th>
+          <th class="px-6 py-4">Personalización</th>
+          <th class="px-6 py-4">Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cama of camas" class="border-b border-slate-100 hover:bg-slate-50">
+          <td class="px-6 py-4 font-medium text-slate-900">#{{ cama.id }}</td>
+          <td class="px-6 py-4">
+            <div class="font-medium text-slate-800">{{ cama.usuario_nombre }}</div>
+            <div class="text-xs text-slate-500">{{ cama.usuario_correo }}</div>
+          </td>
+          <td class="px-6 py-4">
+            <ul class="space-y-1">
+              <li><span class="text-slate-400">Ext:</span> <span class="font-medium">{{ cama.base_color_name }}</span></li>
+              <li><span class="text-slate-400">Int:</span> <span class="font-medium">{{ cama.cushion_color_name }}</span></li>
+              <li *ngIf="cama.show_pillow"><span class="text-slate-400">Corazón:</span> <span class="font-medium">{{ cama.pillow_color_name }}</span></li>
+            </ul>
+          </td>
+          <td class="px-6 py-4">
+            <div *ngIf="cama.pet_name">
+              <span class="font-medium">"{{ cama.pet_name }}"</span>
+              <div class="text-xs text-slate-500 mt-1">{{ cama.font_name }}</div>
+              <div class="text-xs text-slate-500">{{ cama.embroidery_color_name }}</div>
+            </div>
+            <span *ngIf="!cama.pet_name" class="text-slate-400">Sin bordado</span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-slate-500">
+            {{ cama.created_at | date:'short' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

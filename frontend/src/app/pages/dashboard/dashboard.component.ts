@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
     '/dashboard/categorias': 'Gestión de Categorías',
     '/dashboard/stats':      'Estadísticas y Analíticas',
     '/dashboard/usuarios':   'Usuarios Registrados',
+    '/dashboard/camas-disenadas': 'Camas Diseñadas',
   };
 
   constructor(private auth: AuthService, private router: Router) {}

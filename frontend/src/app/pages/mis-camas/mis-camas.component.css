@@ -1,0 +1,47 @@
+.mis-camas-page {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Poppins', sans-serif;
+  padding-top: 80px;
+}
+
+.text-turquesa {
+  color: #00B3BC;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: #00B3BC;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background: #009aa2;
+}
+
+/* Print specific styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-card, .print-card * {
+    visibility: visible;
+  }
+  .print-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    box-shadow: none;
+    border: none;
+  }
+  .header-print, .print-action, .btn-primary {
+    display: none !important;
+  }
+}

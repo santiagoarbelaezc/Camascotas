@@ -1,6 +1,7 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header-index',
@@ -9,10 +10,17 @@ import { RouterModule } from '@angular/router';
   templateUrl: './header-index.component.html',
   styleUrls: ['./header-index.component.css']
 })
-export class HeaderIndexComponent {
+export class HeaderIndexComponent implements OnInit {
   menuAbierto = false;
   scrolled = false;
   grupoAbierto = false; // Para el dropdown en mobile
+  isLogueado = false;
+
+  constructor(public auth: AuthService) {}
+
+  ngOnInit(): void {
+    this.isLogueado = this.auth.isLoggedIn();
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
