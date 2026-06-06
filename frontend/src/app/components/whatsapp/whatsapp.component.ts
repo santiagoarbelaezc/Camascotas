@@ -34,7 +34,11 @@ export class WhatsappComponent implements OnInit, OnDestroy {
       this.isVisible = true;
       // Reproducir el video una sola vez tras el pop-in
       setTimeout(() => {
-        this.huskyVideoRef?.nativeElement?.play().catch(() => {});
+        if (this.huskyVideoRef?.nativeElement) {
+          this.huskyVideoRef.nativeElement.muted = true;
+          this.huskyVideoRef.nativeElement.volume = 0;
+          this.huskyVideoRef.nativeElement.play().catch(() => {});
+        }
       }, 500);
     }, 4100);
   }
