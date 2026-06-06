@@ -19,13 +19,7 @@ export class WhatsappComponent implements OnInit, OnDestroy {
   private showTimer: any;
   private sequenceTimer: any;
 
-  videoSequence = [
-    'assets/videos/video-husky10.mp4',
-    'assets/videos/video-husky.mp4',
-    'assets/videos/video-husky2.mp4'
-  ];
-  currentVideoIndex = 0;
-  currentVideoSrc = this.videoSequence[0];
+  currentVideoSrc = 'assets/videos/video-husky10.mp4';
   isFading = false;
 
   @ViewChild('huskyVideo') huskyVideoRef?: ElementRef<HTMLVideoElement>;
@@ -58,10 +52,7 @@ export class WhatsappComponent implements OnInit, OnDestroy {
   }
 
   onVideoEnded() {
-    // Avanzamos al siguiente video
-    this.currentVideoIndex = (this.currentVideoIndex + 1) % this.videoSequence.length;
-    
-    // Esperamos 5 segundos antes de hacer la transición
+    // Esperamos 5 segundos antes de repetir el video
     this.sequenceTimer = setTimeout(() => {
       
       // 1. Iniciamos el desvanecimiento (fade out)
@@ -69,10 +60,12 @@ export class WhatsappComponent implements OnInit, OnDestroy {
 
       // 2. Esperamos a que termine el fade out (400ms)
       setTimeout(() => {
-        // Cambiamos el video mientras está oculto
-        this.currentVideoSrc = this.videoSequence[this.currentVideoIndex];
+        // Reiniciamos el video al inicio mientras está oculto
+        if (this.huskyVideoRef?.nativeElement) {
+          this.huskyVideoRef.nativeElement.currentTime = 0;
+        }
         
-        // 3. Pequeño delay para que el navegador cargue el primer frame
+        // 3. Pequeño delay
         setTimeout(() => {
           // Iniciamos la reproducción
           this.playCurrentVideo();

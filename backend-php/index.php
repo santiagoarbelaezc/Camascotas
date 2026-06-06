@@ -120,6 +120,7 @@ $router = new Router();
 (require __DIR__ . '/routes/chat.routes.php')($router);
 (require __DIR__ . '/routes/componente.routes.php')($router);
 (require __DIR__ . '/routes/usuarios.routes.php')($router);
+(require __DIR__ . '/routes/camas_personalizadas.routes.php')($router);
 
 
 $router->add('GET', '/health', function() {
