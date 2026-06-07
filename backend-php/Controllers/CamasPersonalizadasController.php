@@ -40,15 +40,16 @@ class CamasPersonalizadasController {
 
             $stmt = $this->db->prepare("
                 INSERT INTO camas_personalizadas (
-                    usuario_id, base_color_name, base_color_value, 
+                    usuario_id, bed_type, base_color_name, base_color_value, 
                     cushion_color_name, cushion_color_value,
                     pillow_color_name, pillow_color_value, show_pillow,
                     font_name, embroidery_color_name, pet_name
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
             $stmt->execute([
                 $usuario_id,
+                $data['bed_type'] ?? 'Cama Dona',
                 $data['base_color_name'] ?? null,
                 $data['base_color_value'] ?? null,
                 $data['cushion_color_name'] ?? null,
@@ -137,7 +138,7 @@ class CamasPersonalizadasController {
 
             $stmt = $this->db->prepare("
                 UPDATE camas_personalizadas SET 
-                    base_color_name = ?, base_color_value = ?, 
+                    bed_type = ?, base_color_name = ?, base_color_value = ?, 
                     cushion_color_name = ?, cushion_color_value = ?,
                     pillow_color_name = ?, pillow_color_value = ?, show_pillow = ?,
                     font_name = ?, embroidery_color_name = ?, pet_name = ?
@@ -145,6 +146,7 @@ class CamasPersonalizadasController {
             ");
 
             $stmt->execute([
+                $data['bed_type'] ?? 'Cama Dona',
                 $data['base_color_name'] ?? null,
                 $data['base_color_value'] ?? null,
                 $data['cushion_color_name'] ?? null,
