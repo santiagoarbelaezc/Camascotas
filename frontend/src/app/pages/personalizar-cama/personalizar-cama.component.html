@@ -25,7 +25,7 @@
           <div class="bed-viewer-container">
             <!-- Capa 1: Cojín Base Fluffy (Fondo interno de la cama) -->
             <img 
-              src="assets/images/prototipo-cojinbase.png" 
+              [src]="selectedBedType.images.cushion" 
               alt="Cojín Base" 
               class="bed-layer cushion-layer"
               [style.filter]="selectedCushion.filter"
@@ -33,16 +33,24 @@
 
             <!-- Capa 2: Estructura Sofa Principal -->
             <img 
-              src="assets/images/prototipo-estructura.png" 
+              [src]="selectedBedType.images.base" 
               alt="Estructura Cama" 
               class="bed-layer base-layer"
               [style.filter]="selectedBase.filter"
             />
 
+            <!-- Capa Extra: Huella (Sólo Cama Sofá) -->
+            <img 
+              *ngIf="selectedBedType.hasFootprint && selectedBedType.images.footprint"
+              [src]="selectedBedType.images.footprint" 
+              alt="Huella Decorativa" 
+              class="bed-layer footprint-layer"
+            />
+
             <!-- Capa 3: Cojín de Corazón Auxiliar (Opcional, encima) -->
             <img 
-              *ngIf="showPillow"
-              src="assets/images/prototipo-corazon.png" 
+              *ngIf="showPillow && selectedBedType.hasPillow && selectedBedType.images.pillow"
+              [src]="selectedBedType.images.pillow" 
               alt="Cojín Corazón" 
               class="bed-layer pillow-layer animate-pop"
               [style.filter]="selectedPillow.filter"
@@ -83,6 +91,13 @@
         <!-- TABS DE NAVEGACIÓN DE CONFIGURACIÓN -->
         <div class="tabs-nav">
           <button 
+            [class.active]="activeTab === 'modelo'" 
+            (click)="selectTab('modelo')"
+            class="tab-btn"
+          >
+            Modelo
+          </button>
+          <button 
             [class.active]="activeTab === 'estructura'" 
             (click)="selectTab('estructura')"
             class="tab-btn"
@@ -97,6 +112,7 @@
             Cojín Base
           </button>
           <button 
+            *ngIf="selectedBedType.hasPillow"
             [class.active]="activeTab === 'corazon'" 
             (click)="selectTab('corazon')"
             class="tab-btn"
@@ -115,6 +131,26 @@
         <!-- CONTENIDO DE LOS TABS -->
         <div class="tab-content-container">
           
+          <!-- TAB 0: MODELO DE CAMA -->
+          <div *ngIf="activeTab === 'modelo'" class="tab-pane animate-fade-in">
+            <h3 class="step-title">Elige el Modelo de Cama</h3>
+            <p class="step-desc">Contamos con 3 diseños exclusivos pensados en la comodidad de tu peludo.</p>
+            
+            <div class="model-picker-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; margin-top: 20px;">
+              <button 
+                *ngFor="let bed of bedTypes"
+                [class.selected]="selectedBedType === bed"
+                (click)="selectedBedType = bed; activeTab = 'estructura'"
+                class="color-option-btn model-btn"
+                style="height: auto; padding: 16px 8px; flex-direction: column;"
+              >
+                <div style="font-size: 2rem; margin-bottom: 8px;">🛏️</div>
+                <span class="color-name" style="text-align: center; font-weight: 600;">{{ bed.name }}</span>
+                <span class="check-icon" *ngIf="selectedBedType === bed">✓</span>
+              </button>
+            </div>
+          </div>
+
           <!-- TAB 1: ESTRUCTURA EXTERIOR -->
           <div *ngIf="activeTab === 'estructura'" class="tab-pane animate-fade-in">
             <h3 class="step-title">1. Color de la Estructura Exterior</h3>
@@ -156,7 +192,7 @@
           </div>
 
           <!-- TAB 3: COJÍN CORAZÓN -->
-          <div *ngIf="activeTab === 'corazon'" class="tab-pane animate-fade-in">
+          <div *ngIf="activeTab === 'corazon' && selectedBedType.hasPillow" class="tab-pane animate-fade-in">
             <div class="title-with-switch">
               <h3 class="step-title">3. Cojín de Corazón Decorativo</h3>
               <label class="switch-container">
@@ -249,6 +285,10 @@
         <div class="summary-card">
           <div class="summary-details">
             <div class="spec-row">
+              <span class="spec-label">Modelo:</span>
+              <span class="spec-val">{{ selectedBedType.name }}</span>
+            </div>
+            <div class="spec-row">
               <span class="spec-label">Estructura:</span>
               <span class="spec-val">{{ selectedBase.name }}</span>
             </div>
@@ -256,7 +296,7 @@
               <span class="spec-label">Cojín Fluffy:</span>
               <span class="spec-val">{{ selectedCushion.name }}</span>
             </div>
-            <div class="spec-row">
+            <div class="spec-row" *ngIf="selectedBedType.hasPillow">
               <span class="spec-label">Cojín Corazón:</span>
               <span class="spec-val">{{ showPillow ? selectedPillow.name : 'No incluido' }}</span>
             </div>
@@ -295,13 +335,6 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24" class="mr-2"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/></svg>
               Enviar Diseño por WhatsApp
             </a>
-
-            <div *ngIf="mensajeExito" class="mt-4 p-3 bg-green-100 text-green-700 rounded-md text-sm text-center">
-              {{ mensajeExito }}
-            </div>
-            <div *ngIf="mensajeError" class="mt-4 p-3 bg-red-100 text-red-700 rounded-md text-sm text-center">
-              {{ mensajeError }}
-            </div>
           </div>
         </div>
       </div>

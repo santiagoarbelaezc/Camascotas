@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 export interface CamaPersonalizada {
   id?: number;
   usuario_id?: number;
+  bed_type?: string;
   base_color_name: string;
   base_color_value: string;
   cushion_color_name: string;
@@ -34,7 +35,55 @@ export interface FontOption {
   className: string;
 }
 
+export interface BedTypeOption {
+  id: string;
+  name: string;
+  images: {
+    base: string;
+    cushion: string;
+    pillow?: string;
+    footprint?: string;
+  };
+  hasPillow: boolean;
+  hasFootprint: boolean;
+}
+
 export const BED_CONFIG = {
+  bedTypes: [
+    {
+      id: 'dona',
+      name: 'Cama Dona',
+      hasPillow: true,
+      hasFootprint: false,
+      images: {
+        base: 'assets/images/camaspersonalizables/prototipo-estructura.png',
+        cushion: 'assets/images/camaspersonalizables/prototipo-cojinbase.png',
+        pillow: 'assets/images/camaspersonalizables/prototipo-corazon.png'
+      }
+    },
+    {
+      id: 'sofa',
+      name: 'Cama Sofá',
+      hasPillow: true,
+      hasFootprint: true,
+      images: {
+        base: 'assets/images/camaspersonalizables/diseño2-estructura.png',
+        cushion: 'assets/images/camaspersonalizables/diseño2-cojinbase.png',
+        pillow: 'assets/images/camaspersonalizables/diseño2-corazon.png',
+        footprint: 'assets/images/camaspersonalizables/diseño2-huella.png'
+      }
+    },
+    {
+      id: 'cuadrada',
+      name: 'Cama Sofá Cuadrada',
+      hasPillow: false,
+      hasFootprint: false,
+      images: {
+        base: 'assets/images/camaspersonalizables/diseño3-estructura.png',
+        cushion: 'assets/images/camaspersonalizables/diseño3-cojinbase.png'
+      }
+    }
+  ] as BedTypeOption[],
   baseColors: [
     { name: 'Rojo Borgoña', value: '#800020', filter: 'grayscale(1) sepia(1) saturate(2.5) hue-rotate(330deg) brightness(0.6)' },
     { name: 'Azul Marino', value: '#1d2a44', filter: 'grayscale(1) sepia(1) saturate(1.8) hue-rotate(200deg) brightness(0.5)' },

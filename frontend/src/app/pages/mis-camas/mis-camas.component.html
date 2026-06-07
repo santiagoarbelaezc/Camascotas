@@ -30,22 +30,29 @@
           <div class="mini-bed-viewer">
             <!-- Capa 1: Cojín Base Fluffy -->
             <img 
-              src="assets/images/prototipo-cojinbase.png" 
+              [src]="getBedImages(cama.bed_type).cushion" 
               alt="Cojín Base" 
               class="mini-bed-layer"
               [style.filter]="getCushionFilter(cama.cushion_color_name)"
             />
             <!-- Capa 2: Estructura Sofa Principal -->
             <img 
-              src="assets/images/prototipo-estructura.png" 
+              [src]="getBedImages(cama.bed_type).base" 
               alt="Estructura Cama" 
               class="mini-bed-layer"
               [style.filter]="getBaseFilter(cama.base_color_name)"
             />
+            <!-- Capa Extra: Huella -->
+            <img 
+              *ngIf="hasFootprint(cama.bed_type) && getBedImages(cama.bed_type).footprint"
+              [src]="getBedImages(cama.bed_type).footprint" 
+              alt="Huella Decorativa" 
+              class="mini-bed-layer"
+            />
             <!-- Capa 3: Cojín Corazón -->
             <img 
-              *ngIf="cama.show_pillow"
-              src="assets/images/prototipo-corazon.png" 
+              *ngIf="cama.show_pillow && hasPillowSupport(cama.bed_type) && getBedImages(cama.bed_type).pillow"
+              [src]="getBedImages(cama.bed_type).pillow" 
               alt="Cojín Corazón" 
               class="mini-bed-layer"
               [style.filter]="getPillowFilter(cama.pillow_color_name)"
@@ -74,6 +81,12 @@
         <div class="p-5 flex-grow">
           <ul class="space-y-3 mb-4 text-sm text-slate-700">
             <li class="flex justify-between border-b border-dashed border-slate-200 pb-2">
+              <span class="text-slate-500">Modelo</span>
+              <span class="font-medium text-slate-800">
+                {{ cama.bed_type || 'Cama Dona' }}
+              </span>
+            </li>
+            <li class="flex justify-between border-b border-dashed border-slate-200 pb-2">
               <span class="text-slate-500">Estructura</span>
               <span class="font-medium flex items-center gap-2">
                 <span class="w-3 h-3 rounded-full shadow-sm inline-block" [style.backgroundColor]="cama.base_color_value"></span>
@@ -87,7 +100,7 @@
                 {{ cama.cushion_color_name }}
               </span>
             </li>
-            <li class="flex justify-between border-b border-dashed border-slate-200 pb-2">
+            <li class="flex justify-between border-b border-dashed border-slate-200 pb-2" *ngIf="hasPillowSupport(cama.bed_type)">
               <span class="text-slate-500">Corazón</span>
               <span *ngIf="cama.show_pillow" class="font-medium flex items-center gap-2">
                 <span class="w-3 h-3 rounded-full shadow-sm inline-block" [style.backgroundColor]="cama.pillow_color_value"></span>

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
-import { CamasPersonalizadasService, CamaPersonalizada, BED_CONFIG, ColorOption, FontOption } from '../../services/camas-personalizadas.service';
+import { CamasPersonalizadasService, CamaPersonalizada, BED_CONFIG, ColorOption, FontOption, BedTypeOption } from '../../services/camas-personalizadas.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-personalizar-cama',
@@ -17,6 +18,9 @@ export class PersonalizarCamaComponent implements OnInit {
   pillowColors = BED_CONFIG.pillowColors;
   fonts = BED_CONFIG.fonts;
   embroideryColors = BED_CONFIG.embroideryColors;
+  bedTypes = BED_CONFIG.bedTypes;
+
+  selectedBedType = this.bedTypes[0];
 
   selectedBase = this.baseColors[0];
   selectedCushion = this.cushionColors[0];
@@ -26,7 +30,7 @@ export class PersonalizarCamaComponent implements OnInit {
   
   petName = '';
   showPillow = true;
-  activeTab = 'estructura';
+  activeTab = 'modelo';
 
   guardando = false;
   mensajeExito = '';
@@ -36,7 +40,8 @@ export class PersonalizarCamaComponent implements OnInit {
 
   constructor(
     private camasService: CamasPersonalizadasService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService
   ) {}
 
   ngOnInit() {
@@ -45,6 +50,10 @@ export class PersonalizarCamaComponent implements OnInit {
       const cama = state.camaEdit;
       this.editingId = cama.id || null;
       
+      if (cama.bed_type) {
+        this.selectedBedType = this.bedTypes.find(b => b.name === cama.bed_type) || this.bedTypes[0];
+      }
+
       this.selectedBase = this.baseColors.find(c => c.name === cama.base_color_name) || this.baseColors[0];
       this.selectedCushion = this.cushionColors.find(c => c.name === cama.cushion_color_name) || this.cushionColors[0];
       
@@ -70,9 +79,10 @@ export class PersonalizarCamaComponent implements OnInit {
     const texto = `¡Hola Camascotas! 🐾 He diseñado una cama personalizada en su web y quiero ordenarla. Aquí tienes las especificaciones:
     
 ✨ *CONFIGURACIÓN DE LA CAMA:*
+• Modelo: ${this.selectedBedType.name}
 • Estructura Exterior: ${this.selectedBase.name}
 • Cojín Base Fluffy: ${this.selectedCushion.name}
-• Cojín Auxiliar de Corazón: ${this.showPillow ? this.selectedPillow.name : 'Sin cojín'}
+• Cojín Auxiliar de Corazón: ${this.showPillow && this.selectedBedType.hasPillow ? this.selectedPillow.name : 'No aplica / Sin cojín'}
 • Nombre Bordado: ${this.petName ? `"${this.petName}"` : 'Sin nombre'}
 • Estilo de Letra: ${this.petName ? this.selectedFont.name : 'N/A'}
 • Color del Bordado: ${this.petName ? this.selectedEmbroideryColor.name : 'N/A'}
@@ -88,13 +98,14 @@ export class PersonalizarCamaComponent implements OnInit {
     this.mensajeError = '';
 
     const diseno: CamaPersonalizada = {
+      bed_type: this.selectedBedType.name,
       base_color_name: this.selectedBase.name,
       base_color_value: this.selectedBase.value,
       cushion_color_name: this.selectedCushion.name,
       cushion_color_value: this.selectedCushion.value,
       pillow_color_name: this.selectedPillow.name,
       pillow_color_value: this.selectedPillow.value,
-      show_pillow: this.showPillow,
+      show_pillow: this.selectedBedType.hasPillow ? this.showPillow : false,
       font_name: this.selectedFont.name,
       embroidery_color_name: this.selectedEmbroideryColor.name,
       pet_name: this.petName
@@ -104,12 +115,12 @@ export class PersonalizarCamaComponent implements OnInit {
       this.camasService.actualizarDiseño(this.editingId, diseno).subscribe({
         next: (res) => {
           this.guardando = false;
-          this.mensajeExito = '¡Tu diseño se ha actualizado correctamente!';
+          this.toast.show('¡Tu diseño se ha actualizado correctamente!', 'success');
           setTimeout(() => this.router.navigate(['/mis-camas']), 2000);
         },
         error: (err) => {
           this.guardando = false;
-          this.mensajeError = 'Error al actualizar el diseño. Intenta nuevamente.';
+          this.toast.show('Error al actualizar el diseño. Intenta nuevamente.', 'error');
           console.error(err);
         }
       });
@@ -117,12 +128,12 @@ export class PersonalizarCamaComponent implements OnInit {
       this.camasService.guardarDiseño(diseno).subscribe({
         next: (res) => {
           this.guardando = false;
-          this.mensajeExito = '¡Tu diseño se ha guardado correctamente!';
+          this.toast.show('¡Tu diseño se ha guardado correctamente!', 'success');
           setTimeout(() => this.router.navigate(['/mis-camas']), 2000);
         },
         error: (err) => {
           this.guardando = false;
-          this.mensajeError = 'Error al guardar el diseño. Intenta nuevamente.';
+          this.toast.show('Error al guardar el diseño. Intenta nuevamente.', 'error');
           console.error(err);
         }
       });

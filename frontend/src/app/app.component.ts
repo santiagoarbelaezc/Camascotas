@@ -8,6 +8,7 @@ import { WhatsappComponent } from './components/whatsapp/whatsapp.component';
 import { SplashScreenComponent } from './components/splash-screen/splash-screen.component';
 import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { ToastComponent } from './components/toast/toast.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { LoadingService } from './services/loading.service';
 import { StatsService } from './services/stats.service';
@@ -23,7 +24,8 @@ import { StatsService } from './services/stats.service';
     WhatsappComponent,
     SplashScreenComponent,
     BottomNavComponent,
-    LoadingComponent
+    LoadingComponent,
+    ToastComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

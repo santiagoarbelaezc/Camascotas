@@ -71,4 +71,22 @@ export class MisCamasComponent implements OnInit {
     const col = BED_CONFIG.embroideryColors.find(c => c.name === colorName);
     return col ? col.value : '#000000';
   }
+
+  getBedImages(bedTypeName: string | undefined): any {
+    const typeName = bedTypeName || 'Cama Dona';
+    const bedType = BED_CONFIG.bedTypes.find(b => b.name === typeName);
+    return bedType ? bedType.images : BED_CONFIG.bedTypes[0].images;
+  }
+
+  hasFootprint(bedTypeName: string | undefined): boolean {
+    const typeName = bedTypeName || 'Cama Dona';
+    const bedType = BED_CONFIG.bedTypes.find(b => b.name === typeName);
+    return bedType ? bedType.hasFootprint : false;
+  }
+
+  hasPillowSupport(bedTypeName: string | undefined): boolean {
+    const typeName = bedTypeName || 'Cama Dona';
+    const bedType = BED_CONFIG.bedTypes.find(b => b.name === typeName);
+    return bedType ? bedType.hasPillow : true;
+  }
 }
