@@ -158,6 +158,12 @@
     font-size: 0.85rem;
 }
 
+.btn-cta-whatsapp svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
 .btn-cta-whatsapp:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -166,6 +172,13 @@
 
 .btn-cta-whatsapp:active {
     transform: translateY(0);
+}
+
+.fav-btn svg,
+button svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
 }
 
 /* ── Sticky Mobile Bar ── */
@@ -177,6 +190,12 @@
     z-index: 999;
     height: 70px;
     border-radius: 16px 16px 0 0;
+}
+
+.desc-sticky-bar svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
 }
 
 /* Responsive Overrides */

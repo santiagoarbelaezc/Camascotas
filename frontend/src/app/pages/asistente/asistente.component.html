@@ -157,7 +157,40 @@
         </svg>
       </button>
     </div>
-    <p class="footer-note">Powered by Gemini AI · Camascotas</p>
+    <p class="footer-note">
+      Powered by Llama 3 via Groq AI · 
+      <a href="javascript:void(0)" (click)="toggleLegalModal()" class="legal-link">Políticas y Términos de la IA</a>
+    </p>
   </footer>
 
+  <!-- ── MODAL DE POLÍTICAS Y TÉRMINOS LEGALES DE LA IA ── -->
+  <div class="legal-modal-overlay" *ngIf="showLegalModal" (click)="toggleLegalModal()">
+    <div class="legal-modal-card" (click)="$event.stopPropagation()">
+      <div class="legal-modal-header">
+        <h3>Políticas de Uso y Descargo de Responsabilidad - Husky IA</h3>
+        <button class="legal-modal-close" (click)="toggleLegalModal()">&times;</button>
+      </div>
+      <div class="legal-modal-body">
+        <p><strong>1. Identidad y Propósito del Asistente</strong><br>
+        Husky es un asistente virtual automatizado desarrollado exclusivamente para <strong>Camascotas</strong> con el objetivo de brindar recomendaciones de productos, orientar en la navegación del sitio y resolver consultas rápidas de los usuarios en tiempo real.</p>
+
+        <p><strong>2. Infraestructura y Modelo Tecnológico</strong><br>
+        El procesamiento de lenguaje natural de este asistente está impulsado por el modelo de inteligencia artificial <strong>Llama (desarrollado por Meta)</strong>, procesado a través de la infraestructura de alta velocidad de <strong>Groq API</strong>. Camascotas utiliza estos servicios tecnológicos como intermediarios de procesamiento de datos automatizado.</p>
+
+        <p><strong>3. Descargo de Responsabilidad de Información (Disclaimer Comercial)</strong><br>
+        • La información generada por Husky es meramente informativa, referencial y automatizada.<br>
+        • Las respuestas, cotizaciones, descripciones de productos, sugerencias de materiales o acabados y estimaciones de costos <strong>no constituyen ofertas comerciales vinculantes</strong> ni compromisos legales de Camascotas.<br>
+        • Toda cotización, pedido o personalización de mobiliario debe ser obligatoriamente <strong>validada y confirmada por un asesor humano de Camascotas</strong> a través de nuestros canales de atención oficial en WhatsApp.</p>
+
+        <p><strong>4. Protección de Datos y Privacidad</strong><br>
+        Las conversaciones son procesadas de manera anónima y automatizada para la correcta entrega de respuestas del chat. Al interactuar con Husky, el usuario acepta que los datos de conversación se procesen bajo estas directrices. <strong>Por motivos de seguridad, se solicita expresamente no compartir información financiera sensible</strong> (como contraseñas, números de tarjetas de crédito o datos personales privados) dentro del chat.</p>
+
+        <p><strong>5. Limitación de Responsabilidad</strong><br>
+        Camascotas no asume responsabilidad alguna por errores de interpretación, desinformación técnica derivada de las limitaciones del modelo de lenguaje, o problemas técnicos ajenos al control de la plataforma.</p>
+      </div>
+      <div class="legal-modal-footer">
+        <button class="btn-legal-accept" (click)="toggleLegalModal()">Entendido y Aceptar</button>
+      </div>
+    </div>
+  </div>
 </div>

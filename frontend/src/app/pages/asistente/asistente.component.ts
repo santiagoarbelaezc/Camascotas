@@ -34,6 +34,7 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
   isVideoLoading = false;
   idleImage = 'assets/videos/husky.png';
   isMini = false; // Estado único: false = Grande (Bienvenida), true = Pequeño (Chat)
+  showLegalModal = false;
 
   constructor(
     private geminiService: GeminiService,
@@ -132,6 +133,10 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (this.messages.length > 0) {
       this.isMini = !this.isMini;
     }
+  }
+
+  toggleLegalModal(): void {
+    this.showLegalModal = !this.showLegalModal;
   }
 
   /** Manejar scroll para expandir a Husky de forma estable */

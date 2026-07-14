@@ -104,6 +104,10 @@
         <button type="submit" [disabled]="cargando" class="btn-primary w-full py-3.5 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
           {{ cargando ? 'Verificando...' : 'Iniciar Sesión' }}
         </button>
+        <p class="text-[10px] text-gray-400 text-center mt-3 uppercase tracking-wider">
+          Al iniciar sesión, aceptas nuestros 
+          <a routerLink="/terminos" class="text-brand-turquesa font-bold hover:underline">Términos y Condiciones</a>
+        </p>
       </div>
 
     </form>
@@ -169,8 +173,21 @@
       <!-- Error message -->
       <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-xs text-red-600 font-medium">{{ error }}</div>
 
+      <!-- Checkbox para políticas y términos -->
+      <div class="flex items-start px-1 py-1">
+        <div class="flex items-center h-5">
+          <input id="accept-terms" name="aceptaTerminos" type="checkbox" required [(ngModel)]="aceptaTerminos"
+            class="h-4 w-4 text-brand-turquesa focus:ring-brand-turquesa border-gray-200 rounded transition-all">
+        </div>
+        <div class="ml-3 text-[10px] leading-relaxed">
+          <label for="accept-terms" class="font-bold text-gray-400 uppercase tracking-wide cursor-pointer">
+            Acepto los <a routerLink="/terminos" class="text-brand-turquesa font-black hover:underline">Términos y Condiciones</a> y la <a routerLink="/politicas-envio" class="text-brand-turquesa font-black hover:underline">Política de Envío</a> de Camascotas.
+          </label>
+        </div>
+      </div>
+
       <div class="pt-2">
-        <button type="submit" [disabled]="cargando" class="btn-primary w-full py-3.5 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
+        <button type="submit" [disabled]="cargando || !aceptaTerminos" class="btn-primary w-full py-3.5 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
           {{ cargando ? 'Registrando...' : 'Registrarse y Entrar' }}
         </button>
       </div>

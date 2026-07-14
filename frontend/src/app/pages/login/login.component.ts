@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   cargando = false;
   error    = '';
   showPassword = false;
+  aceptaTerminos = false;
 
   constructor(
     private router: Router,
@@ -85,6 +86,11 @@ export class LoginComponent implements OnInit {
   registrar(): void {
     if (!this.nombre || !this.apellidos || !this.edad || !this.direccion || !this.ciudad || !this.correo || !this.password) {
       this.error = 'Completa todos los campos obligatorios';
+      return;
+    }
+
+    if (!this.aceptaTerminos) {
+      this.error = 'Debe aceptar los términos y condiciones para continuar';
       return;
     }
 

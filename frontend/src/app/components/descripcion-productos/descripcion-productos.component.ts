@@ -26,6 +26,8 @@ export class DescripcionProductosComponent implements OnInit {
   varianteSeleccionada: string = 'M (Mediano)';
   esFavorito: boolean = false;
   descripcionExpandida: boolean = false;
+  envioExpandido: boolean = false;
+  cuidadoExpandido: boolean = false;
 
   @ViewChild('mainImageContainer') mainImageContainer!: ElementRef;
 
@@ -164,6 +166,14 @@ export class DescripcionProductosComponent implements OnInit {
 
   toggleDescripcion(): void {
     this.descripcionExpandida = !this.descripcionExpandida;
+  }
+
+  toggleEnvio(): void {
+    this.envioExpandido = !this.envioExpandido;
+  }
+
+  toggleCuidado(): void {
+    this.cuidadoExpandido = !this.cuidadoExpandido;
   }
 
   copiarEnlace(): void {
