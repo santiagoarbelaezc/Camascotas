@@ -1,239 +1,187 @@
 :host {
     display: block;
-}
-
-/* Animación de entrada */
-.animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Capa de Zoom Dinámico */
-[ngStyle] {
-    transition: background-position 0.1s ease-out;
-}
-
-/* Personalización de scrollbars */
-.overflow-y-auto {
-    scrollbar-width: thin;
-    scrollbar-color: #5B8FA8 transparent;
-}
-
-.overflow-y-auto::-webkit-scrollbar {
-    width: 6px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb {
-    background-color: #5B8FA8;
-    border-radius: 20px;
-}
-
-/* ===================================================
-   MOBILE STYLING OVERRIDES (max-width: 768px)
-   =================================================== */
-@media (max-width: 768px) {
-
-    /* ── Wrap & Card ─────────────────────────────── */
-    .desc-page-wrap {
-        padding: 0 !important;
-        padding-bottom: 100px !important;
-    }
-
-    .desc-card {
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        border: none !important;
-        background: #f8f9fb !important;
-    }
-
-    /* ── Galería: imagen inmersiva a ancho completo ─ */
-    .desc-gallery {
-        flex-direction: column !important;
-        padding: 0 !important;
-        gap: 0 !important;
-        background: white !important;
-    }
-
-    .desc-gallery > div:last-child {
-        order: 1 !important;
-    }
-    .desc-thumbnails {
-        order: 2 !important;
-        flex-direction: row !important;
-        justify-content: flex-start !important;
-        overflow-x: auto !important;
-        scrollbar-width: none !important;
-        padding: 14px 16px !important;
-        gap: 10px !important;
-        background: white !important;
-        border-bottom: 1px solid #f0f0f0 !important;
-        width: 100% !important;
-    }
-
-    .desc-thumbnails::-webkit-scrollbar {
-        display: none;
-    }
-
-    .desc-thumb {
-        flex-shrink: 0 !important;
-        width: 56px !important;
-        height: 56px !important;
-        border-radius: 12px !important;
-        border-width: 2px !important;
-    }
-
-    .desc-main-image-frame {
-        border-radius: 0 !important;
-        border: none !important;
-        background: white !important;
-        aspect-ratio: 1 / 1 !important;
-        width: 100% !important;
-    }
-
-    .desc-zoom-hint {
-        display: none !important;
-    }
-
-    /* ── Info section: tarjeta flotante ─ */
-    .desc-info-section {
-        background: white !important;
-        margin: 16px 16px 0 16px !important;
-        border-radius: 28px !important;
-        padding: 24px 20px !important;
-        box-shadow: 0 4px 24px rgba(0, 65, 83, 0.07) !important;
-        border: 1px solid rgba(0, 65, 83, 0.05) !important;
-    }
-
-    .desc-breadcrumb {
-        font-size: 9px !important;
-        letter-spacing: 0.2em !important;
-        margin-bottom: 12px !important;
-        gap: 6px !important;
-    }
-
-    .desc-title {
-        font-size: 1.75rem !important;
-        line-height: 1.15 !important;
-        margin-bottom: 10px !important;
-        font-weight: 800 !important;
-    }
-
-    .desc-price-row {
-        align-items: baseline !important;
-        gap: 10px !important;
-        margin-bottom: 14px !important;
-    }
-
-    .desc-price {
-        font-size: 1.9rem !important;
-        font-weight: 300 !important;
-    }
-
-    .desc-badge {
-        font-size: 9px !important;
-        padding: 4px 10px !important;
-    }
-
-    .desc-divider-bar {
-        width: 40px !important;
-        height: 3px !important;
-        margin-bottom: 14px !important;
-    }
-
-    .desc-text-box {
-        margin-bottom: 0 !important;
-    }
-
-    .desc-section-subtitle {
-        font-size: 8px !important;
-        letter-spacing: 0.35em !important;
-        margin-bottom: 6px !important;
-    }
-
-    .desc-p {
-        font-size: 0.93rem !important;
-        line-height: 1.65 !important;
-        color: #6b7280 !important;
-    }
-
-    /* Ocultar botones de acción inline — se reemplazan con sticky bar */
-    .desc-actions-row {
-        display: none !important;
-    }
-
-    /* Mostrar sticky bar */
-    .desc-sticky-bar {
-        display: flex !important;
-    }
-}
-
-/* ── Sticky CTA bar (solo mobile) ─────────────────────── */
-.desc-sticky-bar {
-    display: none;
-    position: fixed;
-    bottom: 84px; /* encima del bottom-nav */
-    left: 0;
-    right: 0;
-    z-index: 500;
-    padding: 10px 16px;
-    gap: 10px;
-    background: white;
-    border-top: 1px solid rgba(0, 65, 83, 0.07);
-    box-shadow: 0 -6px 20px rgba(0, 65, 83, 0.08);
-    align-items: center;
+    background: #fafbfc;
+    min-height: 100vh;
     font-family: 'Poppins', sans-serif;
 }
 
-.desc-sticky-whatsapp {
-    flex: 1;
+/* ── Breadcrumb ── */
+.desc-breadcrumb {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: #a0aec0;
+}
+
+.desc-breadcrumb span {
+    transition: color 0.2s ease;
+}
+
+/* ── Card Principal ── */
+.desc-card {
+    box-shadow: 0 4px 20px -2px rgba(0, 65, 83, 0.03), 0 2px 8px -1px rgba(0, 65, 83, 0.01);
+}
+
+/* ── Galería de Imágenes ── */
+.desc-main-image-frame {
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    cursor: zoom-in;
+}
+
+.desc-main-image-frame:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border-color: #edf2f7;
+}
+
+.desc-thumb {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.desc-thumb:hover {
+    transform: scale(1.05);
+}
+
+/* ── Tarjeta de Precio y Disponibilidad ── */
+.price-availability-card {
+    background: #f8fafc;
+}
+
+.availability-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+    animation: pulseAvailability 2s infinite;
+}
+
+@keyframes pulseAvailability {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.3); }
+    70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.price-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: #22c55e;
-    color: white;
-    font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 13px 16px;
-    border-radius: 14px;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-    line-height: 1;
-    white-space: nowrap;
+    align-items: baseline;
+    gap: 2px;
 }
 
-.desc-sticky-whatsapp svg {
-    flex-shrink: 0;
-    display: block;
-}
-
-.desc-sticky-whatsapp:active {
-    background: #16a34a;
-    transform: scale(0.97);
-}
-
-.desc-sticky-share {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    background: #f0f4f6;
-    border: none;
+.price-currency {
     color: #004153;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-    flex-shrink: 0;
 }
 
-.desc-sticky-share:active {
-    background: #dde6ea;
-    transform: scale(0.95);
+.price-amount {
+    color: #004153;
+}
+
+/* ── Botón Favorito ── */
+.fav-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fav-btn:hover {
+    transform: scale(1.08);
+}
+
+.fav-btn.fav-active {
+    color: #ef4444;
+    border-color: #fca5a5;
+    background-color: #fff5f5;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+}
+
+/* ── Variante Pills ── */
+.variant-pill {
+    background: white;
+    border-color: #e2e8f0;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.variant-pill:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+}
+
+.variant-pill.active-pill {
+    border-color: #000000;
+    background: #000000;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Acordeón de Descripción ── */
+.desc-content-panel {
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Tarjetas Logísticas ── */
+.logistics-card {
+    transition: all 0.2s ease;
+}
+
+.logistics-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 65, 83, 0.03);
+}
+
+/* ── Control de Cantidad ── */
+.qty-counter {
+    background: #f8fafc;
+}
+
+.qty-btn {
+    outline: none;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.qty-btn:hover {
+    background: #edf2f7;
+    color: #000000;
+}
+
+/* ── CTA WhatsApp ── */
+.btn-cta-whatsapp {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+}
+
+.btn-cta-whatsapp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background: #1a1a1a;
+}
+
+.btn-cta-whatsapp:active {
+    transform: translateY(0);
+}
+
+/* ── Sticky Mobile Bar ── */
+.desc-sticky-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: 70px;
+    border-radius: 16px 16px 0 0;
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+    .desc-page-wrap {
+        padding-bottom: 80px !important;
+    }
 }

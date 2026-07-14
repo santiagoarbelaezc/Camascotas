@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductosService, Producto } from '../../services/productos.service';
 import { ProductoSeleccionadoService } from '../../services/producto-seleccionado.service';
 import { StatsService } from '../../services/stats.service';
+import { ConfiguracionService } from '../../services/configuracion.service';
 
 @Component({
   selector: 'app-descripcion-productos',
@@ -16,7 +17,15 @@ export class DescripcionProductosComponent implements OnInit {
   producto: Producto | null = null;
   imagenPrincipal: string = '';
   zoomStyle: any = { display: 'none' };
+  mostrarPrecios$;
+  
+  // Estados para el nuevo diseño e-commerce
   isCopied = false;
+  cantidad: number = 1;
+  variantes: string[] = ['S (Mini/Gatos)', 'M (Mediano)', 'L (Grande)'];
+  varianteSeleccionada: string = 'M (Mediano)';
+  esFavorito: boolean = false;
+  descripcionExpandida: boolean = false;
 
   @ViewChild('mainImageContainer') mainImageContainer!: ElementRef;
 
@@ -24,8 +33,11 @@ export class DescripcionProductosComponent implements OnInit {
     private route: ActivatedRoute,
     private productosService: ProductosService,
     private productoSeleccionadoService: ProductoSeleccionadoService,
-    private statsService: StatsService
-  ) {}
+    private statsService: StatsService,
+    private configuracionService: ConfiguracionService
+  ) {
+    this.mostrarPrecios$ = this.configuracionService.mostrarPrecios$;
+  }
 
   ngOnInit(): void {
     // Escuchamos siempre los cambios en los parámetros de la URL
@@ -65,6 +77,17 @@ export class DescripcionProductosComponent implements OnInit {
         // Establecer imagen principal (la primera de la galería si existe, sino la imagen base)
         const firstImg = (found.imagenes && found.imagenes.length > 0) ? found.imagenes[0] : found.imagen;
         this.imagenPrincipal = this.getImagenUrl(firstImg);
+        
+        // Inicializar variantes específicas si el producto tiene colores o tipos
+        if (found.colores && found.colores.length > 0) {
+          this.varianteSeleccionada = 'Color: ' + found.colores[0];
+          this.variantes = found.colores.map(c => 'Color: ' + c);
+        } else {
+          this.variantes = ['S (Mini/Gatos)', 'M (Mediano)', 'L (Grande)'];
+          this.varianteSeleccionada = 'M (Mediano)';
+        }
+        this.cantidad = 1; // Resetear cantidad
+        
         // Hacemos scroll al inicio cuando cambia el producto
         window.scrollTo({ top: 0, behavior: 'smooth' });
       },
@@ -111,8 +134,36 @@ export class DescripcionProductosComponent implements OnInit {
 
   generarEnlaceWhatsApp(): string {
     if (!this.producto) return '';
-    const mensaje = `Hola Camascotas! Me interesa el producto *${this.producto.nombre}* con un precio de ${this.formatearPrecio(this.producto.precio)}. Me gustaría recibir más información.`;
+    const mostrarPrecios = this.configuracionService.mostrarPreciosActual;
+    const precioTotalTexto = mostrarPrecios 
+      ? ` con un valor total de ${this.formatearPrecio(this.producto.precio * this.cantidad)}` 
+      : '';
+    const mensaje = `Hola Camascotas! Me interesa el producto *${this.producto.nombre}* (${this.varianteSeleccionada}, Cantidad: ${this.cantidad})${precioTotalTexto}. Me gustaría recibir más información.`;
     return `https://api.whatsapp.com/send?phone=573207793380&text=${encodeURIComponent(mensaje)}`;
+  }
+
+  incrementarCantidad(): void {
+    if (this.cantidad < 99) {
+      this.cantidad++;
+    }
+  }
+
+  decrementarCantidad(): void {
+    if (this.cantidad > 1) {
+      this.cantidad--;
+    }
+  }
+
+  seleccionarVariante(v: string): void {
+    this.varianteSeleccionada = v;
+  }
+
+  toggleFavorito(): void {
+    this.esFavorito = !this.esFavorito;
+  }
+
+  toggleDescripcion(): void {
+    this.descripcionExpandida = !this.descripcionExpandida;
   }
 
   copiarEnlace(): void {

@@ -1,15 +1,21 @@
 import { Component } from '@angular/core';
 import { Producto } from '../../models/interfaces';
-import { CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { ConfiguracionService } from '../../services/configuracion.service';
 
 @Component({
   selector: 'app-grid-productos',
   standalone: true,
-  imports: [CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe],
   templateUrl: './grid-productos.component.html',
   styleUrl: './grid-productos.component.css'
 })
 export class GridProductosComponent {
+  mostrarPrecios$;
+
+  constructor(private configuracionService: ConfiguracionService) {
+    this.mostrarPrecios$ = this.configuracionService.mostrarPrecios$;
+  }
   productos: Producto[] = [
     {
       id: 1,

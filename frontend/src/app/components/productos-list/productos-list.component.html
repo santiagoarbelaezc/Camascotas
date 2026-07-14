@@ -31,7 +31,8 @@
           <h3 class="producto-nombre">{{ prod.nombre }}</h3>
           <p class="producto-desc">{{ prod.descripcion }}</p>
           <div class="card-footer">
-            <span class="precio">{{ formatearPrecio(prod.precio) }}</span>
+            <span class="precio" *ngIf="mostrarPrecios$ | async">{{ formatearPrecio(prod.precio) }}</span>
+            <span class="precio precio-oculto" *ngIf="!(mostrarPrecios$ | async)">Consultar precio</span>
             <button class="add-btn" aria-label="Ver más">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

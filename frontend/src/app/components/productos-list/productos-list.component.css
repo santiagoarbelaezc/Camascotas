@@ -351,3 +351,10 @@
     padding: 24px;
   }
 }
+
+.precio-oculto {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #a0aec0;
+  letter-spacing: 0.03em;
+}

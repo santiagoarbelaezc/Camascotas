@@ -37,9 +37,12 @@
         <!-- Card Info -->
         <div class="card-info">
           <p class="card-nombre">{{ item.nombre }}</p>
-          <div class="card-precio-row">
+          <div class="card-precio-row" *ngIf="mostrarPrecios$ | async">
             <span *ngIf="item.desde" class="card-desde">— Desde</span>
             <span class="card-precio">{{ formatPrecio(item.precio) }}</span>
+          </div>
+          <div class="card-precio-row card-precio-oculto" *ngIf="!(mostrarPrecios$ | async)">
+            <span class="card-precio-consultar">Consultar precio</span>
           </div>
           <div class="card-colores">
             <span

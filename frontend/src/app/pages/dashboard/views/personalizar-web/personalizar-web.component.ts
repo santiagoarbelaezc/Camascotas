@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ComponentesService, ComponenteDinamico } from '../../../../services/componentes.service';
 import { CategoriasService, Categoria } from '../../../../services/categorias.service';
+import { ConfiguracionService } from '../../../../services/configuracion.service';
 
 @Component({
   selector: 'app-personalizar-web',
@@ -14,7 +15,14 @@ import { CategoriasService, Categoria } from '../../../../services/categorias.se
 export class PersonalizarWebComponent implements OnInit {
   componentes: ComponenteDinamico[] = [];
   categorias: Categoria[] = [];
-  
+
+  // Configuración Global
+  mostrarPrecios = true;
+  guardandoConfig = false;
+  configToast = '';
+  configToastError = false;
+  configToastVisible = false;
+
   // Modales
   showModal = false;
   editingComponente: ComponenteDinamico | null = null;
@@ -33,12 +41,37 @@ export class PersonalizarWebComponent implements OnInit {
 
   constructor(
     private componentesService: ComponentesService,
-    private categoriasService: CategoriasService
+    private categoriasService: CategoriasService,
+    private configuracionService: ConfiguracionService
   ) {}
 
   ngOnInit(): void {
     this.cargarComponentes();
     this.cargarCategorias();
+    this.configuracionService.getMostrarPrecios().subscribe(val => this.mostrarPrecios = val);
+  }
+
+  toggleMostrarPrecios(): void {
+    const nuevoValor = !this.mostrarPrecios;
+    this.guardandoConfig = true;
+    this.configuracionService.setMostrarPrecios(nuevoValor).subscribe({
+      next: () => {
+        this.guardandoConfig = false;
+        this.mostrarPrecios = nuevoValor;
+        this.showConfigToast(nuevoValor ? 'Precios visibles para los usuarios' : 'Precios ocultos correctamente');
+      },
+      error: () => {
+        this.guardandoConfig = false;
+        this.showConfigToast('Error al guardar la configuración', true);
+      }
+    });
+  }
+
+  private showConfigToast(msg: string, isError = false): void {
+    this.configToast = msg;
+    this.configToastError = isError;
+    this.configToastVisible = true;
+    setTimeout(() => this.configToastVisible = false, 3500);
   }
 
   cargarComponentes(): void {

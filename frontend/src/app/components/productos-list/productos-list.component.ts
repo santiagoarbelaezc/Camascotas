@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductosService, Producto } from '../../services/productos.service';
 import { ProductoSeleccionadoService } from '../../services/producto-seleccionado.service';
+import { ConfiguracionService } from '../../services/configuracion.service';
 
 @Component({
   selector: 'app-productos-list',
@@ -15,6 +16,7 @@ export class ProductosListComponent implements OnInit {
   productos: Producto[] = [];
   cargando = true;
   terminoBusqueda: string | null = null;
+  mostrarPrecios$;
 
   // Paginación
   currentPage = 1;
@@ -24,8 +26,11 @@ export class ProductosListComponent implements OnInit {
     private productosService: ProductosService,
     private productoSeleccionadoService: ProductoSeleccionadoService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private configuracionService: ConfiguracionService
+  ) {
+    this.mostrarPrecios$ = this.configuracionService.mostrarPrecios$;
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {

@@ -487,6 +487,7 @@
 .cp-footer { display: flex; justify-content: space-between; align-items: center; }
 .cp-price { font-size: 0.85rem; font-weight: 700; color: var(--lima); }
 .cp-price small { font-size: 0.6rem; font-weight: 400; color: var(--text-muted); margin-right: 2px; }
+.cp-price-oculto { font-style: italic; font-weight: 400; color: #a0aec0; font-size: 0.8rem; }
 .cp-arrow { color: var(--turquesa); opacity: 0.6; transition: transform 0.3s ease; }
 .chat-prod-card:hover .cp-arrow { opacity: 1; transform: translateX(2px); }
 

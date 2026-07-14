@@ -523,3 +523,10 @@
     aspect-ratio: 1/1; /* Square on grid for consistency */
   }
 }
+
+.card-precio-consultar {
+  font-style: italic;
+  font-size: 0.8rem;
+  color: #a0aec0;
+  letter-spacing: 0.03em;
+}

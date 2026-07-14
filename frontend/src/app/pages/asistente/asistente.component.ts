@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GeminiService, ChatMessage } from '../../services/gemini.service';
+import { ConfiguracionService } from '../../services/configuracion.service';
 
 /**
  * Componente de Asistente Virtual Husky
@@ -25,6 +26,7 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
   inputText = '';
   isLoading = false;
   private shouldScroll = false;
+  mostrarPrecios$;
 
   // Mascot State (Unified)
   currentVideo: string | null = null;
@@ -35,8 +37,11 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   constructor(
     private geminiService: GeminiService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private configuracionService: ConfiguracionService
+  ) {
+    this.mostrarPrecios$ = this.configuracionService.mostrarPrecios$;
+  }
 
   async ngOnInit(): Promise<void> {
     this.messages = await this.geminiService.getHistory();

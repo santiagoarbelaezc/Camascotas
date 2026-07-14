@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { ConfiguracionService } from '../../services/configuracion.service';
 
 export interface CarruselItem {
   id: number;
@@ -32,7 +33,11 @@ export class CarruselDestacadosComponent {
   tabActivo = 'Todos';
   expandido = false;
 
-  constructor(private router: Router) {}
+  mostrarPrecios$;
+
+  constructor(private router: Router, private configuracionService: ConfiguracionService) {
+    this.mostrarPrecios$ = this.configuracionService.mostrarPrecios$;
+  }
 
   get itemsFiltradosPorTab(): CarruselItem[] {
     if (this.tabActivo === 'Todos') return this.todosLosItems;

@@ -36,8 +36,11 @@
                 </div>
                 
                 <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-8">
-                    <span class="text-3xl font-extralight text-brand-turquesa">
+                    <span class="text-3xl font-extralight text-brand-turquesa" *ngIf="mostrarPrecios$ | async">
                         {{ producto.precio | currency:'USD':'symbol':'1.0-0' }}
+                    </span>
+                    <span class="text-sm italic text-gray-400" *ngIf="!(mostrarPrecios$ | async)">
+                        Consultar precio
                     </span>
                     <button class="text-brand-petrol font-black text-[10px] uppercase tracking-[0.4em] hover:text-brand-turquesa transition-all flex items-center gap-3 group/add">
                         Ver Detalles
