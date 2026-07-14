@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-brand-turquesa flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden font-poppins">
+<div class="min-h-screen bg-brand-turquesa flex flex-col items-center justify-center py-4 px-4 sm:px-6 lg:px-8 relative overflow-hidden font-poppins">
   <!-- Decorative Background Blobs -->
   <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-lima/20 rounded-full blur-[120px]"></div>
   <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-brand-petrol/20 rounded-full blur-[120px]"></div>
@@ -13,62 +13,51 @@
     <span class="hidden md:inline-block font-bold text-xs uppercase tracking-[0.2em] text-white">Regresar</span>
   </button>
 
-  <div class="max-w-md w-full bg-white rounded-[40px] shadow-2xl p-8 md:p-12 space-y-8 relative z-10 border border-white/20">
+  <!-- Wrapper Card (Width: max-w-6xl for Registration, max-w-md for Login) -->
+  <div class="w-full bg-white rounded-[32px] shadow-2xl p-6 md:p-8 relative z-10 border border-white/20 transition-all duration-500 my-auto"
+       [ngClass]="modo === 'registro' ? 'max-w-6xl' : 'max-w-md'">
     
-    <!-- Header -->
-    <div class="text-center">
-      <div class="inline-block p-3 bg-brand-turquesa/5 rounded-2xl mb-4">
-        <img src="assets/icons/logo.png" alt="Camascotas" class="h-8 w-auto filter contrast-125">
-      </div>
-      <h1 class="text-2xl font-black text-brand-petrol mb-1 tracking-tight">
-        {{ modo === 'login' ? 'Bienvenido de vuelta' : 'Crea tu Cuenta' }}
-      </h1>
-      <p class="text-xs text-gray-400 font-medium">
-        {{ modo === 'login' ? 'Ingresa para gestionar tu cuenta de Camascotas' : 'Regístrate para comprar y seguir a tu mascota' }}
-      </p>
-    </div>
-
-    <!-- Tab Switcher: visualmente diferenciados -->
-    <div class="flex bg-gray-100 p-1 rounded-2xl gap-1">
-      <!-- INGRESAR tab -->
+    <!-- Tab Switcher -->
+    <div class="flex bg-gray-100 p-1 rounded-2xl gap-1 mb-5 max-w-sm mx-auto">
       <button type="button" (click)="cambiarModo('login')"
-              class="tab-btn flex-1 flex items-center justify-center gap-2 py-3.5 text-[10px] uppercase tracking-[0.18em] font-black rounded-xl transition-all duration-300"
+              class="tab-btn flex-1 flex items-center justify-center gap-2 py-2.5 text-xs uppercase tracking-[0.18em] font-black rounded-xl transition-all duration-300"
               [ngClass]="modo === 'login'
-                ? 'bg-brand-petrol text-white shadow-lg shadow-brand-petrol/30'
+                ? 'bg-brand-petrol text-white shadow-lg'
                 : 'text-gray-400 hover:text-gray-600'">
-        <svg *ngIf="modo === 'login'" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-        </svg>
         Ingresar
       </button>
-      <!-- REGISTRARSE tab -->
       <button type="button" (click)="cambiarModo('registro')"
-              class="tab-btn flex-1 flex items-center justify-center gap-2 py-3.5 text-[10px] uppercase tracking-[0.18em] font-black rounded-xl transition-all duration-300"
+              class="tab-btn flex-1 flex items-center justify-center gap-2 py-2.5 text-xs uppercase tracking-[0.18em] font-black rounded-xl transition-all duration-300"
               [ngClass]="modo === 'registro'
-                ? 'bg-brand-lima text-brand-petrol shadow-lg shadow-brand-lima/40'
+                ? 'bg-brand-lima text-brand-petrol shadow-lg'
                 : 'text-gray-400 hover:text-gray-600'">
-        <svg *ngIf="modo === 'registro'" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-        </svg>
         Registrarse
       </button>
     </div>
 
-    <!-- LOGIN FORM -->
-    <form *ngIf="modo === 'login'" class="space-y-5" (submit)="login(); $event.preventDefault()">
-      <div class="space-y-4">
+    <!-- ── VISTA LOGIN (Centered & Compact) ── -->
+    <div *ngIf="modo === 'login'" class="space-y-5 max-w-sm mx-auto">
+      <div class="text-center mb-4">
+        <div class="inline-block p-3 bg-brand-turquesa/5 rounded-2xl mb-3">
+          <img src="assets/icons/logo.png" alt="Camascotas" class="h-7 w-auto filter contrast-125">
+        </div>
+        <h2 class="text-2xl font-black text-brand-petrol mb-1 tracking-tight">Bienvenido de vuelta</h2>
+        <p class="text-xs text-gray-400 font-medium">Ingresa para gestionar tu cuenta</p>
+      </div>
+
+      <form class="space-y-4" (submit)="login(); $event.preventDefault()">
         <div>
           <label for="email-address" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Correo Electrónico</label>
           <input id="email-address" name="correo" type="email" autocomplete="email" required
             [(ngModel)]="correo"
-            class="appearance-none relative block w-full px-5 py-3.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="tu@correo.com">
+            class="appearance-none relative block w-full px-5 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="tu@correo.com">
         </div>
         <div>
           <label for="password" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Contraseña</label>
           <div class="relative">
             <input id="password" name="password" [type]="showPassword ? 'text' : 'password'" autocomplete="current-password" required
               [(ngModel)]="password"
-              class="appearance-none relative block w-full px-5 py-3.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50 pr-12" placeholder="••••••••">
+              class="appearance-none relative block w-full px-5 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50 pr-12" placeholder="••••••••">
             
             <button type="button" (click)="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-300 hover:text-brand-turquesa transition-colors">
               <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -81,117 +70,146 @@
             </button>
           </div>
         </div>
-      </div>
 
-      <div class="flex items-center justify-between px-1">
-        <div class="flex items-center">
-          <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-brand-turquesa focus:ring-brand-turquesa border-gray-200 rounded transition-all">
-          <label for="remember-me" class="ml-2 block text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-            Recordar
-          </label>
+        <div class="flex items-center justify-between px-1">
+          <div class="flex items-center">
+            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-brand-turquesa focus:ring-brand-turquesa border-gray-200 rounded transition-all">
+            <label for="remember-me" class="ml-2 block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Recordar</label>
+          </div>
+          <div class="text-[10px]">
+            <a href="#" class="font-bold text-brand-turquesa hover:text-brand-turquesa/80 transition-colors uppercase tracking-wider">¿Olvido?</a>
+          </div>
         </div>
-        <div class="text-[10px]">
-          <a href="#" class="font-bold text-brand-turquesa hover:text-brand-turquesa/80 transition-colors uppercase tracking-wider">
-            ¿Olvido?
-          </a>
-        </div>
-      </div>
 
-      <!-- Error message -->
-      <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-xs text-red-600 font-medium">{{ error }}</div>
+        <!-- Error message -->
+        <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-xs text-red-600 font-medium">{{ error }}</div>
 
-      <div>
-        <button type="submit" [disabled]="cargando" class="btn-primary w-full py-3.5 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
-          {{ cargando ? 'Verificando...' : 'Iniciar Sesión' }}
-        </button>
-        <p class="text-[10px] text-gray-400 text-center mt-3 uppercase tracking-wider">
-          Al iniciar sesión, aceptas nuestros 
-          <a routerLink="/terminos" class="text-brand-turquesa font-bold hover:underline">Términos y Condiciones</a>
-        </p>
-      </div>
-
-    </form>
-
-    <!-- REGISTRATION FORM -->
-    <form *ngIf="modo === 'registro'" class="space-y-4" (submit)="registrar(); $event.preventDefault()">
-      <div class="grid grid-cols-2 gap-4">
         <div>
-          <label for="reg-nombre" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Nombre</label>
-          <input id="reg-nombre" name="nombre" type="text" required [(ngModel)]="nombre"
-            class="appearance-none relative block w-full px-4 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Nombre">
-        </div>
-        <div>
-          <label for="reg-apellidos" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Apellidos</label>
-          <input id="reg-apellidos" name="apellidos" type="text" required [(ngModel)]="apellidos"
-            class="appearance-none relative block w-full px-4 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Apellidos">
-        </div>
-      </div>
-
-      <div class="grid grid-cols-3 gap-4">
-        <div class="col-span-1">
-          <label for="reg-edad" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Edad</label>
-          <input id="reg-edad" name="edad" type="number" required [(ngModel)]="edad" min="1" max="120"
-            class="appearance-none relative block w-full px-4 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Ej: 25">
-        </div>
-        <div class="col-span-2">
-          <label for="reg-ciudad" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Ciudad</label>
-          <input id="reg-ciudad" name="ciudad" type="text" required [(ngModel)]="ciudad"
-            class="appearance-none relative block w-full px-4 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Ciudad (ej: Armenia)">
-        </div>
-      </div>
-
-      <div>
-        <label for="reg-direccion" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Dirección de Envío</label>
-        <input id="reg-direccion" name="direccion" type="text" required [(ngModel)]="direccion"
-          class="appearance-none relative block w-full px-4 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Calle 10 # 15-20, Apto 101">
-      </div>
-
-      <div>
-        <label for="reg-correo" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Correo Electrónico</label>
-        <input id="reg-correo" name="correo" type="email" required [(ngModel)]="correo" autocomplete="email"
-          class="appearance-none relative block w-full px-4 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="cliente@correo.com">
-      </div>
-
-      <div>
-        <label for="reg-password" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Crear Contraseña</label>
-        <div class="relative">
-          <input id="reg-password" name="password" [type]="showPassword ? 'text' : 'password'" required [(ngModel)]="password" autocomplete="new-password"
-            class="appearance-none relative block w-full px-4 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50 pr-12" placeholder="Contraseña">
-          
-          <button type="button" (click)="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-300 hover:text-brand-turquesa transition-colors">
-            <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125 3.125l3.125 3.125" />
-            </svg>
+          <button type="submit" [disabled]="cargando" class="btn-primary w-full py-3.5 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
+            {{ cargando ? 'Verificando...' : 'Iniciar Sesión' }}
           </button>
+          <p class="text-[10px] text-gray-400 text-center mt-3.5 uppercase tracking-wider">
+            Al iniciar sesión, aceptas nuestros 
+            <a href="/terminos" target="_blank" class="text-brand-turquesa font-bold hover:underline">Términos y Condiciones</a>
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── VISTA REGISTRO (Widescreen con Imagen de Husky) ── -->
+    <div *ngIf="modo === 'registro'" class="flex flex-col lg:flex-row gap-8 items-stretch text-left">
+      
+      <!-- Columna Izquierda: Imagen Mascot & Mensaje de Bienvenida -->
+      <div class="lg:w-4/12 flex flex-col justify-between bg-gray-50/50 rounded-[24px] p-6 border border-gray-100 relative overflow-hidden min-h-[300px] lg:min-h-none">
+        <!-- Imagen Husky PNG Grande y Flotante -->
+        <div class="w-full flex-1 flex items-center justify-center p-2">
+          <img src="assets/videos/husky.png" alt="Husky Mascot" class="w-full max-w-[320px] md:max-w-[360px] h-auto object-contain hover:scale-105 transition-transform duration-300">
+        </div>
+
+        <!-- Mensaje de bienvenida de Husky -->
+        <div class="mt-4 text-center lg:text-left">
+          <div class="flex items-center gap-2 justify-center lg:justify-start mb-1.5">
+            <span class="text-xl">🐾</span>
+            <h3 class="text-base font-black text-brand-petrol tracking-tight">¡Hola, soy Husky!</h3>
+          </div>
+          <p class="text-xs text-gray-500 leading-relaxed font-light">
+            Crea tu cuenta de Camascotas para diseñar tu cama en 3D, guardar tus favoritos, realizar tus pedidos y seguir el descanso de tu peludo.
+          </p>
         </div>
       </div>
 
-      <!-- Error message -->
-      <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-xs text-red-600 font-medium">{{ error }}</div>
+      <!-- Columna Derecha: Formulario de Registro Ultra-Compacto -->
+      <div class="lg:w-8/12 flex flex-col justify-center py-2">
+        <div class="mb-4">
+          <h2 class="text-2xl font-black text-brand-petrol mb-0.5 tracking-tight font-poppins">Crea tu Cuenta</h2>
+          <p class="text-xs text-gray-400 font-medium">Completa tus datos para disfrutar la experiencia Camascotas</p>
+        </div>
 
-      <!-- Checkbox para políticas y términos -->
-      <div class="flex items-start px-1 py-1">
-        <div class="flex items-center h-5">
-          <input id="accept-terms" name="aceptaTerminos" type="checkbox" required [(ngModel)]="aceptaTerminos"
-            class="h-4 w-4 text-brand-turquesa focus:ring-brand-turquesa border-gray-200 rounded transition-all">
-        </div>
-        <div class="ml-3 text-[10px] leading-relaxed">
-          <label for="accept-terms" class="font-bold text-gray-400 uppercase tracking-wide cursor-pointer">
-            Acepto los <a routerLink="/terminos" class="text-brand-turquesa font-black hover:underline">Términos y Condiciones</a> y la <a routerLink="/politicas-envio" class="text-brand-turquesa font-black hover:underline">Política de Envío</a> de Camascotas.
-          </label>
-        </div>
+        <form class="space-y-4" (submit)="registrar(); $event.preventDefault()">
+          <!-- Fila 1: Nombre y Apellidos -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="reg-nombre" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Nombre</label>
+              <input id="reg-nombre" name="nombre" type="text" required [(ngModel)]="nombre"
+                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Nombre">
+            </div>
+            <div>
+              <label for="reg-apellidos" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Apellidos</label>
+              <input id="reg-apellidos" name="apellidos" type="text" required [(ngModel)]="apellidos"
+                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Apellidos">
+            </div>
+          </div>
+
+          <!-- Fila 2: Correo y Contraseña (Ahorra un espacio vertical enorme) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="reg-correo" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Correo Electrónico</label>
+              <input id="reg-correo" name="correo" type="email" required [(ngModel)]="correo" autocomplete="email"
+                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="cliente@correo.com">
+            </div>
+            <div>
+              <label for="reg-password" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Contraseña</label>
+              <div class="relative">
+                <input id="reg-password" name="password" [type]="showPassword ? 'text' : 'password'" required [(ngModel)]="password" autocomplete="new-password"
+                  class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50 pr-12" placeholder="Contraseña">
+                
+                <button type="button" (click)="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-300 hover:text-brand-turquesa transition-colors">
+                  <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125l3.125 3.125" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 3: Edad, Ciudad y Dirección de Envío juntas -->
+          <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-2">
+              <label for="reg-edad" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Edad</label>
+              <input id="reg-edad" name="edad" type="number" required [(ngModel)]="edad" min="1" max="120"
+                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Edad">
+            </div>
+            <div class="col-span-4">
+              <label for="reg-ciudad" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Ciudad</label>
+              <input id="reg-ciudad" name="ciudad" type="text" required [(ngModel)]="ciudad"
+                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Ej: Armenia">
+            </div>
+            <div class="col-span-6">
+              <label for="reg-direccion" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Dirección de Envío</label>
+              <input id="reg-direccion" name="direccion" type="text" required [(ngModel)]="direccion"
+                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Calle 10 # 15-20, Apto 101">
+            </div>
+          </div>
+
+          <!-- Error message -->
+          <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-xs text-red-600 font-medium">{{ error }}</div>
+
+          <!-- Checkbox para políticas y términos -->
+          <div class="flex items-start px-1 py-1">
+            <div class="flex items-center h-5">
+              <input id="accept-terms" name="aceptaTerminos" type="checkbox" required [(ngModel)]="aceptaTerminos"
+                class="h-4 w-4 text-brand-turquesa focus:ring-brand-turquesa border-gray-200 rounded transition-all">
+            </div>
+            <div class="ml-3 text-[10px] leading-relaxed">
+              <label for="accept-terms" class="font-bold text-gray-400 uppercase tracking-wide cursor-pointer">
+                Acepto los <a href="/terminos" target="_blank" class="text-brand-turquesa font-black hover:underline">Términos y Condiciones</a> y la <a href="/politicas-envio" target="_blank" class="text-brand-turquesa font-black hover:underline">Política de Envío</a> de Camascotas.
+              </label>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" [disabled]="cargando || !aceptaTerminos" class="btn-primary w-full py-3.5 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
+              {{ cargando ? 'Registrando...' : 'Registrarse y Entrar' }}
+            </button>
+          </div>
+        </form>
       </div>
 
-      <div class="pt-2">
-        <button type="submit" [disabled]="cargando || !aceptaTerminos" class="btn-primary w-full py-3.5 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
-          {{ cargando ? 'Registrando...' : 'Registrarse y Entrar' }}
-        </button>
-      </div>
-    </form>
+    </div>
 
   </div>
 </div>
