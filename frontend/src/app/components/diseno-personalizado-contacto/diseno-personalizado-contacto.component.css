@@ -1,0 +1,5 @@
+/* Estilos adicionales si son necesarios para micro-animaciones y acabados */
+:host {
+  display: block;
+  width: 100%;
+}

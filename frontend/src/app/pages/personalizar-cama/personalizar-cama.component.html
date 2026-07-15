@@ -1,3 +1,4 @@
+<ng-container *ngIf="personalizacionActiva">
 <div class="customizer-page">
   <div class="customizer-container">
     
@@ -342,3 +343,6 @@
 
   </div>
 </div>
+</ng-container>
+
+<app-diseno-personalizado-contacto *ngIf="!personalizacionActiva"></app-diseno-personalizado-contacto>

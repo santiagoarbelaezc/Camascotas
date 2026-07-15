@@ -4,15 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { CamasPersonalizadasService, CamaPersonalizada, BED_CONFIG, ColorOption, FontOption, BedTypeOption } from '../../services/camas-personalizadas.service';
 import { ToastService } from '../../services/toast.service';
+import { environment } from '../../../environments/environment';
+import { DisenoPersonalizadoContactoComponent } from '../../components/diseno-personalizado-contacto/diseno-personalizado-contacto.component';
 
 @Component({
   selector: 'app-personalizar-cama',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, DisenoPersonalizadoContactoComponent],
   templateUrl: './personalizar-cama.component.html',
   styleUrl: './personalizar-cama.component.css'
 })
 export class PersonalizarCamaComponent implements OnInit {
+  readonly personalizacionActiva = environment.personalizacionActiva;
   baseColors = BED_CONFIG.baseColors;
   cushionColors = BED_CONFIG.cushionColors;
   pillowColors = BED_CONFIG.pillowColors;
