@@ -58,4 +58,8 @@ export class AuthService {
   getAuthHeaders(): HttpHeaders {
     return new HttpHeaders({ Authorization: `Bearer ${this.getToken()}` });
   }
+
+  actualizarUsuarioSesion(nuevoUsuario: any): void {
+    localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
+  }
 }

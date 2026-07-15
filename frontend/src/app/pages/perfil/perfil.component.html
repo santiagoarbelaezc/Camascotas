@@ -1,100 +1,283 @@
-<div class="perfil-page">
-  <div class="perfil-header" *ngIf="auth.isLoggedIn(); else guestHeader">
-    <div class="avatar-circle">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+<div class="perfil-page bg-[#FAFAF8] min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-[1000px] mx-auto">
+    
+    <!-- CABECERA DE PERFIL (HERO) -->
+    <div class="perfil-header relative overflow-hidden bg-gradient-to-r from-[#004153] via-[#00556b] to-[#004153] rounded-[32px] p-8 md:p-12 text-white shadow-xl mb-8 border border-[#00B3BC]/20" *ngIf="auth.isLoggedIn(); else guestHeader">
+      <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-[#00B3BC]/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute right-12 top-6 w-32 h-32 bg-[#B1D616]/10 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="flex flex-col md:flex-row items-center gap-6 relative z-10 text-center md:text-left">
+        <div class="avatar-circle relative w-24 h-24 rounded-full bg-gradient-to-br from-[#00B3BC] to-[#B1D616] p-1 shadow-lg flex-shrink-0">
+          <div class="w-full h-full bg-[#004153] rounded-full flex items-center justify-center text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-[#B1D616]">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="flex-grow">
+          <div class="inline-block px-3.5 py-1 rounded-full bg-[#B1D616]/20 border border-[#B1D616]/30 text-[#B1D616] text-[11px] font-black tracking-widest uppercase mb-2">
+            Cliente Camascotas VIP
+          </div>
+          <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mb-1">
+            HOLA, {{ (perfil?.nombre || auth.getUsuario()?.nombre || 'USUARIO') | uppercase }}
+          </h1>
+          <p class="text-white/75 text-sm sm:text-base font-light">{{ perfil?.correo || auth.getUsuario()?.correo }}</p>
+        </div>
+
+        <div class="md:self-start">
+          <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 text-xs text-white/90">
+            <span class="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
+            Sesión Activa
+          </span>
+        </div>
+      </div>
+
+      <!-- BARRA DE PESTAÑAS INTERNAS -->
+      <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-3 justify-center md:justify-start">
+        <button (click)="seleccionarVista('menu')" 
+          [class.bg-[#00B3BC]]="vistaActual === 'menu'"
+          [class.text-white]="vistaActual === 'menu'"
+          [class.shadow-md]="vistaActual === 'menu'"
+          [class.bg-white/10]="vistaActual !== 'menu'"
+          [class.text-white/80]="vistaActual !== 'menu'"
+          class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 hover:bg-[#00B3BC] hover:text-white flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+          </svg>
+          Mi Panel
+        </button>
+
+        <button (click)="seleccionarVista('datos')" 
+          [class.bg-[#00B3BC]]="vistaActual === 'datos'"
+          [class.text-white]="vistaActual === 'datos'"
+          [class.shadow-md]="vistaActual === 'datos'"
+          [class.bg-white/10]="vistaActual !== 'datos'"
+          [class.text-white/80]="vistaActual !== 'datos'"
+          class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 hover:bg-[#00B3BC] hover:text-white flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>
+          Mis Datos Personales
+        </button>
+      </div>
+    </div>
+
+    <!-- HEADER PARA INVITADOS -->
+    <ng-template #guestHeader>
+      <div class="perfil-header guest-header bg-white rounded-[32px] p-12 text-center border border-slate-200 shadow-sm mb-8">
+        <div class="w-20 h-20 mx-auto rounded-full bg-[#004153]/10 flex items-center justify-center text-[#004153] mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>
+        </div>
+        <h2 class="text-3xl font-bold text-[#004153] mb-2">Bienvenido a Camascotas</h2>
+        <p class="text-slate-500 mb-6">Inicia sesión en tu cuenta para acceder a tu panel y gestionar tus pedidos</p>
+        <a routerLink="/login" class="inline-flex items-center px-8 py-3.5 bg-[#004153] hover:bg-[#00313f] text-white font-bold rounded-2xl shadow-lg transition-all duration-300">
+          Iniciar Sesión / Registrarse
+        </a>
+      </div>
+    </ng-template>
+
+    <!-- SPINNER DE CARGA -->
+    <div *ngIf="cargando && auth.isLoggedIn()" class="flex justify-center items-center py-16">
+      <svg class="animate-spin h-10 w-10 text-[#00B3BC]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
     </div>
-    <h2>Hola, {{ auth.getUsuario()?.nombre || 'Usuario' }}</h2>
-    <p>{{ auth.getUsuario()?.correo }}</p>
-  </div>
 
-  <ng-template #guestHeader>
-    <div class="perfil-header guest-header">
-      <div class="avatar-circle">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+    <!-- CONTENIDO PESTAÑA 1: MI PANEL (VISTA MENÚ) -->
+    <div *ngIf="!cargando && auth.isLoggedIn() && vistaActual === 'menu'" class="space-y-4 animate-fade-in">
+      
+      <!-- Opciones de Personalización (Solo si la flag está activa) -->
+      <a *ngIf="personalizacionActiva" routerLink="/mis-camas" class="menu-card group bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-[#00B3BC] flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-[#00B3BC]/10 group-hover:bg-[#00B3BC] flex items-center justify-center text-[#00B3BC] group-hover:text-white transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.813-3.814a1.125 1.125 0 0 0-1.59-1.59l-3.814 3.813m-7.436 14.702a15.996 15.996 0 0 0 15.661-2.62 1.125 1.125 0 0 0-1.59-1.59c-1.853 1.853-4.34 2.95-6.923 2.95-2.583 0-5.07-1.097-6.923-2.95a1.125 1.125 0 0 0-1.59 1.59A15.996 15.996 0 0 0 11.49 22.5Z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-800 text-base group-hover:text-[#004153] transition-colors">Mis Diseños Guardados</h3>
+            <p class="text-xs text-slate-500">Consulta los sofás cuna configurados a tu medida</p>
+          </div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-400 group-hover:text-[#00B3BC] group-hover:translate-x-1 transition-all duration-300">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
         </svg>
+      </a>
+
+      <a *ngIf="personalizacionActiva" routerLink="/mis-camas" class="menu-card group bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-[#00B3BC] flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-[#B1D616]/20 group-hover:bg-[#B1D616] flex items-center justify-center text-[#004153] group-hover:text-white transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-800 text-base group-hover:text-[#004153] transition-colors">Mis Camas Guardadas</h3>
+            <p class="text-xs text-slate-500">Historial y diseños listos para enviar a confeccionar</p>
+          </div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-400 group-hover:text-[#00B3BC] group-hover:translate-x-1 transition-all duration-300">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+      </a>
+
+      <!-- Mis Productos Guardados -->
+      <a href="javascript:void(0)" class="menu-card group bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-[#00B3BC] flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-slate-100 group-hover:bg-[#004153] flex items-center justify-center text-slate-600 group-hover:text-white transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-800 text-base group-hover:text-[#004153] transition-colors">Mis Productos Guardados</h3>
+            <p class="text-xs text-slate-500">Lista de rascadores, camas y accesorios favoritos</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-500 text-xs font-bold uppercase tracking-wider">Pronto</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-all duration-300">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+      </a>
+
+      <!-- Cambiar datos personales (Ahora interactivo, va a pestaña datos) -->
+      <button (click)="seleccionarVista('datos')" class="w-full menu-card group bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-[#00B3BC] flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-300 text-left">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-sky-50 group-hover:bg-[#00B3BC] flex items-center justify-center text-[#00B3BC] group-hover:text-white transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-800 text-base group-hover:text-[#004153] transition-colors">Cambiar mis datos personales</h3>
+            <p class="text-xs text-slate-500">Actualiza tu nombre, dirección de envío y ciudad</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-full bg-[#B1D616]/20 text-[#004153] text-xs font-bold">Disponible</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-400 group-hover:text-[#00B3BC] group-hover:translate-x-1 transition-all duration-300">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+      </button>
+
+      <!-- Botón Cerrar Sesión -->
+      <div class="pt-4">
+        <button (click)="logout()" class="w-full bg-red-50/70 hover:bg-red-500 text-red-600 hover:text-white border border-red-100 rounded-2xl p-4 font-bold text-center transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+          </svg>
+          Cerrar Sesión en Camascotas
+        </button>
       </div>
-      <h2>Bienvenido a Camascotas</h2>
-      <p>Inicia sesión para ver tu información</p>
+
     </div>
-  </ng-template>
 
-  <div class="perfil-menu" *ngIf="auth.isLoggedIn()">
-    <a *ngIf="personalizacionActiva" routerLink="/mis-camas" class="menu-item">
-      <div class="item-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.813-3.814a1.125 1.125 0 0 0-1.59-1.59l-3.814 3.813m-7.436 14.702a15.996 15.996 0 0 0 15.661-2.62 1.125 1.125 0 0 0-1.59-1.59c-1.853 1.853-4.34 2.95-6.923 2.95-2.583 0-5.07-1.097-6.923-2.95a1.125 1.125 0 0 0-1.59 1.59A15.996 15.996 0 0 0 11.49 22.5Z" />
-        </svg>
+    <!-- CONTENIDO PESTAÑA 2: MIS DATOS PERSONALES (FORMULARIO) -->
+    <div *ngIf="!cargando && auth.isLoggedIn() && vistaActual === 'datos'" class="bg-white rounded-[32px] p-6 sm:p-10 border border-slate-200/80 shadow-lg animate-fade-in">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-slate-100 gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-[#004153]">Información Personal y Dirección</h2>
+          <p class="text-slate-500 text-sm">Estos datos se utilizarán para la facturación y envío de tu mobiliario</p>
+        </div>
+        <button (click)="seleccionarVista('menu')" class="self-start sm:self-center text-sm font-semibold text-[#00B3BC] hover:text-[#004153] flex items-center gap-1 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+          Volver al Panel
+        </button>
       </div>
-      <span class="item-text">Mis Diseños Guardados</span>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="chevron">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-      </svg>
-    </a>
 
-    <a *ngIf="personalizacionActiva" routerLink="/mis-camas" class="menu-item">
-      <div class="item-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-        </svg>
-      </div>
-      <span class="item-text">Mis Camas Guardadas</span>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="chevron">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-      </svg>
-    </a>
+      <form (ngSubmit)="guardarDatos()" class="space-y-6">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- Nombre -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Nombre <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <input type="text" [(ngModel)]="formData.nombre" name="nombre" required placeholder="Tu nombre"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-800 font-medium focus:bg-white focus:border-[#00B3BC] focus:ring-4 focus:ring-[#00B3BC]/10 transition-all outline-none">
+            </div>
+          </div>
 
-    <a href="javascript:void(0)" class="menu-item">
-      <div class="item-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-        </svg>
-      </div>
-      <span class="item-text">Mis Productos Guardados</span>
-      <span class="badge-soon">Pronto</span>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="chevron">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-      </svg>
-    </a>
+          <!-- Apellidos -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Apellidos</label>
+            <div class="relative">
+              <input type="text" [(ngModel)]="formData.apellidos" name="apellidos" placeholder="Tus apellidos"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-800 font-medium focus:bg-white focus:border-[#00B3BC] focus:ring-4 focus:ring-[#00B3BC]/10 transition-all outline-none">
+            </div>
+          </div>
 
-    <div class="menu-divider"></div>
+          <!-- Correo Electrónico (Solo Lectura) -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2 flex items-center gap-1">
+              Correo Electrónico
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-slate-400">
+                <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clip-rule="evenodd" />
+              </svg>
+            </label>
+            <input type="email" [value]="formData.correo" disabled
+              class="w-full bg-slate-100/80 border border-slate-200/60 rounded-xl px-4 py-3.5 text-slate-500 font-medium cursor-not-allowed select-none">
+            <p class="text-[11px] text-slate-400 mt-1">El correo está vinculado a tu cuenta y no puede modificarse.</p>
+          </div>
 
-    <a href="javascript:void(0)" class="menu-item">
-      <div class="item-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
-        </svg>
-      </div>
-      <span class="item-text">Cambiar mis datos personales</span>
-      <span class="badge-soon">Pronto</span>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="chevron">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-      </svg>
-    </a>
+          <!-- Edad -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Edad</label>
+            <input type="number" [(ngModel)]="formData.edad" name="edad" placeholder="Ej: 28" min="18" max="100"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-800 font-medium focus:bg-white focus:border-[#00B3BC] focus:ring-4 focus:ring-[#00B3BC]/10 transition-all outline-none">
+          </div>
 
-    <button (click)="logout()" class="menu-item logout-btn">
-      <div class="item-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-        </svg>
-      </div>
-      <span class="item-text">Cerrar Sesión</span>
-    </button>
-  </div>
+          <!-- Ciudad -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Ciudad / Municipio</label>
+            <input type="text" [(ngModel)]="formData.ciudad" name="ciudad" placeholder="Ej: Armenia, Quindío"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-800 font-medium focus:bg-white focus:border-[#00B3BC] focus:ring-4 focus:ring-[#00B3BC]/10 transition-all outline-none">
+          </div>
 
-  <div class="perfil-menu" *ngIf="!auth.isLoggedIn()">
-    <a routerLink="/login" class="menu-item login-btn">
-      <div class="item-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-        </svg>
-      </div>
-      <span class="item-text">Iniciar Sesión / Registrarse</span>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="chevron">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-      </svg>
-    </a>
+          <!-- Dirección de Envío -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Dirección de Envío / Residencia</label>
+            <input type="text" [(ngModel)]="formData.direccion" name="direccion" placeholder="Ej: Calle 19 # 14 - 25 Apt 402"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-800 font-medium focus:bg-white focus:border-[#00B3BC] focus:ring-4 focus:ring-[#00B3BC]/10 transition-all outline-none">
+          </div>
+        </div>
+
+        <!-- Cambio de Contraseña Opcional -->
+        <div class="pt-4 border-t border-slate-100 mt-6">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Nueva Contraseña <span class="text-slate-400 font-normal lowercase">(deja en blanco para mantener la actual)</span></label>
+          <input type="password" [(ngModel)]="formData.password" name="password" placeholder="••••••••••••"
+            class="w-full sm:w-1/2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-800 font-medium focus:bg-white focus:border-[#00B3BC] focus:ring-4 focus:ring-[#00B3BC]/10 transition-all outline-none">
+        </div>
+
+        <!-- Botones del formulario -->
+        <div class="pt-6 border-t border-slate-100 flex flex-col-reverse sm:flex-row justify-end gap-3">
+          <button type="button" (click)="seleccionarVista('menu')"
+            class="px-6 py-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 font-bold text-slate-600 transition-all duration-300 text-center">
+            Cancelar
+          </button>
+
+          <button type="submit" [disabled]="guardando"
+            class="px-8 py-3.5 rounded-xl bg-[#004153] hover:bg-[#00313f] text-white font-bold transition-all duration-300 shadow-lg shadow-[#004153]/20 flex items-center justify-center gap-2 disabled:opacity-50">
+            <svg *ngIf="guardando" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>{{ guardando ? 'Guardando Cambios...' : 'Guardar Cambios' }}</span>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+
   </div>
 </div>
