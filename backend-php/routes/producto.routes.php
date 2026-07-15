@@ -13,8 +13,8 @@ return function($router) {
     $router->add('GET', '/producto/{id}',               [productocontroller::class, 'obtenerProductoPorId']);
     $router->add('PATCH', '/producto/{id}/vista',       [productocontroller::class, 'incrementarVista']);
 
-    // Rutas protegidas (requieren JWT)
-    $router->add('POST',   '/producto',       [productocontroller::class, 'crearProducto'],      [authmiddleware::class, 'verifyToken']);
-    $router->add('PUT',    '/producto/{id}',  [productocontroller::class, 'actualizarProducto'], [authmiddleware::class, 'verifyToken']);
-    $router->add('DELETE', '/producto/{id}',  [productocontroller::class, 'eliminarProducto'],   [authmiddleware::class, 'verifyToken']);
+    // Rutas protegidas (solo admin / superadmin)
+    $router->add('POST',   '/producto',       [productocontroller::class, 'crearProducto'],      [authmiddleware::class, 'verifyAdmin']);
+    $router->add('PUT',    '/producto/{id}',  [productocontroller::class, 'actualizarProducto'], [authmiddleware::class, 'verifyAdmin']);
+    $router->add('DELETE', '/producto/{id}',  [productocontroller::class, 'eliminarProducto'],   [authmiddleware::class, 'verifyAdmin']);
 };

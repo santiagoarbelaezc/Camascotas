@@ -8,5 +8,7 @@ return function($router) {
     $router->add('POST', '/auth/login',    [authcontroller::class, 'login']);
     $router->add('POST', '/auth/register', [authcontroller::class, 'register']);
     $router->add('POST', '/auth/logout',   [authcontroller::class, 'logout']);
-    $router->add('POST', '/auth/google',   [authcontroller::class, 'googleLogin']);
+    $router->add('POST', '/auth/google',           [authcontroller::class, 'googleLogin']);
+    $router->add('POST', '/auth/verificar-codigo', [authcontroller::class, 'verificarCodigo']);
+    $router->add('POST', '/auth/reenviar-codigo',  [authcontroller::class, 'reenviarCodigo']);
 };

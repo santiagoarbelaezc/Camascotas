@@ -13,7 +13,7 @@ return function($router) {
     $router->add('GET', '/camas-personalizadas/mis-camas', [$controller, 'listarPorUsuario'], [authmiddleware::class, 'handle']);
     
     // Listar todos los diseños para el administrador
-    $router->add('GET', '/camas-personalizadas/admin', [$controller, 'listarTodas'], [authmiddleware::class, 'handle']);
+    $router->add('GET', '/camas-personalizadas/admin', [$controller, 'listarTodas'], [authmiddleware::class, 'handleAdmin']);
     
     // Actualizar un diseño existente
     $router->add('PUT', '/camas-personalizadas/{id}', [$controller, 'actualizar'], [authmiddleware::class, 'handle']);

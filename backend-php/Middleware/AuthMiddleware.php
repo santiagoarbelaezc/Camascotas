@@ -38,4 +38,23 @@ class authmiddleware {
     public static function handle(): void {
         self::verifyToken();
     }
+
+    public static function verifyAdminToken(): array {
+        $tokenData = self::verifyToken();
+        $rol       = $tokenData['rol'] ?? 'cliente';
+
+        if ($rol !== 'admin' && $rol !== 'superadmin') {
+            response::error('Acceso denegado. Se requiere rol de administrador para acceder a este endpoint del dashboard/sistema.', 403);
+        }
+
+        return $tokenData;
+    }
+
+    public static function handleAdmin(): void {
+        self::verifyAdminToken();
+    }
+
+    public static function verifyAdmin(): void {
+        self::verifyAdminToken();
+    }
 }
