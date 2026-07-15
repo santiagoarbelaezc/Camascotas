@@ -1,0 +1,81 @@
+<div class="min-h-screen bg-[#FAFAF8] pt-12 pb-32 md:py-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+  <div class="max-w-[1500px] w-full mx-auto">
+    
+    <!-- Contenedor Principal con estilo de tarjeta luxury -->
+    <div class="bg-white rounded-[32px] md:rounded-[40px] shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-slate-100 transition-all duration-500">
+      
+      <!-- Sección Imagen de Contacto (Izquierda / Top) -->
+      <div class="lg:w-[48%] relative min-h-[400px] lg:min-h-[620px] overflow-hidden group">
+        <img src="assets/images/contacto.jpg" alt="Atención Personalizada Camascotas"
+          class="absolute inset-0 w-full h-full object-cover transform transition-transform duration-1000 group-hover:scale-105">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#004153]/95 via-[#004153]/40 to-transparent flex items-end p-8 md:p-14">
+          <div class="relative z-10">
+            <span class="inline-block px-4 py-2 rounded-full bg-[#B1D616]/20 backdrop-blur-md text-[#B1D616] text-xs font-black tracking-[0.3em] uppercase mb-4 border border-[#B1D616]/30">
+              Diseño a tu Medida
+            </span>
+            <h3 class="text-3xl md:text-5xl font-bold text-white mb-3 tracking-tight leading-tight">
+              Artesanía y Exclusividad
+            </h3>
+            <p class="text-white/80 text-lg md:text-xl font-light leading-relaxed max-w-lg">
+              Cada hogar y cada mascota son únicos. Creamos piezas irrepetibles con acabados de alta costura e ingeniería en descanso.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección Texto y CTA de Asesoría (Derecha / Bottom) -->
+      <div class="lg:w-[52%] p-8 md:p-16 lg:p-20 flex flex-col justify-center bg-white">
+        <div class="w-16 h-1.5 bg-[#00B3BC] rounded-full mb-8"></div>
+        
+        <span class="text-[#004153]/60 font-semibold text-sm tracking-wider uppercase mb-2">Servicio Premium de Confección</span>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#004153] mb-6 leading-[1.15] tracking-tight">
+          Habla con nosotros para crear tu <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#004153] to-[#00B3BC]">propio diseño personalizado</span>
+        </h1>
+        
+        <p class="text-slate-600 mb-8 leading-relaxed text-lg sm:text-xl font-light">
+          ¿Tienes en mente unas dimensiones especiales, una combinación de telas que haga juego con tu sala o un bordado especial? Nuestro equipo de diseñadores y asesores te guiará paso a paso para dar vida a la cama de sus sueños.
+        </p>
+
+        <!-- Beneficios Rápidos -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+          <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-[#00B3BC]/10 flex items-center justify-center text-[#00B3BC] flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <span class="text-sm font-semibold text-[#004153]">Medidas y Telas a elección</span>
+          </div>
+
+          <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-[#B1D616]/20 flex items-center justify-center text-[#004153] flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <span class="text-sm font-semibold text-[#004153]">Asesoría de diseño sin costo</span>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+          <a [href]="generarEnlaceWhatsApp()" target="_blank"
+            class="flex-1 inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-lg rounded-2xl shadow-xl shadow-[#25D366]/25 hover:-translate-y-1 transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/>
+            </svg>
+            Hablar por WhatsApp
+          </a>
+
+          <a routerLink="/productos"
+            class="inline-flex items-center justify-center px-6 py-4 rounded-2xl border-2 border-slate-200 hover:border-[#004153] text-[#004153] font-bold text-base transition-all duration-300">
+            Ver Catálogo
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
