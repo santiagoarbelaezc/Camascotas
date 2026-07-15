@@ -13,7 +13,7 @@ import { LoadingService } from '../../services/loading.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-  modo: 'login' | 'registro' = 'login';
+  modo: 'login' | 'registro' | 'verificacion' = 'login';
 
   // Campos comunes/Login
   correo   = '';
@@ -25,6 +25,15 @@ export class LoginComponent implements OnInit {
   edad: number | null = null;
   direccion = '';
   ciudad    = '';
+
+  // Campos de verificación
+  correoVerificacion = '';
+  codigoVerificacion = '';
+  cargandoVerificacion = false;
+  errorVerificacion = '';
+  mensajeVerificacion = '';
+  tiempoReenvio = 0;
+  intervaloReenvio: any = null;
 
   cargando = false;
   error    = '';
@@ -52,11 +61,12 @@ export class LoginComponent implements OnInit {
     this.cargarGoogleSDK();
   }
 
-  cambiarModo(nuevoModo: 'login' | 'registro'): void {
+  cambiarModo(nuevoModo: 'login' | 'registro' | 'verificacion'): void {
     this.modo = nuevoModo;
     this.error = '';
+    this.errorVerificacion = '';
     
-    // Si cambiamos de modo, reiniciamos el botón de Google para asegurarnos de que se dibuje correctamente
+    // Si cambiamos de modo a login, reiniciamos el botón de Google para asegurarnos de que se dibuje correctamente
     if (this.modo === 'login') {
       setTimeout(() => this.inicializarGoogle(), 100);
     }
@@ -73,12 +83,19 @@ export class LoginComponent implements OnInit {
 
     this.auth.login({ correo: this.correo, password: this.password }).subscribe({
       next: (res) => {
-        this.auth.guardarSesion(res);
-        this.redirigirUsuario(res.usuario.rol);
+         this.auth.guardarSesion(res);
+         this.redirigirUsuario(res.usuario?.rol ?? 'cliente');
       },
       error: (err) => {
         this.cargando = false;
-        this.error = err?.error?.error ?? 'Credenciales incorrectas';
+        const resp = err?.error;
+        if (resp?.requiere_verificacion) {
+          this.correoVerificacion = resp.correo ?? this.correo;
+          this.errorVerificacion = resp.error ?? 'Ingresa el código enviado a tu correo.';
+          this.cambiarModo('verificacion');
+        } else {
+          this.error = resp?.error ?? 'Credenciales incorrectas';
+        }
       }
     });
   }
@@ -110,14 +127,80 @@ export class LoginComponent implements OnInit {
 
     this.auth.registroCliente(datos).subscribe({
       next: (res) => {
-        this.auth.guardarSesion(res);
-        this.redirigirUsuario('cliente');
+        this.cargando = false;
+        if (res.requiere_verificacion) {
+          this.correoVerificacion = res.correo ?? this.correo;
+          this.mensajeVerificacion = res.mensaje ?? 'Hemos enviado un código de 6 dígitos a tu correo.';
+          this.cambiarModo('verificacion');
+          this.iniciarTemporizadorReenvio();
+        } else {
+          if (res.token && res.usuario) {
+            this.auth.guardarSesion(res);
+            this.redirigirUsuario('cliente');
+          }
+        }
       },
       error: (err) => {
         this.cargando = false;
         this.error = err?.error?.error ?? 'Error al registrarse';
       }
     });
+  }
+
+  verificarMiCodigo(): void {
+    if (!this.codigoVerificacion || this.codigoVerificacion.length !== 6) {
+      this.errorVerificacion = 'Ingresa los 6 dígitos numéricos del código';
+      return;
+    }
+    this.cargandoVerificacion = true;
+    this.errorVerificacion = '';
+    this.mensajeVerificacion = '';
+
+    this.auth.verificarCodigo(this.correoVerificacion, this.codigoVerificacion).subscribe({
+      next: (res) => {
+        this.cargandoVerificacion = false;
+        if (res.token && res.usuario) {
+          this.auth.guardarSesion(res);
+          this.redirigirUsuario(res.usuario.rol);
+        } else {
+          this.mensajeVerificacion = res.mensaje;
+          setTimeout(() => this.cambiarModo('login'), 2000);
+        }
+      },
+      error: (err) => {
+        this.cargandoVerificacion = false;
+        this.errorVerificacion = err?.error?.error ?? 'Código de verificación incorrecto o expirado';
+      }
+    });
+  }
+
+  reenviarMiCodigo(): void {
+    if (this.tiempoReenvio > 0 || !this.correoVerificacion) return;
+    this.errorVerificacion = '';
+    this.mensajeVerificacion = 'Reenviando código a tu correo...';
+
+    this.auth.reenviarCodigo(this.correoVerificacion).subscribe({
+      next: (res) => {
+        this.mensajeVerificacion = res.mensaje ?? 'Se ha enviado un nuevo código de 6 dígitos a tu correo.';
+        this.iniciarTemporizadorReenvio();
+      },
+      error: (err) => {
+        this.errorVerificacion = err?.error?.error ?? 'Error al reenviar el código';
+        this.mensajeVerificacion = '';
+      }
+    });
+  }
+
+  iniciarTemporizadorReenvio(): void {
+    this.tiempoReenvio = 60;
+    if (this.intervaloReenvio) clearInterval(this.intervaloReenvio);
+    this.intervaloReenvio = setInterval(() => {
+      if (this.tiempoReenvio > 0) {
+        this.tiempoReenvio--;
+      } else {
+        clearInterval(this.intervaloReenvio);
+      }
+    }, 1000);
   }
 
   private cargarGoogleSDK(): void {
@@ -163,12 +246,13 @@ export class LoginComponent implements OnInit {
     this.cargando = true;
     this.error = '';
 
-    // Google Callback se ejecuta fuera de la zona de detección de Angular, usamos ngZone
     this.ngZone.run(() => {
       this.auth.loginConGoogle(response.credential).subscribe({
         next: (res) => {
-          this.auth.guardarSesion(res);
-          this.redirigirUsuario(res.usuario.rol);
+          if (res.token && res.usuario) {
+            this.auth.guardarSesion(res);
+            this.redirigirUsuario(res.usuario.rol);
+          }
         },
         error: (err) => {
           this.cargando = false;

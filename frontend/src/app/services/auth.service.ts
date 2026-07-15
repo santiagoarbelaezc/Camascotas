@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 
 export interface LoginCredentials { correo: string; password: string; }
 export interface Usuario { id: number; nombre: string; correo: string; rol: string; }
-export interface LoginResponse { mensaje: string; token: string; usuario: Usuario; }
+export interface LoginResponse { mensaje: string; token?: string; usuario?: Usuario; requiere_verificacion?: boolean; correo?: string; }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -32,14 +32,28 @@ export class AuthService {
     );
   }
 
+  verificarCodigo(correo: string, codigo: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/verificar-codigo`, { correo, codigo }).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  reenviarCodigo(correo: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/auth/reenviar-codigo`, { correo }).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
   }
 
   guardarSesion(response: LoginResponse): void {
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('usuario', JSON.stringify(response.usuario));
+    if (response.token && response.usuario) {
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('usuario', JSON.stringify(response.usuario));
+    }
   }
 
   getToken(): string | null {

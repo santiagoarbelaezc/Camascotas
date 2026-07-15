@@ -18,7 +18,7 @@
        [ngClass]="modo === 'registro' ? 'max-w-6xl' : 'max-w-md'">
     
     <!-- Tab Switcher -->
-    <div class="flex bg-gray-100 p-1 rounded-2xl gap-1 mb-5 max-w-sm mx-auto">
+    <div *ngIf="modo !== 'verificacion'" class="flex bg-gray-100 p-1 rounded-2xl gap-1 mb-5 max-w-sm mx-auto">
       <button type="button" (click)="cambiarModo('login')"
               class="tab-btn flex-1 flex items-center justify-center gap-2 py-2.5 text-xs uppercase tracking-[0.18em] font-black rounded-xl transition-all duration-300"
               [ngClass]="modo === 'login'
@@ -209,6 +209,60 @@
         </form>
       </div>
 
+    </div>
+
+    <!-- ── VISTA VERIFICACIÓN (6 Dígitos) ── -->
+    <div *ngIf="modo === 'verificacion'" class="space-y-6 max-w-md mx-auto py-4 text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-brand-turquesa/10 rounded-3xl mb-1 border border-brand-turquesa/20 animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-brand-petrol" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-black text-brand-petrol mb-2 tracking-tight">Verifica tu correo</h2>
+        <p class="text-xs text-gray-500 font-medium leading-relaxed max-w-sm mx-auto">
+          Hemos enviado un código de seguridad de <strong class="text-brand-petrol font-bold">6 dígitos</strong> al correo electrónico: <br>
+          <span class="inline-block mt-1 px-3 py-1.5 bg-brand-turquesa/10 rounded-xl font-bold text-brand-petrol text-sm break-all">{{ correoVerificacion }}</span>
+        </p>
+      </div>
+
+      <!-- Mensajes -->
+      <div *ngIf="mensajeVerificacion" class="bg-emerald-50 border border-emerald-200 rounded-2xl px-5 py-3 text-xs text-emerald-700 font-bold">
+        ✓ {{ mensajeVerificacion }}
+      </div>
+      <div *ngIf="errorVerificacion" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-xs text-red-600 font-bold">
+        ✕ {{ errorVerificacion }}
+      </div>
+
+      <form class="space-y-6" (submit)="verificarMiCodigo(); $event.preventDefault()">
+        <div>
+          <label class="block text-[10px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-3">
+            Ingresa el Código de 6 Dígitos
+          </label>
+          <input type="text" name="codigoVerificacion" required maxlength="6"
+            [(ngModel)]="codigoVerificacion"
+            class="block w-full text-center px-4 py-4 border-2 border-brand-petrol/20 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/20 focus:border-brand-turquesa font-black text-3xl tracking-[0.4em] transition-all bg-gray-50/80 shadow-inner" placeholder="••••••">
+        </div>
+
+        <button type="submit" [disabled]="cargandoVerificacion || codigoVerificacion.length !== 6"
+          class="btn-primary w-full py-4 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-50 font-black">
+          {{ cargandoVerificacion ? 'Validando código...' : 'Activar mi Cuenta' }}
+        </button>
+      </form>
+
+      <!-- Reenviar o Volver -->
+      <div class="pt-4 border-t border-gray-100 flex flex-col gap-2">
+        <button type="button" (click)="reenviarMiCodigo()" [disabled]="tiempoReenvio > 0"
+          class="text-xs font-bold text-brand-turquesa hover:text-brand-petrol transition-colors uppercase tracking-wider disabled:text-gray-400 disabled:cursor-not-allowed">
+          {{ tiempoReenvio > 0 ? '¿No llegó? Reenviar en ' + tiempoReenvio + 's' : '🔄 ¿No recibiste el código? Reenviar' }}
+        </button>
+
+        <button type="button" (click)="cambiarModo('login')"
+          class="text-[11px] font-medium text-gray-400 hover:text-gray-600 transition-colors">
+          Volver al Inicio de Sesión
+        </button>
+      </div>
     </div>
 
   </div>
