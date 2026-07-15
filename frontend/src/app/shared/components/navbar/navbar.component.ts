@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductosService, Producto } from '../../../services/productos.service';
 import { AuthService } from '../../../services/auth.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +14,7 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  readonly personalizacionActiva = environment.personalizacionActiva;
   menuAbierto = false;
   scrolled = false;
   grupoAbierto = false; // Para el dropdown en mobile

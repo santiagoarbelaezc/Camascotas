@@ -89,8 +89,10 @@
               </svg>
             </button>
             <div class="dropdown-menu profile-menu">
-              <a routerLink="/mis-camas" class="dropdown-item">Mis Diseños Guardados</a>
-              <a routerLink="/mis-camas" class="dropdown-item">Mis Camas Guardadas</a>
+              <a routerLink="/perfil" class="dropdown-item">Editar Perfil</a>
+              <a routerLink="/perfil" class="dropdown-item">Configuración</a>
+              <a *ngIf="personalizacionActiva" routerLink="/mis-camas" class="dropdown-item">Mis Diseños Guardados</a>
+              <a *ngIf="personalizacionActiva" routerLink="/mis-camas" class="dropdown-item">Mis Camas Guardadas</a>
               <a href="javascript:void(0)" class="dropdown-item">Mis Productos Guardados</a>
               <div class="dropdown-divider"></div>
               <a (click)="auth.logout()" class="dropdown-item logout-item" style="cursor: pointer;">Cerrar Sesión</a>

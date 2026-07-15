@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-perfil',
@@ -11,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './perfil.component.css'
 })
 export class PerfilComponent implements OnInit {
+  readonly personalizacionActiva = environment.personalizacionActiva;
 
   constructor(
     public auth: AuthService,
