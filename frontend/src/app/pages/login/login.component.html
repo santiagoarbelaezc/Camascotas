@@ -65,7 +65,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
               <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125 3.125l3.125 3.125" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125l3.125 3.125" />
               </svg>
             </button>
           </div>
@@ -100,26 +100,26 @@
     <div *ngIf="modo === 'registro'" class="flex flex-col lg:flex-row gap-8 items-stretch text-left">
       
       <!-- Columna Izquierda: Imagen Mascot & Mensaje de Bienvenida -->
-      <div class="lg:w-4/12 flex flex-col justify-between bg-gray-50/50 rounded-[24px] p-6 border border-gray-100 relative overflow-hidden min-h-[300px] lg:min-h-none">
-        <!-- Imagen Husky PNG Grande y Flotante -->
-        <div class="w-full flex-1 flex items-center justify-center p-2">
-          <img src="assets/videos/husky.png" alt="Husky Mascot" class="w-full max-w-[320px] md:max-w-[360px] h-auto object-contain hover:scale-105 transition-transform duration-300">
+      <div class="lg:w-4/12 flex flex-col justify-center items-center bg-gray-50/50 rounded-[24px] p-6 border border-gray-100 relative overflow-hidden">
+        <!-- Imagen Husky PNG con tamaño vertical reducido -->
+        <div class="w-full flex justify-center p-1">
+          <img src="assets/videos/husky.png" alt="Husky Mascot" class="w-full max-w-[210px] md:max-w-[235px] h-auto object-contain hover:scale-105 transition-transform duration-300">
         </div>
 
-        <!-- Mensaje de bienvenida de Husky -->
-        <div class="mt-4 text-center lg:text-left">
-          <div class="flex items-center gap-2 justify-center lg:justify-start mb-1.5">
+        <!-- Mensaje de bienvenida de Husky (subido y compacto) -->
+        <div class="mt-2 text-center">
+          <div class="flex items-center gap-2 justify-center mb-1">
             <span class="text-xl">🐾</span>
             <h3 class="text-base font-black text-brand-petrol tracking-tight">¡Hola, soy Husky!</h3>
           </div>
-          <p class="text-xs text-gray-500 leading-relaxed font-light">
+          <p class="text-[11px] text-gray-500 leading-relaxed font-light">
             Crea tu cuenta de Camascotas para diseñar tu cama en 3D, guardar tus favoritos, realizar tus pedidos y seguir el descanso de tu peludo.
           </p>
         </div>
       </div>
 
       <!-- Columna Derecha: Formulario de Registro Ultra-Compacto -->
-      <div class="lg:w-8/12 flex flex-col justify-center py-2">
+      <div class="lg:w-8/12 flex flex-col justify-center py-1">
         <div class="mb-4">
           <h2 class="text-2xl font-black text-brand-petrol mb-0.5 tracking-tight font-poppins">Crea tu Cuenta</h2>
           <p class="text-xs text-gray-400 font-medium">Completa tus datos para disfrutar la experiencia Camascotas</p>
@@ -140,7 +140,7 @@
             </div>
           </div>
 
-          <!-- Fila 2: Correo y Contraseña (Ahorra un espacio vertical enorme) -->
+          <!-- Fila 2: Correo y Contraseña -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="reg-correo" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Correo Electrónico</label>
@@ -166,7 +166,7 @@
             </div>
           </div>
 
-          <!-- Fila 3: Edad, Ciudad y Dirección de Envío juntas -->
+          <!-- Fila 3: Edad, Ciudad y Dirección de Envío -->
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-2">
               <label for="reg-edad" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Edad</label>
