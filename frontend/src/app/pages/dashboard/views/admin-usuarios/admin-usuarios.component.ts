@@ -74,4 +74,36 @@ export class AdminUsuariosComponent implements OnInit {
   inicial(nombre: string | null): string {
     return nombre?.charAt(0).toUpperCase() ?? '?';
   }
+
+  alternarEstado(cliente: ClienteUsuario): void {
+    const nuevoEstado = !cliente.activo;
+    const accion = nuevoEstado ? 'activar' : 'desactivar';
+    
+    if (confirm(`¿Estás seguro de que deseas ${accion} a ${cliente.nombre}?`)) {
+      this.usuariosService.cambiarEstadoUsuario(cliente.id, nuevoEstado).subscribe({
+        next: (res) => {
+          cliente.activo = nuevoEstado;
+        },
+        error: (err) => {
+          alert('Error al cambiar el estado del usuario.');
+          console.error(err);
+        }
+      });
+    }
+  }
+
+  eliminarUsuario(cliente: ClienteUsuario): void {
+    if (confirm(`¿Estás seguro de que deseas ELIMINAR a ${cliente.nombre}? Esta acción no se puede deshacer.`)) {
+      this.usuariosService.eliminarUsuario(cliente.id).subscribe({
+        next: (res) => {
+          this.clientes = this.clientes.filter(c => c.id !== cliente.id);
+          this.filtrar();
+        },
+        error: (err) => {
+          alert('Error al eliminar el usuario.');
+          console.error(err);
+        }
+      });
+    }
+  }
 }
