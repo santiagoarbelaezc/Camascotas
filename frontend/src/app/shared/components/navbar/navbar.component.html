@@ -71,6 +71,9 @@
         <a [routerLink]="['/login']" [queryParams]="{ mode: 'registro' }" class="nav-register-btn-desktop">
           Registrarse
         </a>
+        <a [routerLink]="['/login']" [queryParams]="{ mode: 'verificacion' }" class="nav-register-btn-desktop" style="background-color: transparent; border: 1px solid var(--brand-turquesa); color: var(--brand-turquesa); margin-right: 12px;">
+          Verificar Cuenta
+        </a>
         <a routerLink="/login" class="nav-admin-btn" aria-label="Ingreso Administrativo" title="Ingreso Administrativo">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -108,6 +111,9 @@
       <ng-container *ngIf="!auth.isLoggedIn(); else userSessionMobile">
         <a [routerLink]="['/login']" [queryParams]="{ mode: 'registro' }" class="nav-register-btn-mobile">
           Registrarse
+        </a>
+        <a [routerLink]="['/login']" [queryParams]="{ mode: 'verificacion' }" class="nav-register-btn-mobile" style="background-color: transparent; border: 1px solid var(--brand-turquesa); color: var(--brand-turquesa);">
+          Verificar Cuenta
         </a>
       </ng-container>
       <ng-template #userSessionMobile>

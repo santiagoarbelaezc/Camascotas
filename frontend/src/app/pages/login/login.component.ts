@@ -54,6 +54,8 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['mode'] === 'registro') {
         this.modo = 'registro';
+      } else if (params['mode'] === 'verificacion') {
+        this.modo = 'verificacion';
       } else {
         this.modo = 'login';
       }
@@ -174,8 +176,18 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  get tiempoReenvioFormateado(): string {
+    const min = Math.floor(this.tiempoReenvio / 60);
+    const sec = this.tiempoReenvio % 60;
+    return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+  }
+
   reenviarMiCodigo(): void {
-    if (this.tiempoReenvio > 0 || !this.correoVerificacion) return;
+    if (this.tiempoReenvio > 0) return;
+    if (!this.correoVerificacion) {
+      this.errorVerificacion = 'Ingresa el correo para reenviar el código';
+      return;
+    }
     this.errorVerificacion = '';
     this.mensajeVerificacion = 'Reenviando código a tu correo...';
 
@@ -192,7 +204,7 @@ export class LoginComponent implements OnInit {
   }
 
   iniciarTemporizadorReenvio(): void {
-    this.tiempoReenvio = 60;
+    this.tiempoReenvio = 900; // 15 minutos
     if (this.intervaloReenvio) clearInterval(this.intervaloReenvio);
     this.intervaloReenvio = setInterval(() => {
       if (this.tiempoReenvio > 0) {

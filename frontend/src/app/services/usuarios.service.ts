@@ -14,6 +14,7 @@ export interface ClienteUsuario {
   edad: number | null;
   rol: string;
   auth_method: 'google' | 'formulario';
+  activo: boolean;
   created_at: string;
 }
 
@@ -55,6 +56,22 @@ export class UsuariosService {
   actualizarMiPerfil(datos: Partial<PerfilUsuario>): Observable<{ mensaje: string; usuario: PerfilUsuario }> {
     return this.http
       .put<{ mensaje: string; usuario: PerfilUsuario }>(`${this.apiUrl}/usuarios/perfil`, datos, {
+        headers: this.auth.getAuthHeaders()
+      })
+      .pipe(catchError(err => throwError(() => err)));
+  }
+
+  eliminarUsuario(id: number): Observable<{ mensaje: string }> {
+    return this.http
+      .delete<{ mensaje: string }>(`${this.apiUrl}/usuarios/${id}`, {
+        headers: this.auth.getAuthHeaders()
+      })
+      .pipe(catchError(err => throwError(() => err)));
+  }
+
+  cambiarEstadoUsuario(id: number, activo: boolean): Observable<{ mensaje: string }> {
+    return this.http
+      .patch<{ mensaje: string }>(`${this.apiUrl}/usuarios/${id}/estado`, { activo }, {
         headers: this.auth.getAuthHeaders()
       })
       .pipe(catchError(err => throwError(() => err)));

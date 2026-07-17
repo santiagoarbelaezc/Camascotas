@@ -221,9 +221,25 @@
 
       <div>
         <h2 class="text-2xl font-black text-brand-petrol mb-2 tracking-tight">Verifica tu correo</h2>
-        <p class="text-xs text-gray-500 font-medium leading-relaxed max-w-sm mx-auto">
-          Hemos enviado un código de seguridad de <strong class="text-brand-petrol font-bold">6 dígitos</strong> al correo electrónico: <br>
-          <span class="inline-block mt-1 px-3 py-1.5 bg-brand-turquesa/10 rounded-xl font-bold text-brand-petrol text-sm break-all">{{ correoVerificacion }}</span>
+        
+        <div *ngIf="correoVerificacion && tiempoReenvio > 0">
+          <p class="text-xs text-gray-500 font-medium leading-relaxed max-w-sm mx-auto">
+            Hemos enviado un código de seguridad de <strong class="text-brand-petrol font-bold">6 dígitos</strong> al correo electrónico: <br>
+            <span class="inline-block mt-1 px-3 py-1.5 bg-brand-turquesa/10 rounded-xl font-bold text-brand-petrol text-sm break-all">{{ correoVerificacion }}</span>
+          </p>
+        </div>
+
+        <div *ngIf="!correoVerificacion || tiempoReenvio === 0" class="max-w-sm mx-auto mt-4 text-left">
+          <label class="block text-[10px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-2">
+            Correo electrónico
+          </label>
+          <input type="email" name="correoVerificacion" required
+            [(ngModel)]="correoVerificacion"
+            class="block w-full px-4 py-3 border-2 border-brand-petrol/20 text-brand-petrol rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/20 focus:border-brand-turquesa text-sm transition-all shadow-sm" placeholder="Ingresa tu correo registrado">
+        </div>
+        
+        <p class="text-[11px] text-brand-petrol font-bold mt-4 bg-brand-petrol/10 py-2 px-4 rounded-lg inline-block">
+          ⚠️ ¡Por favor, revisa tu bandeja de Spam o Correo No Deseado!
         </p>
       </div>
 
@@ -255,7 +271,7 @@
       <div class="pt-4 border-t border-gray-100 flex flex-col gap-2">
         <button type="button" (click)="reenviarMiCodigo()" [disabled]="tiempoReenvio > 0"
           class="text-xs font-bold text-brand-turquesa hover:text-brand-petrol transition-colors uppercase tracking-wider disabled:text-gray-400 disabled:cursor-not-allowed">
-          {{ tiempoReenvio > 0 ? '¿No llegó? Reenviar en ' + tiempoReenvio + 's' : '🔄 ¿No recibiste el código? Reenviar' }}
+          {{ tiempoReenvio > 0 ? '¿No llegó? Reenviar en ' + tiempoReenvioFormateado : '🔄 ¿No recibiste el código? Reenviar' }}
         </button>
 
         <button type="button" (click)="cambiarModo('login')"
