@@ -1,0 +1,245 @@
+/* =========================================================
+   SHARED LEGAL PAGE SYSTEM — Camascotas
+   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* HERO */
+.legal-page {
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #f0fffe 0%, #ffffff 60%);
+  padding-top: 100px;
+}
+
+.legal-hero {
+  background: linear-gradient(135deg, #004153 0%, #00b3bc 100%);
+  padding: 80px 24px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.legal-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(160deg, #f0fffe 0%, #ffffff 60%);
+  clip-path: ellipse(60% 100% at 50% 100%);
+}
+
+.legal-hero-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.legal-hero-icon {
+  width: 72px;
+  height: 72px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  color: white;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.legal-hero-icon svg {
+  width: 38px;
+  height: 38px;
+}
+
+.legal-hero-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+.legal-hero-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.75);
+  font-weight: 300;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.legal-hero-link {
+  color: #b1d616;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(177,214,22,0.4);
+  transition: border-color 0.2s;
+}
+.legal-hero-link:hover { border-color: #b1d616; }
+
+/* TABS */
+.faq-body {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+}
+
+.faq-tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.faq-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  background: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.faq-tab:hover {
+  border-color: #00b3bc;
+  color: #00b3bc;
+}
+
+.faq-tab.active {
+  background: #00b3bc;
+  border-color: #00b3bc;
+  color: white;
+  box-shadow: 0 4px 20px rgba(0,179,188,0.3);
+}
+
+.faq-tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.faq-tab-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ACCORDION */
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 60px;
+}
+
+.faq-item {
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  background: white;
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.faq-item.open {
+  border-color: #00b3bc;
+  box-shadow: 0 6px 24px rgba(0,179,188,0.1);
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+  cursor: pointer;
+  gap: 16px;
+  transition: background 0.2s;
+}
+
+.faq-question:hover {
+  background: #f8fffe;
+}
+
+.faq-chevron {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  transition: all 0.3s ease;
+}
+
+.faq-item.open .faq-chevron {
+  background: #00b3bc;
+  color: white;
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.faq-answer-inner {
+  padding: 0 24px 24px;
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.75;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 16px;
+}
+
+/* CTA */
+.legal-cta {
+  text-align: center;
+  padding: 48px 32px;
+  background: linear-gradient(135deg, #f0fffe 0%, #e0f7f8 100%);
+  border-radius: 24px;
+  border: 1px solid rgba(0,179,188,0.2);
+}
+
+.legal-cta p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #334155;
+  margin: 0 0 20px;
+}
+
+.legal-cta-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #00b3bc;
+  color: white;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.legal-cta-btn:hover {
+  background: #008f97;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,179,188,0.35);
+}

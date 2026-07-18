@@ -56,6 +56,10 @@ export class LoginComponent implements OnInit {
         this.modo = 'registro';
       } else if (params['mode'] === 'verificacion') {
         this.modo = 'verificacion';
+        const pendingEmail = this.auth.getPendingVerification();
+        if (pendingEmail) {
+          this.correoVerificacion = pendingEmail;
+        }
       } else {
         this.modo = 'login';
       }
@@ -93,6 +97,7 @@ export class LoginComponent implements OnInit {
         const resp = err?.error;
         if (resp?.requiere_verificacion) {
           this.correoVerificacion = resp.correo ?? this.correo;
+          this.auth.setPendingVerification(this.correoVerificacion);
           this.errorVerificacion = resp.error ?? 'Ingresa el código enviado a tu correo.';
           this.cambiarModo('verificacion');
         } else {
@@ -132,6 +137,7 @@ export class LoginComponent implements OnInit {
         this.cargando = false;
         if (res.requiere_verificacion) {
           this.correoVerificacion = res.correo ?? this.correo;
+          this.auth.setPendingVerification(this.correoVerificacion);
           this.mensajeVerificacion = res.mensaje ?? 'Hemos enviado un código de 6 dígitos a tu correo.';
           this.cambiarModo('verificacion');
           this.iniciarTemporizadorReenvio();
@@ -162,6 +168,7 @@ export class LoginComponent implements OnInit {
       next: (res) => {
         this.cargandoVerificacion = false;
         if (res.token && res.usuario) {
+          this.auth.clearPendingVerification();
           this.auth.guardarSesion(res);
           this.redirigirUsuario(res.usuario.rol);
         } else {

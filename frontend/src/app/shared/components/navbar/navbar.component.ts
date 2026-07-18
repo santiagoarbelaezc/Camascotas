@@ -37,6 +37,10 @@ export class NavbarComponent {
     });
   }
 
+  get hasPendingVerification(): boolean {
+    return this.auth.getPendingVerification() !== null;
+  }
+
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.scrolled = window.scrollY > 10;

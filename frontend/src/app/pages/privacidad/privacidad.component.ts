@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-footer',
+  selector: 'app-privacidad',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  templateUrl: './privacidad.component.html',
+  styleUrl: './privacidad.component.css'
 })
-export class FooterComponent {}
+export class PrivacidadComponent {}

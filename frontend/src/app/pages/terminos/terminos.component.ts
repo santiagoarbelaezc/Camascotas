@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-terminos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [RouterModule],
   templateUrl: './terminos.component.html',
   styleUrl: './terminos.component.css'
 })
-export class TerminosComponent {
-}
+export class TerminosComponent {}

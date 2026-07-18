@@ -71,39 +71,95 @@ export class AdminUsuariosComponent implements OnInit {
     });
   }
 
+  // Estado del Modal de Confirmación
+  showConfirmModal = false;
+  modalConfig: { titulo: string; mensaje: string; tipo: 'eliminar' | 'estado'; cliente: ClienteUsuario | null } = {
+    titulo: '',
+    mensaje: '',
+    tipo: 'eliminar',
+    cliente: null
+  };
+
+  // Estado del Toast (Gadget de éxito/error)
+  toast = {
+    show: false,
+    mensaje: '',
+    tipo: 'success' as 'success' | 'error'
+  };
+  toastTimeout: any;
+
+  mostrarToast(mensaje: string, tipo: 'success' | 'error' = 'success'): void {
+    this.toast = { show: true, mensaje, tipo };
+    if (this.toastTimeout) clearTimeout(this.toastTimeout);
+    this.toastTimeout = setTimeout(() => {
+      this.toast.show = false;
+    }, 3000);
+  }
+
   inicial(nombre: string | null): string {
     return nombre?.charAt(0).toUpperCase() ?? '?';
   }
 
   alternarEstado(cliente: ClienteUsuario): void {
     const nuevoEstado = !cliente.activo;
-    const accion = nuevoEstado ? 'activar' : 'desactivar';
+    const accion = nuevoEstado ? 'Activar' : 'Desactivar';
     
-    if (confirm(`¿Estás seguro de que deseas ${accion} a ${cliente.nombre}?`)) {
+    this.modalConfig = {
+      titulo: `${accion} Usuario`,
+      mensaje: `¿Estás seguro de que deseas ${accion.toLowerCase()} a ${cliente.nombre}?`,
+      tipo: 'estado',
+      cliente: cliente
+    };
+    this.showConfirmModal = true;
+  }
+
+  eliminarUsuario(cliente: ClienteUsuario): void {
+    this.modalConfig = {
+      titulo: 'Eliminar Usuario',
+      mensaje: `¿Estás seguro de que deseas ELIMINAR a ${cliente.nombre}? Esta acción no se puede deshacer.`,
+      tipo: 'eliminar',
+      cliente: cliente
+    };
+    this.showConfirmModal = true;
+  }
+
+  confirmarAccionModal(): void {
+    if (!this.modalConfig.cliente) return;
+    const cliente = this.modalConfig.cliente;
+
+    if (this.modalConfig.tipo === 'estado') {
+      const nuevoEstado = !cliente.activo;
       this.usuariosService.cambiarEstadoUsuario(cliente.id, nuevoEstado).subscribe({
         next: (res) => {
           cliente.activo = nuevoEstado;
+          this.showConfirmModal = false;
+          this.mostrarToast(`Usuario ${nuevoEstado ? 'activado' : 'desactivado'} con éxito.`, 'success');
         },
         error: (err) => {
-          alert('Error al cambiar el estado del usuario.');
+          this.showConfirmModal = false;
+          this.mostrarToast('Error al cambiar el estado del usuario.', 'error');
+          console.error(err);
+        }
+      });
+    } else if (this.modalConfig.tipo === 'eliminar') {
+      this.usuariosService.eliminarUsuario(cliente.id).subscribe({
+        next: (res) => {
+          this.clientes = this.clientes.filter(c => c.id !== cliente.id);
+          this.filtrar();
+          this.showConfirmModal = false;
+          this.mostrarToast('Usuario eliminado correctamente.', 'success');
+        },
+        error: (err) => {
+          this.showConfirmModal = false;
+          this.mostrarToast('Error al eliminar el usuario.', 'error');
           console.error(err);
         }
       });
     }
   }
 
-  eliminarUsuario(cliente: ClienteUsuario): void {
-    if (confirm(`¿Estás seguro de que deseas ELIMINAR a ${cliente.nombre}? Esta acción no se puede deshacer.`)) {
-      this.usuariosService.eliminarUsuario(cliente.id).subscribe({
-        next: (res) => {
-          this.clientes = this.clientes.filter(c => c.id !== cliente.id);
-          this.filtrar();
-        },
-        error: (err) => {
-          alert('Error al eliminar el usuario.');
-          console.error(err);
-        }
-      });
-    }
+  cerrarModal(): void {
+    this.showConfirmModal = false;
+    this.modalConfig.cliente = null;
   }
 }

@@ -58,11 +58,11 @@
 .navbar-desktop {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
 }
 
 .nav-link {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: #FFFFFF;
   font-weight: 400;
   text-decoration: none;
@@ -400,6 +400,21 @@
 }
 
 /* MEDIA QUERIES */
+@media (max-width: 1200px) {
+  .navbar-desktop {
+    gap: 14px;
+  }
+  .search-container {
+    min-width: 180px;
+    max-width: 250px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .nav-link {
+    font-size: 0.78rem;
+  }
+}
+
 @media (max-width: 768px) {
   .navbar-desktop { display: none; }
   .hamburger { display: flex; }
@@ -412,9 +427,10 @@
    ========================================================= */
 .search-container {
   position: relative;
-  margin-left: 60px;
-  margin-right: 60px;
+  margin-left: 20px;
+  margin-right: 20px;
   flex: 1;
+  min-width: 280px;
   max-width: 450px;
 }
 

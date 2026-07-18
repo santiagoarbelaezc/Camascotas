@@ -76,4 +76,16 @@ export class AuthService {
   actualizarUsuarioSesion(nuevoUsuario: any): void {
     localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
   }
+
+  setPendingVerification(correo: string): void {
+    sessionStorage.setItem('pendingVerificationEmail', correo);
+  }
+
+  getPendingVerification(): string | null {
+    return sessionStorage.getItem('pendingVerificationEmail');
+  }
+
+  clearPendingVerification(): void {
+    sessionStorage.removeItem('pendingVerificationEmail');
+  }
 }

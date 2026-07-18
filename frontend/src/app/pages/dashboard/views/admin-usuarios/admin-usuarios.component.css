@@ -119,6 +119,10 @@
   background: #f8fffe;
 }
 
+.btn-eliminar:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
 .table-row:last-child {
   border-bottom: none;
 }
@@ -314,4 +318,234 @@
 .page-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+/* ============================================================
+   ESTILOS DE ACCIONES
+   ============================================================ */
+.td-acciones {
+  white-space: nowrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-activo {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+.btn-activo:hover {
+  background-color: rgba(34, 197, 94, 0.2);
+}
+
+.btn-inactivo {
+  background-color: rgba(234, 179, 8, 0.1);
+  color: #eab308;
+}
+.btn-inactivo:hover {
+  background-color: rgba(234, 179, 8, 0.2);
+}
+
+.btn-eliminar {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+.btn-eliminar:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+/* ============================================================
+   MODAL DE CONFIRMACIÓN
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.modal-body {
+  padding: 24px;
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.modal-body p {
+  margin: 0;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-cancel {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #f1f5f9;
+}
+
+.btn-confirm {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-confirm-danger {
+  background-color: #ef4444;
+}
+
+.btn-confirm-danger:hover {
+  background-color: #dc2626;
+}
+
+.btn-confirm-warning {
+  background-color: #f59e0b;
+}
+
+.btn-confirm-warning:hover {
+  background-color: #d97706;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   TOAST NOTIFICATIONS
+   ============================================================ */
+.toast-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999;
+  animation: slideInRight 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  color: #fff;
+  min-width: 250px;
+}
+
+.toast-content svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toast-message {
+  font-size: 0.95rem;
+}
+
+.toast-success .toast-content {
+  background: #10b981;
+}
+
+.toast-error .toast-content {
+  background: #ef4444;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

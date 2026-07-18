@@ -10,8 +10,6 @@
     <nav class="navbar-desktop">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">Inicio</a>
       <a routerLink="/productos" routerLinkActive="active" class="nav-link">Productos</a>
-      <a routerLink="/personalizar-cama" routerLinkActive="active" class="nav-link">Personalizar Cama</a>
-      <a *ngIf="isLogueado" routerLink="/mis-camas" routerLinkActive="active" class="nav-link">Mis Camas</a>
       <a routerLink="/contacto" routerLinkActive="active" class="nav-link">Contáctanos</a>
       <a routerLink="/nosotros" routerLinkActive="active" class="nav-link">Nosotros</a>
       <span class="nav-link ubicacion-text" style="cursor: default;">
@@ -88,8 +86,6 @@
   <div class="mobile-nav-links">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="navigateAndClose()">Inicio</a>
     <a routerLink="/productos" routerLinkActive="active" (click)="navigateAndClose()">Productos</a>
-    <a routerLink="/personalizar-cama" routerLinkActive="active" (click)="navigateAndClose()">Personalizar Cama</a>
-    <a *ngIf="isLogueado" routerLink="/mis-camas" routerLinkActive="active" (click)="navigateAndClose()">Mis Camas</a>
     <a routerLink="/contacto" routerLinkActive="active" (click)="navigateAndClose()">Contáctanos</a>
     <a routerLink="/nosotros" routerLinkActive="active" (click)="navigateAndClose()">Nosotros</a>
     

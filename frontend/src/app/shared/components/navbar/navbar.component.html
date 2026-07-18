@@ -71,7 +71,7 @@
         <a [routerLink]="['/login']" [queryParams]="{ mode: 'registro' }" class="nav-register-btn-desktop">
           Registrarse
         </a>
-        <a [routerLink]="['/login']" [queryParams]="{ mode: 'verificacion' }" class="nav-register-btn-desktop" style="background-color: transparent; border: 1px solid var(--brand-turquesa); color: var(--brand-turquesa); margin-right: 12px;">
+        <a *ngIf="hasPendingVerification" [routerLink]="['/login']" [queryParams]="{ mode: 'verificacion' }" class="nav-register-btn-desktop" style="background-color: transparent; border: 1px solid var(--turquesa); color: var(--turquesa); margin-right: 12px;">
           Verificar Cuenta
         </a>
         <a routerLink="/login" class="nav-admin-btn" aria-label="Ingreso Administrativo" title="Ingreso Administrativo">
@@ -80,7 +80,7 @@
           </svg>
         </a>
       </ng-container>
-
+ 
       <ng-template #userSession>
         <div class="user-session-wrap">
           <span class="user-name">Hola, {{ auth.getUsuario()?.nombre }}</span>
@@ -104,7 +104,7 @@
         </div>
       </ng-template>
     </nav>
-
+ 
     <!-- Lado Derecho Mobile (Registro & Hamburguesa) -->
     <div class="mobile-actions desktop-hidden">
       <!-- Registro / Sesión de Cliente Mobile -->
@@ -112,7 +112,7 @@
         <a [routerLink]="['/login']" [queryParams]="{ mode: 'registro' }" class="nav-register-btn-mobile">
           Registrarse
         </a>
-        <a [routerLink]="['/login']" [queryParams]="{ mode: 'verificacion' }" class="nav-register-btn-mobile" style="background-color: transparent; border: 1px solid var(--brand-turquesa); color: var(--brand-turquesa);">
+        <a *ngIf="hasPendingVerification" [routerLink]="['/login']" [queryParams]="{ mode: 'verificacion' }" class="nav-register-btn-mobile" style="background-color: transparent; border: 1px solid var(--turquesa); color: var(--turquesa);">
           Verificar Cuenta
         </a>
       </ng-container>

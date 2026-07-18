@@ -98,6 +98,14 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/perfil/perfil.component').then(m => m.PerfilComponent)
   },
   {
+    path: 'privacidad',
+    loadComponent: () => import('./pages/privacidad/privacidad.component').then(m => m.PrivacidadComponent)
+  },
+  {
+    path: 'garantia',
+    loadComponent: () => import('./pages/garantia/garantia.component').then(m => m.GarantiaComponent)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }
