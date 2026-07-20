@@ -114,8 +114,9 @@
 .full-width-img {
   width: 100%;
   height: auto;
-  aspect-ratio: 1536 / 1024;
+  aspect-ratio: 1024 / 1536;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -194,7 +195,7 @@
 
   .full-width-img {
     height: auto;
-    aspect-ratio: 864 / 1821;
+    aspect-ratio: 1024 / 1536;
   }
 
   .floating-badge {
