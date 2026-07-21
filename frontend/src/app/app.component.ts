@@ -46,15 +46,17 @@ export class AppComponent {
     private statsService: StatsService,
     private pwaService: PwaService
   ) {
-    // Sugerir instalación de PWA tras 5 segundos en dispositivos móviles si no se ha instalado
-    if (typeof window !== 'undefined' && (this.pwaService.isIos || this.pwaService.isAndroid) && !this.pwaService.isInstalled) {
-      setTimeout(() => {
-        const dismissed = localStorage.getItem('pwa_prompt_dismissed');
-        if (!dismissed) {
-          this.pwaService.abrirModal();
-          localStorage.setItem('pwa_prompt_dismissed', '1');
-        }
-      }, 5000);
+    // Sugerir instalación de PWA tras 3.5 segundos en dispositivos móviles si no se ha instalado
+    if (typeof window !== 'undefined') {
+      const isMobile = this.pwaService.isIos || this.pwaService.isAndroid || window.innerWidth <= 768;
+      if (isMobile && !this.pwaService.isInstalled) {
+        setTimeout(() => {
+          const dismissedInSession = sessionStorage.getItem('pwa_prompt_dismissed');
+          if (!dismissedInSession) {
+            this.pwaService.abrirModal();
+          }
+        }, 3500);
+      }
     }
     // Suscribirse al estado de carga manual
     this.loadingService.loading$.subscribe(state => {

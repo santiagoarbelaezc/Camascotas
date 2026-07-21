@@ -15,14 +15,8 @@ export class HeaderEnlacesComponent implements OnInit, OnDestroy {
   currentSlide = 0;
   private slideInterval: any;
 
-  // Items para escritorio
+  // Items para escritorio (Esquinas -> Centro, Centro -> Esquinas)
   items = [
-    {
-      title: 'Mundo Gaturro',
-      subtitle: 'Explora rascadores y camas diseñadas para su instinto',
-      img: 'assets/images/home1.jpeg',
-      link: '/productos'
-    },
     {
       title: 'Línea para perros',
       subtitle: 'Todo en un solo lugar: descanso, viaje y diversión',
@@ -30,15 +24,21 @@ export class HeaderEnlacesComponent implements OnInit, OnDestroy {
       link: '/productos'
     },
     {
-      title: 'Sofás de Lujo',
-      subtitle: 'Confort de otro nivel para los que más quieres',
-      img: 'assets/images/home3.jpeg',
+      title: 'Mundo Gaturro',
+      subtitle: 'Explora rascadores y camas diseñadas para su instinto',
+      img: 'assets/images/home1.jpeg',
       link: '/productos'
     },
     {
       title: 'Novedades 2024',
       subtitle: 'Descubre las tendencias en descanso para mascotas',
       img: 'assets/images/home4.jpeg',
+      link: '/productos'
+    },
+    {
+      title: 'Sofás de Lujo',
+      subtitle: 'Confort de otro nivel para los que más quieres',
+      img: 'assets/images/home3.jpeg',
       link: '/productos'
     }
   ];

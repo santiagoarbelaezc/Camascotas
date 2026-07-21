@@ -139,29 +139,10 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.showLegalModal = !this.showLegalModal;
   }
 
-  /** Manejar scroll para expandir a Husky de forma estable */
+  /** Manejar scroll estable sin saltos de layout */
   onScroll(): void {
     if (!this.chatContainer) return;
-
-    // Si ya hay mensajes en el chat, el Husky se mantiene en modo mini (oculto en móvil)
-    // para evitar que al subir el scroll a leer el historial vuelva a expandirse y cause fallos.
     if (this.messages.length > 0) {
-      this.isMini = true;
-      return;
-    }
-
-    const element = this.chatContainer.nativeElement;
-    const scrollPos = element.scrollTop;
-
-    // Si hay carga o estamos procesando, no permitimos expandir
-    if (this.isLoading) return;
-
-    // Solo expandir si estamos en el tope real
-    if (scrollPos <= 5) {
-      this.isMini = false;
-    } 
-    // Solo minimizar si hemos bajado un poco (umbral reducido de 80 a 15)
-    else if (scrollPos > 15) {
       this.isMini = true;
     }
   }
@@ -169,14 +150,12 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
   onInputFocus(): void {
     document.body.classList.add('chat-keyboard-open');
     this.shouldScroll = true;
-    // Forzar scroll al fondo después del reajuste del viewport por el teclado virtual
     setTimeout(() => {
       this.scrollToBottom();
-    }, 100);
+    }, 150);
   }
 
   onInputBlur(): void {
-    // Retrasar levemente para permitir clicks en el botón de enviar
     setTimeout(() => {
       document.body.classList.remove('chat-keyboard-open');
     }, 150);
@@ -190,28 +169,25 @@ export class AsistenteComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   goToProduct(p: any): void {
-    // Redirigir a /compra/muebles-mascotas/slug-pid
     const seoUrl = `/compra/muebles-mascotas/${p.slug}-p${p.id}`;
     this.router.navigateByUrl(seoUrl);
   }
 
   scrollToTop(): void {
+    this.isMini = false;
     if (this.chatContainer) {
       this.chatContainer.nativeElement.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
     }
-    // Opcional: Expandir a Husky si estaba minimizado
-    this.isMini = false;
   }
 
   private scrollToBottom(): void {
-    try {
-      if (this.chatContainer) {
-        this.chatContainer.nativeElement.scrollTop =
-          this.chatContainer.nativeElement.scrollHeight;
-      }
-    } catch { }
+    if (!this.chatContainer) return;
+    const el = this.chatContainer.nativeElement;
+    requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight;
+    });
   }
 }

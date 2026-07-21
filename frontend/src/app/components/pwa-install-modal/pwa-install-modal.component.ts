@@ -145,6 +145,9 @@ export class PwaInstallModalComponent implements OnInit, OnDestroy {
   }
 
   cerrarModal(): void {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('pwa_prompt_dismissed', '1');
+    }
     this.pwaService.ocultarModal();
   }
 
