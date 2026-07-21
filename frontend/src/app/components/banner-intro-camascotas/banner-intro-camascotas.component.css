@@ -1,0 +1,27 @@
+.intro-camascotas-bar {
+  background: var(--azul-oscuro, #003644);
+}
+
+.brand-logo-img {
+  height: 135px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.4));
+  transition: transform 0.4s ease;
+}
+
+.brand-logo-img:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 1024px) {
+  .brand-logo-img {
+    height: 105px;
+  }
+}
+
+@media (max-width: 640px) {
+  .brand-logo-img {
+    height: 80px;
+  }
+}

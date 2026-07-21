@@ -1,89 +1,78 @@
-<section class="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12 my-12 animate-fadeIn">
-  <div class="contact-aviso-card relative overflow-hidden rounded-[36px] p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10 border border-white/10">
+<section class="w-full my-0 py-0 overflow-hidden">
+  <div class="contact-aviso-bar w-full py-6 md:py-8 px-6 md:px-12 flex flex-col lg:flex-row items-center justify-between gap-6 border-b border-white/10 shadow-lg">
     
-    <!-- Luces decorativas ambientales de fondo -->
-    <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-[#B1D616]/15 rounded-full blur-[140px] pointer-events-none"></div>
-    <div class="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-[#00B3BC]/25 rounded-full blur-[150px] pointer-events-none"></div>
-
-    <!-- Contenido Izquierdo: Badges, Título, Subtítulo y Horario -->
-    <div class="flex-1 space-y-5 text-center lg:text-left relative z-10 max-w-4xl">
-      
-      <!-- Badges superiores -->
+    <!-- Contenido Izquierdo: Mensaje, Dirección & Punto de Fábrica -->
+    <div class="flex-1 space-y-3.5 text-center lg:text-left max-w-4xl">
+      <!-- Badges Superiores -->
       <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#B1D616]/20 border border-[#B1D616]/40 text-[#B1D616] text-xs font-black tracking-[0.25em] uppercase backdrop-blur-md">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#B1D616]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-          </svg>
-          Aviso de Atención
+        <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold whitespace-nowrap">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span>Asesores en Línea</span>
         </span>
-
-        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold tracking-wider">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          ● Asesores en Línea
+        
+        <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-[#B1D616] text-xs font-bold uppercase tracking-wider whitespace-nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#B1D616] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>Punto de Fábrica Oficial</span>
         </span>
       </div>
 
-      <!-- Título Sólido (Sin degradado) y Gran Impacto -->
-      <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-[56px] font-black text-white leading-[1.1] tracking-tight">
-        Habla con nosotros, <br class="hidden sm:inline">
-        <span class="text-[#B1D616]">contáctanos hoy mismo</span>
+      <!-- Título -->
+      <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-tight tracking-tight">
+        Visítanos en nuestro punto de fábrica o <span class="text-[#B1D616]">habla con nosotros en línea</span>
       </h2>
 
-      <!-- Descripción Clara y Legible -->
-      <p class="text-white/90 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-3xl mx-auto lg:mx-0">
-        ¿Tienes dudas sobre qué talla es ideal para tu peludito, métodos de envío o quieres recibir recomendaciones personalizadas? Nuestro equipo está listo para ayudarte al instante.
-      </p>
-
-      <!-- Horario y Garantía -->
-      <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-white/70 font-medium">
+      <!-- Dirección Completa y Horario -->
+      <div class="flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs md:text-sm text-white/90 font-medium">
         <div class="flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#00B3BC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#B1D616] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          <span>Atención Lunes a Sábado de 8:00 AM a 6:00 PM</span>
+          <span class="whitespace-nowrap"><strong>Espumas y Plásticos SAS</strong> — Cra. 19 #19 - 27, Armenia, Quindío</span>
         </div>
-        <div class="hidden sm:flex items-center gap-2 text-emerald-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div class="hidden sm:flex items-center gap-2 text-white/75">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#00B3BC] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span>Respuesta Rápida Garantizada</span>
+          <span class="whitespace-nowrap">Lun - Sáb: 8:00 AM - 6:00 PM</span>
         </div>
       </div>
     </div>
 
-    <!-- Contenido Derecho: Botones en disposición horizontal/grid equilibrada -->
-    <div class="w-full lg:w-auto flex flex-col sm:flex-row lg:flex-col xl:flex-row items-stretch sm:items-center gap-4 relative z-10 shrink-0">
-      
-      <!-- Hablar por WhatsApp -->
-      <a [href]="generarEnlaceWhatsApp()" target="_blank"
-        class="group relative inline-flex items-center justify-center gap-3.5 px-8 py-5 bg-[#25D366] hover:bg-[#20bd5a] text-white font-black text-base uppercase tracking-wider rounded-2xl shadow-2xl shadow-[#25D366]/30 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 whitespace-nowrap">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" class="group-hover:rotate-12 transition-transform duration-300">
-          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/>
+    <!-- Contenido Derecho: Botones con Iconos Vectoriales Pulidos -->
+    <div class="flex flex-wrap items-center justify-center gap-3.5 shrink-0">
+      <!-- Botón ¿Cómo Llegar? (Toma Ubicación GPS) -->
+      <button (click)="comoLlegar()"
+        class="inline-flex items-center gap-2.5 px-5 py-3 bg-[#B1D616] hover:bg-[#c7ef1a] text-[#002835] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 whitespace-nowrap cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#002835] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
         </svg>
-        <span>Hablar por WhatsApp</span>
+        <span>¿Cómo Llegar?</span>
+      </button>
+
+      <!-- Ver Ubicación en Google Maps -->
+      <a href="https://www.google.com/maps/place/Espumas+y+Pl%C3%A1sticos+SAS/@4.5356269,-75.677381,17z" target="_blank"
+        class="inline-flex items-center gap-2 px-4.5 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider rounded-xl border border-white/20 transition-all whitespace-nowrap">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#00B3BC] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+        <span>Ver Mapa</span>
       </a>
 
-      <!-- Centro de Contacto & Llamada (agrupados en columna en XL para perfecto balance) -->
-      <div class="flex flex-col sm:flex-row lg:flex-col gap-3.5 w-full sm:w-auto">
-        <!-- Centro de Contacto -->
-        <a routerLink="/contacto"
-          class="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-sm uppercase tracking-wider rounded-2xl border border-white/20 hover:border-white/40 backdrop-blur-lg transition-all duration-300 transform hover:-translate-y-1 active:scale-95 whitespace-nowrap">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#00B3BC]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          <span>Centro de Contacto</span>
-        </a>
-
-        <!-- Línea Telefónica Directa -->
-        <a href="tel:+573207793380"
-          class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-black/25 hover:bg-black/40 text-white/90 hover:text-white rounded-xl border border-white/10 text-xs font-semibold tracking-wider transition-all whitespace-nowrap">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#B1D616]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-          </svg>
-          <span>Llamada: +57 320 779 3380</span>
-        </a>
-      </div>
-
+      <!-- Hablar por WhatsApp -->
+      <a [href]="generarEnlaceWhatsApp()" target="_blank"
+        class="inline-flex items-center gap-2.5 px-5 py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 whitespace-nowrap">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/>
+        </svg>
+        <span>WhatsApp</span>
+      </a>
     </div>
 
   </div>
