@@ -11,4 +11,6 @@ return function($router) {
     $router->add('POST', '/auth/google',           [authcontroller::class, 'googleLogin']);
     $router->add('POST', '/auth/verificar-codigo', [authcontroller::class, 'verificarCodigo']);
     $router->add('POST', '/auth/reenviar-codigo',  [authcontroller::class, 'reenviarCodigo']);
+    $router->add('POST', '/auth/recuperar-password', [authcontroller::class, 'solicitarRecuperacion']);
+    $router->add('POST', '/auth/validar-correo',    [authcontroller::class, 'validarCorreo']);
 };

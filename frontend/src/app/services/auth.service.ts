@@ -44,6 +44,18 @@ export class AuthService {
     );
   }
 
+  solicitarRecuperacion(correo: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/auth/recuperar-password`, { correo }).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  validarCorreo(correo: string): Observable<{ valido: boolean; registrado: boolean; mensaje: string }> {
+    return this.http.post<{ valido: boolean; registrado: boolean; mensaje: string }>(`${this.apiUrl}/auth/validar-correo`, { correo }).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');

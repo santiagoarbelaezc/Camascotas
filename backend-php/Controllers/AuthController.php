@@ -32,8 +32,24 @@ class authcontroller {
         }
 
         if (!password_verify($password, $usuario['password'])) {
-            logger::warning("Login fallido: Contraseña incorrecta ($correo)");
-            response::error('Credenciales incorrectas', 401);
+            $provisionalValida = false;
+            if (!empty($usuario['recovery_mode']) && (int)$usuario['recovery_mode'] === 1 && !empty($usuario['codigo_verificacion'])) {
+                if ((string)$usuario['codigo_verificacion'] === (string)$password) {
+                    if (!empty($usuario['codigo_verificacion_expira']) && strtotime($usuario['codigo_verificacion_expira']) >= time()) {
+                        $provisionalValida = true;
+                    }
+                }
+            }
+
+            if (!$provisionalValida) {
+                logger::warning("Login fallido: Contraseña incorrecta ($correo)");
+                response::error('Credenciales incorrectas', 401);
+            }
+
+            // Si ingresó con código provisional de recuperación
+            $stmtClear = $db->prepare('UPDATE usuarios SET verificado = 1, codigo_verificacion = NULL, codigo_verificacion_expira = NULL, recovery_mode = 0 WHERE id = ?');
+            $stmtClear->execute([$usuario['id']]);
+            logger::info("Login exitoso con código provisional de recuperación: $correo (ID: {$usuario['id']})");
         }
 
         if (isset($usuario['activo']) && (int)$usuario['activo'] === 0) {
@@ -77,6 +93,80 @@ class authcontroller {
         response::success(['mensaje' => 'Logout exitoso']);
     }
 
+    public static function validarDominioEmail(string $correo): bool {
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+        $dominio = substr(strrchr($correo, "@"), 1);
+        if (empty($dominio)) {
+            return false;
+        }
+        return checkdnsrr($dominio, "MX") || checkdnsrr($dominio, "A");
+    }
+
+    public static function validarCorreo(): void {
+        $data   = \App\utils\request::all();
+        $correo = strtolower(trim($data['correo'] ?? ''));
+
+        if (empty($correo) || !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            response::success([
+                'valido' => false,
+                'registrado' => false,
+                'mensaje' => 'Ingresa un formato de correo electrónico válido'
+            ]);
+            return;
+        }
+
+        $dominioValido = self::validarDominioEmail($correo);
+        if (!$dominioValido) {
+            $dominio = substr(strrchr($correo, "@"), 1);
+            response::success([
+                'valido' => false,
+                'registrado' => false,
+                'mensaje' => "El dominio @{$dominio} no tiene servidores de correo activos"
+            ]);
+            return;
+        }
+
+        $db   = database::getConnection();
+        $stmt = $db->prepare('SELECT id, verificado, codigo_verificacion_expira FROM usuarios WHERE correo = ?');
+        $stmt->execute([$correo]);
+        $usuario = $stmt->fetch();
+
+        if ($usuario) {
+            if ((int)$usuario['verificado'] === 1) {
+                response::success([
+                    'valido' => true,
+                    'registrado' => true,
+                    'mensaje' => 'Este correo ya se encuentra registrado'
+                ]);
+                return;
+            }
+
+            if (!empty($usuario['codigo_verificacion_expira']) && strtotime($usuario['codigo_verificacion_expira']) < time()) {
+                response::success([
+                    'valido' => true,
+                    'registrado' => false,
+                    'mensaje' => 'Correo disponible para registro (intento anterior expirado)'
+                ]);
+                return;
+            }
+
+            response::success([
+                'valido' => true,
+                'registrado' => true,
+                'mensaje' => 'Registro pendiente de verificación por código'
+            ]);
+            return;
+        }
+
+        response::success([
+            'valido' => true,
+            'registrado' => false,
+            'mensaje' => 'Correo válido y disponible para registro'
+        ]);
+    }
+
     public static function register(): void {
         $data      = \App\utils\request::all();
         $nombre    = trim($data['nombre']    ?? '');
@@ -94,11 +184,31 @@ class authcontroller {
             response::error('Todos los campos son obligatorios para el registro', 400);
         }
 
+        // 1. Verificación de Dominio DNS MX Real
+        if (!self::validarDominioEmail($correo)) {
+            $dominio = substr(strrchr($correo, "@"), 1);
+            response::error("El dominio @{$dominio} no existe o no tiene un servidor de correo activo para recibir mensajes.", 400);
+        }
+
+        // 2. Validación de Contraseña Segura
+        if (strlen($password) < 7 || !preg_match('/[A-Z]/', $password) || !preg_match('/[0-9]/', $password)) {
+            response::error('La contraseña debe tener al menos 7 caracteres, una letra mayúscula y un número.', 400);
+        }
+
         $db   = database::getConnection();
-        $stmt = $db->prepare('SELECT id FROM usuarios WHERE correo = ?');
+        $stmt = $db->prepare('SELECT id, verificado, codigo_verificacion_expira FROM usuarios WHERE correo = ?');
         $stmt->execute([$correo]);
-        if ($stmt->fetch()) {
-            response::error('El correo ya está registrado', 400);
+        $usuarioExistente = $stmt->fetch();
+
+        if ($usuarioExistente) {
+            // Si la cuenta anterior estaba no verificada y su código ya expiró, depurar registro previo
+            if ((int)$usuarioExistente['verificado'] === 0 && !empty($usuarioExistente['codigo_verificacion_expira']) && strtotime($usuarioExistente['codigo_verificacion_expira']) < time()) {
+                $stmtDel = $db->prepare('DELETE FROM usuarios WHERE id = ?');
+                $stmtDel->execute([$usuarioExistente['id']]);
+                logger::info("Depurado registro no verificado expirado para: $correo");
+            } else {
+                response::error('El correo ya está registrado en nuestro sistema', 400);
+            }
         }
 
         try {
@@ -342,5 +452,42 @@ class authcontroller {
 
         logger::info("Código de verificación reenviado a: $correo");
         response::success(['mensaje' => 'Hemos enviado un nuevo código de 6 dígitos a tu correo electrónico.']);
+    }
+
+    public static function solicitarRecuperacion(): void {
+        $data   = \App\utils\request::all();
+        $correo = strtolower(trim($data['correo'] ?? ''));
+
+        if (empty($correo)) {
+            response::error('El correo electrónico es requerido para la recuperación de contraseña', 400);
+        }
+
+        if (!self::validarDominioEmail($correo)) {
+            $dominio = substr(strrchr($correo, "@"), 1);
+            response::error("El dominio @{$dominio} no posee un servidor de correo activo.", 400);
+        }
+
+        $mensajeGenerico = 'Si el correo electrónico se encuentra registrado en nuestro sistema, hemos enviado un código de 6 dígitos que puedes utilizar como contraseña provisional.';
+
+        $db   = database::getConnection();
+        $stmt = $db->prepare('SELECT * FROM usuarios WHERE correo = ?');
+        $stmt->execute([$correo]);
+        $usuario = $stmt->fetch();
+
+        if (!$usuario || !empty($usuario['google_id'])) {
+            response::success(['mensaje' => $mensajeGenerico]);
+            return;
+        }
+
+        $codigo = sprintf("%06d", random_int(0, 999999));
+        $expira = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+
+        $stmtUpdate = $db->prepare('UPDATE usuarios SET codigo_verificacion = ?, codigo_verificacion_expira = ?, recovery_mode = 1 WHERE id = ?');
+        $stmtUpdate->execute([$codigo, $expira, $usuario['id']]);
+
+        EmailService::enviarCodigoRecuperacion($correo, $usuario['nombre'], $codigo);
+
+        logger::info("Código de recuperación de contraseña solicitado para: $correo");
+        response::success(['mensaje' => $mensajeGenerico]);
     }
 }

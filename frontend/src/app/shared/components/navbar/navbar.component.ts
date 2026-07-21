@@ -130,4 +130,10 @@ export class NavbarComponent {
     this.suggestions = [];
     this.showSuggestions = false;
   }
+
+  logout(): void {
+    this.auth.logout();
+    this.closeMenu();
+    this.router.navigate(['/login'], { queryParams: { logout: 'success' } });
+  }
 }

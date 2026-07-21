@@ -16,6 +16,7 @@ export class ExplorerCategoriasComponent implements OnInit, AfterViewInit, OnDes
   private isInViewport = false;
 
   categorias: Categoria[] = [];
+  cargando: boolean = true;
   categoriaSeleccionadaId: number | null = null;
   subcategoriaSeleccionadaId: number | null = null;
   
@@ -35,27 +36,30 @@ export class ExplorerCategoriasComponent implements OnInit, AfterViewInit, OnDes
   ) {}
 
   ngOnInit(): void {
-    this.categoriasService.getCategorias().subscribe(cats => {
-      this.categorias = cats;
-      
-      this.route.queryParams.subscribe(params => {
-        const catIdFromUrl = params['categoria_id'] ? +params['categoria_id'] : null;
+    this.categoriasService.getCategorias().subscribe({
+      next: (cats) => {
+        this.categorias = cats;
+        this.cargando = false;
         
-        if (catIdFromUrl) {
-          const found = this.categorias.find(c => c.id === catIdFromUrl);
-          if (found) {
-            this.selectCategoriaInternal(found);
-            this.subcategoriaSeleccionadaId = params['subcategoria_id'] ? +params['subcategoria_id'] : null;
+        this.route.queryParams.subscribe(params => {
+          const catIdFromUrl = params['categoria_id'] ? +params['categoria_id'] : null;
+          
+          if (catIdFromUrl) {
+            const found = this.categorias.find(c => c.id === catIdFromUrl);
+            if (found) {
+              this.selectCategoriaInternal(found);
+              this.subcategoriaSeleccionadaId = params['subcategoria_id'] ? +params['subcategoria_id'] : null;
+            }
+          } else if (this.categorias.length > 0) {
+            this.selectCategoriaInternal(this.categorias[0]);
           }
-        } else if (this.categorias.length > 0) {
-          this.selectCategoriaInternal(this.categorias[0]);
-        }
 
-        // Si ya está en pantalla al cargar, iniciamos el carrusel
-        if (this.isInViewport) {
-          this.startAutoPlay();
-        }
-      });
+          // Si ya está en pantalla al cargar, iniciamos el carrusel
+          if (this.isInViewport) {
+            this.startAutoPlay();
+          }
+        });
+      }
     });
   }
 

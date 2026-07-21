@@ -27,40 +27,60 @@
     (mouseup)="onMouseUp()"
     (mousemove)="onMouseMove($event, trackWrapper)">
     <div class="carrusel-track">
-      <div
-        *ngFor="let item of itemsFiltrados; let i = index"
-        (click)="verProducto(item)"
-        class="carrusel-card">
-
-        <!-- Image Reveal Container -->
-        <div class="card-imagen-container">
-          <img [src]="item.imagen" [alt]="item.nombre" class="card-img card-img-base" />
-          <img [src]="item.imagenHover" [alt]="item.nombre + ' hover'" class="card-img card-img-hover" />
-          <div class="card-overlay"></div>
-          <div [class]="'card-badge ' + getBadgeClass(getBadge(item, i))">
-            {{ getBadge(item, i) }}
+      <!-- SKELETON LOADERS -->
+      <ng-container *ngIf="cargando">
+        <div *ngFor="let sk of [1,2,3,4,5,6]" class="carrusel-card skeleton-card">
+          <div class="card-imagen-container skeleton-box">
+            <div class="skeleton-shimmer"></div>
+          </div>
+          <div class="card-info space-y-2 pt-2">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-price"></div>
+            <div class="flex gap-1.5 pt-1">
+              <div class="skeleton-circle"></div>
+              <div class="skeleton-circle"></div>
+            </div>
           </div>
         </div>
+      </ng-container>
 
-        <!-- Card Info -->
-        <div class="card-info">
-          <p class="card-nombre">{{ item.nombre }}</p>
-          <div class="card-precio-row" *ngIf="mostrarPrecios$ | async">
-            <span *ngIf="item.desde" class="card-desde">— Desde</span>
-            <span class="card-precio">{{ formatPrecio(item.precio) }}</span>
+      <!-- TARJETAS REALES -->
+      <ng-container *ngIf="!cargando">
+        <div
+          *ngFor="let item of itemsFiltrados; let i = index"
+          (click)="verProducto(item)"
+          class="carrusel-card">
+
+          <!-- Image Reveal Container -->
+          <div class="card-imagen-container">
+            <img [src]="item.imagen" [alt]="item.nombre" class="card-img card-img-base" />
+            <img [src]="item.imagenHover" [alt]="item.nombre + ' hover'" class="card-img card-img-hover" />
+            <div class="card-overlay"></div>
+            <div [class]="'card-badge ' + getBadgeClass(getBadge(item, i))">
+              {{ getBadge(item, i) }}
+            </div>
           </div>
-          <div class="card-precio-row card-precio-oculto" *ngIf="!(mostrarPrecios$ | async)">
-            <span class="card-precio-consultar">Consultar precio</span>
-          </div>
-          <div class="card-colores">
-            <span
-              *ngFor="let color of item.colores"
-              class="color-dot"
-              [style.background-color]="color">
-            </span>
+
+          <!-- Card Info -->
+          <div class="card-info">
+            <p class="card-nombre">{{ item.nombre }}</p>
+            <div class="card-precio-row" *ngIf="mostrarPrecios$ | async">
+              <span *ngIf="item.desde" class="card-desde">— Desde</span>
+              <span class="card-precio">{{ formatPrecio(item.precio) }}</span>
+            </div>
+            <div class="card-precio-row card-precio-oculto" *ngIf="!(mostrarPrecios$ | async)">
+              <span class="card-precio-consultar">Consultar precio</span>
+            </div>
+            <div class="card-colores">
+              <span
+                *ngFor="let color of item.colores"
+                class="color-dot"
+                [style.background-color]="color">
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-container>
     </div>
   </div>
 

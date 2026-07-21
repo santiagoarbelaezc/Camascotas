@@ -5,7 +5,32 @@
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
 
-  <div class="explorer-hero-grid">
+  <!-- SKELETON LOADER FOR EXPLORER CATEGORIAS -->
+  <div *ngIf="cargando" class="explorer-hero-grid">
+    <div class="explorer-info-side space-y-6">
+      <div class="category-selector-pills flex flex-wrap gap-2.5">
+        <div class="w-28 h-11 rounded-full bg-white/20 animate-pulse"></div>
+        <div class="w-36 h-11 rounded-full bg-white/20 animate-pulse"></div>
+        <div class="w-28 h-11 rounded-full bg-white/20 animate-pulse"></div>
+      </div>
+      <div class="space-y-4 pt-2">
+        <div class="w-36 h-6 rounded-full bg-white/20 animate-pulse"></div>
+        <div class="w-2/3 h-10 rounded-2xl bg-white/20 animate-pulse"></div>
+        <div class="w-full h-14 rounded-2xl bg-white/20 animate-pulse"></div>
+      </div>
+      <div class="subcategories-pills-grid flex gap-2 pt-2">
+        <div class="w-24 h-9 rounded-full bg-white/20 animate-pulse"></div>
+        <div class="w-28 h-9 rounded-full bg-white/20 animate-pulse"></div>
+      </div>
+    </div>
+    <div class="explorer-visual-side flex items-center justify-center">
+      <div class="visual-container flex items-center justify-center">
+        <div class="w-[320px] h-[320px] lg:w-[420px] lg:h-[420px] rounded-full bg-white/20 animate-pulse"></div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!cargando" class="explorer-hero-grid">
     
     <!-- LEFT SIDE: CONTROLS & INFO -->
     <div class="explorer-info-side">

@@ -90,10 +90,52 @@ export class PerfilComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  confirmarPassword = '';
+  showPassword = false;
+  showConfirmPassword = false;
+
+  get passwordTieneLongitud(): boolean { return !!this.formData.password && this.formData.password.length >= 7; }
+  get passwordTieneMayuscula(): boolean { return !!this.formData.password && /[A-Z]/.test(this.formData.password); }
+  get passwordTieneNumero(): boolean { return !!this.formData.password && /[0-9]/.test(this.formData.password); }
+  get passwordEsSegura(): boolean { return this.passwordTieneLongitud && this.passwordTieneMayuscula && this.passwordTieneNumero; }
+
+  get passwordFortaleza(): number {
+    if (!this.formData.password) return 0;
+    let score = 0;
+    if (this.passwordTieneLongitud) score += 34;
+    if (this.passwordTieneMayuscula) score += 33;
+    if (this.passwordTieneNumero) score += 33;
+    return score;
+  }
+
+  get passwordEtiquetaFortaleza(): string {
+    const score = this.passwordFortaleza;
+    if (score === 0) return '';
+    if (score <= 34) return 'Débil';
+    if (score <= 67) return 'Media';
+    return 'Excelente / Segura';
+  }
+
+  get passwordCoincide(): boolean {
+    if (!this.formData.password && !this.confirmarPassword) return true;
+    return !!this.confirmarPassword && this.formData.password === this.confirmarPassword;
+  }
+
   guardarDatos(): void {
     if (!this.formData.nombre?.trim()) {
       this.toast.show('El nombre no puede estar vacío', 'error');
       return;
+    }
+
+    if (this.formData.password?.trim()) {
+      if (!this.passwordEsSegura) {
+        this.toast.show('La nueva contraseña debe tener al menos 7 caracteres, 1 mayúscula y 1 número', 'error');
+        return;
+      }
+      if (!this.passwordCoincide) {
+        this.toast.show('Las contraseñas no coinciden. Por favor verifícalas.', 'error');
+        return;
+      }
     }
 
     this.guardando = true;
@@ -114,13 +156,13 @@ export class PerfilComponent implements OnInit {
         this.guardando = false;
         if (res && res.usuario) {
           this.perfil = res.usuario;
-          // Actualizar sesión para que el navbar cambie inmediatamente
           const sesionActual = this.auth.getUsuario() || { id: 0, nombre: '', correo: '', rol: '' };
           sesionActual.nombre = res.usuario.nombre;
           this.auth.actualizarUsuarioSesion(sesionActual);
         }
         this.toast.show('¡Tus datos personales han sido actualizados con éxito!', 'success');
-        this.formData.password = ''; // Limpiar campo contraseña
+        this.formData.password = '';
+        this.confirmarPassword = '';
       },
       error: (err) => {
         this.guardando = false;
@@ -132,6 +174,6 @@ export class PerfilComponent implements OnInit {
 
   logout(): void {
     this.auth.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login'], { queryParams: { logout: 'success' } });
   }
 }

@@ -6,11 +6,10 @@
 .sidebar-container {
   position: sticky;
   top: 100px;
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
+  height: fit-content;
+  overflow: visible;
   z-index: 10;
   transition: all 0.3s ease;
-  scrollbar-width: thin;
 }
 
 @media (max-width: 1024px) {
@@ -18,15 +17,21 @@
     position: fixed;
     top: 0;
     left: -100%;
-    width: 85%;
-    max-width: 350px;
+    width: 88%;
+    max-width: 360px;
     height: 100vh;
-    background: white;
-    padding: 30px;
-    box-shadow: 20px 0 60px rgba(0,65,83,0.2);
-    z-index: 1000; /* Higher z-index for the sidebar */
-    transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Smoother curve */
+    background: #ffffff;
+    padding: 24px;
+    box-shadow: 20px 0 60px rgba(0, 40, 53, 0.18);
+    z-index: 1000;
+    transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .sidebar-container::-webkit-scrollbar {
+    display: none;
   }
 
   .sidebar-container.menu-visible {

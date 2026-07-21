@@ -74,6 +74,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   recientesItems: CarruselItem[] = [];
   novedadesItems: CarruselItem[] = [];
+  cargandoRecientes = true;
+  cargandoNovedades = true;
   componentesDinamicos: ComponenteDinamico[] = [];
 
   private scrollTimer: any;
@@ -126,18 +128,26 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productosService.getRecientes(20).subscribe({
       next: (productos) => {
         this.recientesItems = productos.map(toCarruselItem);
+        this.cargandoRecientes = false;
         this.restaurarScrollGuardado();
       },
-      error: (err) => console.warn('Error cargando recientes:', err)
+      error: (err) => {
+        console.warn('Error cargando recientes:', err);
+        this.cargandoRecientes = false;
+      }
     });
 
     // Bottom carrousel: 16 productos aleatorios
     this.productosService.getAleatorios(16).subscribe({
       next: (productos) => {
         this.novedadesItems = productos.map(toCarruselItem);
+        this.cargandoNovedades = false;
         this.restaurarScrollGuardado();
       },
-      error: (err) => console.warn('Error cargando novedades:', err)
+      error: (err) => {
+        console.warn('Error cargando novedades:', err);
+        this.cargandoNovedades = false;
+      }
     });
   }
 

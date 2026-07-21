@@ -243,10 +243,86 @@
         </div>
 
         <!-- Cambio de Contraseña Opcional -->
-        <div class="pt-4 border-t border-slate-100 mt-6">
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Nueva Contraseña <span class="text-slate-400 font-normal lowercase">(deja en blanco para mantener la actual)</span></label>
-          <input type="password" [(ngModel)]="formData.password" name="password" placeholder="••••••••••••"
-            class="w-full sm:w-1/2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-800 font-medium focus:bg-white focus:border-[#00B3BC] focus:ring-4 focus:ring-[#00B3BC]/10 transition-all outline-none">
+        <div class="pt-6 border-t border-slate-100 mt-6 space-y-4">
+          <h4 class="text-sm font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#00B3BC]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            Cambio de Contraseña <span class="text-slate-400 font-normal normal-case text-xs">(opcional, deja en blanco si no deseas cambiarla)</span>
+          </h4>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Nueva Contraseña -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Nueva Contraseña</label>
+              <div class="relative">
+                <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="formData.password" name="password" placeholder="••••••••••••"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 pr-12 text-slate-800 font-medium focus:bg-white focus:border-[#00B3BC] focus:ring-4 focus:ring-[#00B3BC]/10 transition-all outline-none">
+                <button type="button" (click)="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#00B3BC] transition-colors">
+                  <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125l3.125 3.125" /></svg>
+                </button>
+              </div>
+
+              <!-- Barra de Progreso de Fortaleza -->
+              <div *ngIf="formData.password" class="mt-2.5 space-y-1.5">
+                <div class="flex items-center justify-between text-[11px] font-bold">
+                  <span class="text-slate-500">Fortaleza:</span>
+                  <span [ngClass]="{
+                    'text-red-500': passwordFortaleza <= 34,
+                    'text-amber-500': passwordFortaleza > 34 && passwordFortaleza <= 67,
+                    'text-emerald-600': passwordFortaleza > 67
+                  }">{{ passwordEtiquetaFortaleza }}</span>
+                </div>
+                <div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+                  <div class="h-full transition-all duration-500 rounded-full"
+                    [style.width.%]="passwordFortaleza"
+                    [ngClass]="{
+                      'bg-red-500': passwordFortaleza <= 34,
+                      'bg-amber-500': passwordFortaleza > 34 && passwordFortaleza <= 67,
+                      'bg-emerald-500': passwordFortaleza > 67
+                    }"></div>
+                </div>
+              </div>
+
+              <!-- Indicadores de Contraseña Segura -->
+              <div *ngIf="formData.password" class="flex flex-wrap items-center gap-3 mt-2.5 text-xs">
+                <span class="flex items-center gap-1.5 font-medium transition-colors" [ngClass]="passwordTieneLongitud ? 'text-emerald-600 font-bold' : 'text-slate-400'">
+                  <span [ngClass]="passwordTieneLongitud ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'" class="w-4 h-4 rounded-full inline-flex items-center justify-center text-[9px] font-black">✓</span> 7+ letras
+                </span>
+                <span class="flex items-center gap-1.5 font-medium transition-colors" [ngClass]="passwordTieneMayuscula ? 'text-emerald-600 font-bold' : 'text-slate-400'">
+                  <span [ngClass]="passwordTieneMayuscula ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'" class="w-4 h-4 rounded-full inline-flex items-center justify-center text-[9px] font-black">✓</span> 1 Mayúscula
+                </span>
+                <span class="flex items-center gap-1.5 font-medium transition-colors" [ngClass]="passwordTieneNumero ? 'text-emerald-600 font-bold' : 'text-slate-400'">
+                  <span [ngClass]="passwordTieneNumero ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'" class="w-4 h-4 rounded-full inline-flex items-center justify-center text-[9px] font-black">✓</span> 1 Número
+                </span>
+              </div>
+            </div>
+
+            <!-- Confirmar Nueva Contraseña -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Confirmar Nueva Contraseña</label>
+              <div class="relative">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" [(ngModel)]="confirmarPassword" name="confirmarPassword" placeholder="••••••••••••"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 pr-12 text-slate-800 font-medium focus:bg-white focus:border-[#00B3BC] focus:ring-4 focus:ring-[#00B3BC]/10 transition-all outline-none">
+                <button type="button" (click)="showConfirmPassword = !showConfirmPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#00B3BC] transition-colors">
+                  <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125l3.125 3.125" /></svg>
+                </button>
+              </div>
+
+              <!-- Indicador de Coincidencia de Contraseñas -->
+              <div *ngIf="confirmarPassword" class="mt-2.5 text-xs font-bold flex items-center gap-1.5"
+                [ngClass]="passwordCoincide ? 'text-emerald-600' : 'text-red-500'">
+                <span class="w-4 h-4 rounded-full inline-flex items-center justify-center text-[9px] font-black text-white"
+                  [ngClass]="passwordCoincide ? 'bg-emerald-500' : 'bg-red-500'">
+                  {{ passwordCoincide ? '✓' : '✕' }}
+                </span>
+                {{ passwordCoincide ? 'Las contraseñas coinciden' : 'Las contraseñas no coinciden' }}
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <!-- Botones del formulario -->

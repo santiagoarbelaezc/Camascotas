@@ -1,284 +1,535 @@
-<div class="min-h-screen bg-brand-turquesa flex flex-col items-center justify-center py-4 px-4 sm:px-6 lg:px-8 relative overflow-hidden font-poppins">
-  <!-- Decorative Background Blobs -->
-  <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-lima/20 rounded-full blur-[120px]"></div>
-  <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-brand-petrol/20 rounded-full blur-[120px]"></div>
+<div class="login-page-wrapper min-h-[calc(100vh-140px)] py-8 lg:py-16 px-4 sm:px-8 lg:px-12 flex items-center justify-center font-poppins bg-slate-50/70 relative">
 
-  <!-- Back to Home Button -->
-  <button (click)="backToHome()" class="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-3 text-white transition-all duration-300 group z-20">
-    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-brand-petrol shadow-lg flex items-center justify-center group-hover:bg-brand-lima group-hover:text-brand-petrol transform group-hover:-translate-x-1 transition-all duration-300">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-      </svg>
-    </div>
-    <span class="hidden md:inline-block font-bold text-xs uppercase tracking-[0.2em] text-white">Regresar</span>
-  </button>
-
-  <!-- Wrapper Card (Width: max-w-6xl for Registration, max-w-md for Login) -->
-  <div class="w-full bg-white rounded-[32px] shadow-2xl p-6 md:p-8 relative z-10 border border-white/20 transition-all duration-500 my-auto"
-       [ngClass]="modo === 'registro' ? 'max-w-6xl' : 'max-w-md'">
-    
-    <!-- Tab Switcher -->
-    <div *ngIf="modo !== 'verificacion'" class="flex bg-gray-100 p-1 rounded-2xl gap-1 mb-5 max-w-sm mx-auto">
-      <button type="button" (click)="cambiarModo('login')"
-              class="tab-btn flex-1 flex items-center justify-center gap-2 py-2.5 text-xs uppercase tracking-[0.18em] font-black rounded-xl transition-all duration-300"
-              [ngClass]="modo === 'login'
-                ? 'bg-brand-petrol text-white shadow-lg'
-                : 'text-gray-400 hover:text-gray-600'">
-        Ingresar
-      </button>
-      <button type="button" (click)="cambiarModo('registro')"
-              class="tab-btn flex-1 flex items-center justify-center gap-2 py-2.5 text-xs uppercase tracking-[0.18em] font-black rounded-xl transition-all duration-300"
-              [ngClass]="modo === 'registro'
-                ? 'bg-brand-lima text-brand-petrol shadow-lg'
-                : 'text-gray-400 hover:text-gray-600'">
-        Registrarse
-      </button>
-    </div>
-
-    <!-- ── VISTA LOGIN (Centered & Compact) ── -->
-    <div *ngIf="modo === 'login'" class="space-y-5 max-w-sm mx-auto">
-      <div class="text-center mb-4">
-        <div class="inline-block p-3 bg-brand-turquesa/5 rounded-2xl mb-3">
-          <img src="assets/icons/logo.png" alt="Camascotas" class="h-7 w-auto filter contrast-125">
-        </div>
-        <h2 class="text-2xl font-black text-brand-petrol mb-1 tracking-tight">Bienvenido de vuelta</h2>
-        <p class="text-xs text-gray-400 font-medium">Ingresa para gestionar tu cuenta</p>
+  <!-- Modal Alerta Recuperación de Contraseña -->
+  <div *ngIf="mostrarModalRecuperacion" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+    <div class="bg-white rounded-3xl p-6 lg:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-5 animate-in fade-in zoom-in duration-300">
+      
+      <!-- Icono Correo / Candado -->
+      <div class="w-16 h-16 rounded-full bg-amber-50 border border-amber-100 flex items-center justify-center mx-auto text-amber-500 shadow-inner">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
       </div>
 
-      <form class="space-y-4" (submit)="login(); $event.preventDefault()">
-        <div>
-          <label for="email-address" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Correo Electrónico</label>
-          <input id="email-address" name="correo" type="email" autocomplete="email" required
-            [(ngModel)]="correo"
-            class="appearance-none relative block w-full px-5 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="tu@correo.com">
+      <div>
+        <h3 class="font-outfit text-xl font-extrabold text-[#002835]">Recuperación de Contraseña</h3>
+        <p class="text-xs text-slate-600 font-medium leading-relaxed mt-3">
+          {{ mensajeModalRecuperacion }}
+        </p>
+      </div>
+
+      <div class="pt-2">
+        <button 
+          (click)="cerrarModalRecuperacion()" 
+          class="w-full py-3.5 bg-[#002835] hover:bg-[#003c4f] text-white font-extrabold text-xs uppercase tracking-[0.15em] rounded-full transition-all shadow-lg active:scale-95">
+          Entendido
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal Éxito Inicio de Sesión (Diferenciado Admin / Cliente) -->
+  <div *ngIf="mostrarModalExito" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border text-center space-y-6 animate-in fade-in zoom-in duration-300"
+      [ngClass]="esAdminLogin ? 'border-indigo-200' : 'border-emerald-200'">
+      
+      <!-- Icono Éxito animado (Admin vs Cliente) -->
+      <div *ngIf="esAdminLogin" class="w-20 h-20 rounded-full bg-[#002835] border-4 border-indigo-100 flex items-center justify-center mx-auto text-brand-lima shadow-xl animate-pulse">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      </div>
+
+      <div *ngIf="!esAdminLogin" class="w-20 h-20 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mx-auto text-emerald-500 shadow-md animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+
+      <div>
+        <span class="inline-block px-3.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-[0.2em] mb-2"
+          [ngClass]="esAdminLogin ? 'bg-indigo-100 text-indigo-800' : 'bg-emerald-100 text-emerald-700'">
+          {{ badgeModalExito }}
+        </span>
+        <h3 class="font-outfit text-2xl font-extrabold text-[#002835]">{{ tituloModalExito }}</h3>
+        <p class="text-xs text-slate-500 font-medium leading-relaxed mt-2">
+          {{ mensajeModalExito }}
+        </p>
+      </div>
+
+      <div class="pt-2">
+        <button 
+          (click)="continuarDespuesDeExito()" 
+          class="w-full py-4 text-white font-extrabold text-xs uppercase tracking-[0.15em] rounded-full transition-all shadow-lg active:scale-95"
+          [ngClass]="esAdminLogin ? 'bg-[#002835] hover:bg-[#004153] shadow-[#002835]/30' : 'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/30'">
+          {{ esAdminLogin ? 'Ir al Dashboard' : 'Continuar a Camascotas' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal Alerta Sesión Cerrada -->
+  <div *ngIf="mostrarModalLogout" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+    <div class="bg-white rounded-3xl p-6 lg:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-5 animate-in fade-in zoom-in duration-300">
+      
+      <!-- Icono Salir -->
+      <div class="w-16 h-16 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center mx-auto text-brand-turquesa shadow-inner">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+      </div>
+
+      <div>
+        <span class="inline-block px-3 py-1 rounded-full bg-blue-50 text-brand-petrol text-[10px] font-extrabold uppercase tracking-[0.2em] mb-2">Sesión Finalizada</span>
+        <h3 class="font-outfit text-xl font-extrabold text-[#002835]">Sesión Cerrada Correctamente</h3>
+        <p class="text-xs text-slate-600 font-medium leading-relaxed mt-2">
+          Has cerrado tu sesión con éxito. Esperamos verte pronto de nuevo en Camascotas.
+        </p>
+      </div>
+
+      <div class="pt-2">
+        <button 
+          (click)="cerrarModalLogout()" 
+          class="w-full py-3.5 bg-[#002835] hover:bg-[#003c4f] text-white font-extrabold text-xs uppercase tracking-[0.15em] rounded-full transition-all shadow-lg active:scale-95">
+          Entendido
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Tarjeta Principal Dividida en 2 Columnas -->
+  <div class="main-auth-card w-full max-w-[1450px] bg-white rounded-[36px] shadow-[0_25px_70px_rgba(0,40,53,0.12)] border border-slate-100/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[640px] relative z-10">
+    
+    <!-- ── COLUMNA IZQUIERDA: CARRUSEL VISUAL CON DESCUENTOS ── -->
+    <div class="lg:col-span-6 relative overflow-hidden hidden md:block min-h-[400px] lg:min-h-[620px]">
+      
+      <!-- Fondo dinámico con transición suave -->
+      <div 
+        *ngFor="let slide of carouselSlides; let i = index"
+        class="absolute inset-0 bg-cover bg-center transition-all duration-1000 transform"
+        [class.opacity-100]="activeSlideIndex === i"
+        [class.scale-100]="activeSlideIndex === i"
+        [class.opacity-0]="activeSlideIndex !== i"
+        [class.scale-105]="activeSlideIndex !== i"
+        [style.background-image]="'url(' + slide.imagen + ')'">
+        
+        <!-- Degradado Oscuro en la base -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#002835]/95 via-[#002835]/40 to-transparent"></div>
+      </div>
+
+      <!-- Contenido Flotante del Carrusel -->
+      <div class="absolute inset-0 p-8 lg:p-12 flex flex-col justify-end text-white z-10">
+        
+        <div *ngFor="let slide of carouselSlides; let i = index"
+             class="transition-all duration-700"
+             [class.hidden]="activeSlideIndex !== i">
+          
+          <!-- Badge Tag -->
+          <span class="inline-block px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-extrabold uppercase tracking-[0.25em] text-brand-lima mb-4 border border-white/20">
+            {{ slide.badge }}
+          </span>
+
+          <!-- Título -->
+          <h2 class="font-outfit text-3xl lg:text-4xl font-extrabold leading-tight text-white mb-3 drop-shadow-md">
+            {{ slide.titulo }}
+          </h2>
+
+          <!-- Subtítulo / Promoción -->
+          <p class="text-sm lg:text-base font-light text-white/90 leading-relaxed mb-8 max-w-md drop-shadow">
+            {{ slide.descripcion }}
+          </p>
         </div>
-        <div>
-          <label for="password" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1.5 px-1">Contraseña</label>
-          <div class="relative">
-            <input id="password" name="password" [type]="showPassword ? 'text' : 'password'" autocomplete="current-password" required
-              [(ngModel)]="password"
-              class="appearance-none relative block w-full px-5 py-3 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50 pr-12" placeholder="••••••••">
-            
-            <button type="button" (click)="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-300 hover:text-brand-turquesa transition-colors">
-              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125l3.125 3.125" />
-              </svg>
+
+        <!-- Controles del Carrusel (Indicadores & Flechas) -->
+        <div class="flex items-center justify-between pt-4 border-t border-white/15">
+          <!-- Dots Indicadores -->
+          <div class="flex items-center gap-2">
+            <button 
+              *ngFor="let slide of carouselSlides; let i = index"
+              (click)="irASlide(i)"
+              class="h-2 rounded-full transition-all duration-500"
+              [ngClass]="activeSlideIndex === i ? 'w-8 bg-brand-lima' : 'w-2 bg-white/40 hover:bg-white/70'">
+            </button>
+          </div>
+
+          <!-- Flechas Navegación -->
+          <div class="flex items-center gap-2">
+            <button (click)="anteriorSlide()" aria-label="Anterior slide" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 flex items-center justify-center text-white transition-all active:scale-95">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+            </button>
+            <button (click)="siguienteSlide()" aria-label="Siguiente slide" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 flex items-center justify-center text-white transition-all active:scale-95">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
             </button>
           </div>
         </div>
 
-        <div class="flex items-center justify-between px-1">
-          <div class="flex items-center">
-            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-brand-turquesa focus:ring-brand-turquesa border-gray-200 rounded transition-all">
-            <label for="remember-me" class="ml-2 block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Recordar</label>
-          </div>
-          <div class="text-[10px]">
-            <a href="#" class="font-bold text-brand-turquesa hover:text-brand-turquesa/80 transition-colors uppercase tracking-wider">¿Olvido?</a>
-          </div>
-        </div>
+      </div>
 
-        <!-- Error message -->
-        <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-xs text-red-600 font-medium">{{ error }}</div>
-
-        <div>
-          <button type="submit" [disabled]="cargando" class="btn-primary w-full py-3.5 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
-            {{ cargando ? 'Verificando...' : 'Iniciar Sesión' }}
-          </button>
-          <p class="text-[10px] text-gray-400 text-center mt-3.5 uppercase tracking-wider">
-            Al iniciar sesión, aceptas nuestros 
-            <a href="/terminos" target="_blank" class="text-brand-turquesa font-bold hover:underline">Términos y Condiciones</a>
-          </p>
-        </div>
-      </form>
     </div>
 
-    <!-- ── VISTA REGISTRO (Widescreen con Imagen de Husky) ── -->
-    <div *ngIf="modo === 'registro'" class="flex flex-col lg:flex-row gap-8 items-stretch text-left">
+    <!-- ── COLUMNA DERECHA: FORMULARIOS ── -->
+    <div class="lg:col-span-6 p-6 sm:p-10 lg:p-12 flex flex-col justify-center">
       
-      <!-- Columna Izquierda: Imagen Mascot & Mensaje de Bienvenida -->
-      <div class="lg:w-4/12 flex flex-col justify-center items-center bg-gray-50/50 rounded-[24px] p-6 border border-gray-100 relative overflow-hidden">
-        <!-- Imagen Husky PNG con tamaño vertical reducido -->
-        <div class="w-full flex justify-center p-1">
-          <img src="assets/videos/husky.png" alt="Husky Mascot" class="w-full max-w-[210px] md:max-w-[235px] h-auto object-contain hover:scale-105 transition-transform duration-300">
+      <!-- Selector de Pestañas (Pill Switcher) -->
+      <div *ngIf="modo !== 'verificacion'" class="auth-pill-switcher bg-slate-100 p-1.5 rounded-full flex gap-1 mb-8 max-w-sm mx-auto w-full">
+        <button 
+          type="button" 
+          (click)="cambiarModo('login')"
+          class="flex-1 py-3 text-xs uppercase tracking-[0.15em] font-extrabold rounded-full transition-all duration-300"
+          [ngClass]="modo === 'login' ? 'bg-[#002835] text-white shadow-md' : 'text-slate-500 hover:text-slate-800'">
+          Iniciar Sesión
+        </button>
+        <button 
+          type="button" 
+          (click)="cambiarModo('registro')"
+          class="flex-1 py-3 text-xs uppercase tracking-[0.15em] font-extrabold rounded-full transition-all duration-300"
+          [ngClass]="modo === 'registro' ? 'bg-[#002835] text-white shadow-md' : 'text-slate-500 hover:text-slate-800'">
+          Crear Cuenta
+        </button>
+      </div>
+
+      <!-- ── VISTA INICIAR SESIÓN ── -->
+      <div *ngIf="modo === 'login'" class="space-y-6 max-w-md mx-auto w-full">
+        <div>
+          <span class="text-[11px] font-extrabold text-pink-500 uppercase tracking-[0.2em] block mb-1">Bienvenido de nuevo</span>
+          <h1 class="font-outfit text-3xl font-extrabold text-brand-petrol tracking-tight">Ingresa a tu cuenta</h1>
+          <p class="text-xs text-slate-400 font-normal mt-1 leading-relaxed">
+            Accede a tus pedidos, beneficios y descuentos reservados para miembros.
+          </p>
         </div>
 
-        <!-- Mensaje de bienvenida de Husky (subido y compacto) -->
-        <div class="mt-2 text-center">
-          <div class="flex items-center gap-2 justify-center mb-1">
-            <span class="text-xl">🐾</span>
-            <h3 class="text-base font-black text-brand-petrol tracking-tight">¡Hola, soy Husky!</h3>
+        <form (submit)="login(); $event.preventDefault()" class="space-y-4 pt-2">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1.5">Correo electrónico</label>
+            <input 
+              type="email" 
+              name="correo" 
+              required 
+              [(ngModel)]="correo"
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa focus:bg-white transition-all placeholder-slate-300" 
+              placeholder="tu@correo.com">
           </div>
-          <p class="text-[11px] text-gray-500 leading-relaxed font-light">
-            Crea tu cuenta de Camascotas para diseñar tu cama en 3D, guardar tus favoritos, realizar tus pedidos y seguir el descanso de tu peludo.
+
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <label class="block text-[11px] font-bold text-slate-700">Contraseña</label>
+              <button type="button" (click)="cambiarModo('recuperacion')" class="text-[11px] text-slate-400 hover:text-brand-turquesa underline font-medium">¿Olvidaste tu contraseña?</button>
+            </div>
+            <div class="relative">
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                name="password" 
+                required 
+                [(ngModel)]="password"
+                class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa focus:bg-white transition-all placeholder-slate-300 pr-12" 
+                placeholder="••••••••">
+              
+              <button type="button" (click)="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-turquesa transition-colors">
+                <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125l3.125 3.125" /></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Gadget Alerta Error con Icono -->
+          <div *ngIf="error" class="p-4 bg-red-50 border border-red-200/80 rounded-2xl flex items-start gap-3 text-xs text-red-700 font-medium shadow-sm animate-in fade-in slide-in-from-top-1 duration-200">
+            <div class="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center text-red-500 shrink-0 mt-0.5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div class="flex-1 leading-relaxed">
+              <strong class="block text-red-800 font-bold mb-0.5">Atención</strong>
+              {{ error }}
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              [disabled]="cargando" 
+              class="w-full py-4 bg-[#002835] hover:bg-[#003c4f] text-white font-extrabold text-xs uppercase tracking-[0.15em] rounded-full transition-all shadow-lg shadow-[#002835]/20 active:scale-95 disabled:opacity-60">
+              {{ cargando ? 'Iniciando...' : 'Ingresar a mi cuenta' }}
+            </button>
+          </div>
+        </form>
+
+        <div class="text-center pt-4 border-t border-slate-100">
+          <p class="text-xs text-slate-500 font-medium">
+            ¿Aún no formas parte? 
+            <button (click)="cambiarModo('registro')" class="font-extrabold text-brand-petrol hover:text-brand-turquesa underline ml-1">
+              Regístrate y obtén descuentos
+            </button>
           </p>
         </div>
       </div>
 
-      <!-- Columna Derecha: Formulario de Registro Ultra-Compacto -->
-      <div class="lg:w-8/12 flex flex-col justify-center py-1">
-        <div class="mb-4">
-          <h2 class="text-2xl font-black text-brand-petrol mb-0.5 tracking-tight font-poppins">Crea tu Cuenta</h2>
-          <p class="text-xs text-gray-400 font-medium">Completa tus datos para disfrutar la experiencia Camascotas</p>
+      <!-- ── VISTA RECUPERACIÓN DE CONTRASEÑA ── -->
+      <div *ngIf="modo === 'recuperacion'" class="space-y-6 max-w-md mx-auto w-full">
+        <div>
+          <span class="text-[11px] font-extrabold text-amber-500 uppercase tracking-[0.2em] block mb-1">Recuperación de cuenta</span>
+          <h1 class="font-outfit text-3xl font-extrabold text-brand-petrol tracking-tight">¿Olvidaste tu contraseña?</h1>
+          <p class="text-xs text-slate-400 font-normal mt-1 leading-relaxed">
+            Ingresa tu correo electrónico. Te enviaremos un código de 6 dígitos que podrás usar como <strong>contraseña provisional</strong> para acceder.
+          </p>
         </div>
 
-        <form class="space-y-4" (submit)="registrar(); $event.preventDefault()">
-          <!-- Fila 1: Nombre y Apellidos -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <form (submit)="solicitarRecuperacionPassword(); $event.preventDefault()" class="space-y-4 pt-2">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1.5">Correo electrónico registrado</label>
+            <input 
+              type="email" 
+              name="correoRecuperacion" 
+              required 
+              [(ngModel)]="correoRecuperacion"
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa focus:bg-white transition-all placeholder-slate-300" 
+              placeholder="tu@correo.com">
+          </div>
+
+          <!-- Mensajes Estado -->
+          <div *ngIf="mensajeRecuperacion" class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs text-emerald-800 font-medium leading-relaxed">
+            {{ mensajeRecuperacion }}
+          </div>
+          <div *ngIf="errorRecuperacion" class="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-600 font-medium">
+            {{ errorRecuperacion }}
+          </div>
+
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              [disabled]="cargandoRecuperacion || !correoRecuperacion" 
+              class="w-full py-4 bg-[#002835] hover:bg-[#003c4f] text-white font-extrabold text-xs uppercase tracking-[0.15em] rounded-full transition-all shadow-lg shadow-[#002835]/20 active:scale-95 disabled:opacity-60">
+              {{ cargandoRecuperacion ? 'Enviando...' : 'Enviar código provisional' }}
+            </button>
+          </div>
+        </form>
+
+        <div class="text-center pt-4 border-t border-slate-100">
+          <p class="text-xs text-slate-500 font-medium">
+            ¿Recordaste tu contraseña? 
+            <button (click)="cambiarModo('login')" class="font-extrabold text-brand-petrol hover:text-brand-turquesa underline ml-1">
+              Inicia sesión aquí
+            </button>
+          </p>
+        </div>
+      </div>
+
+      <!-- ── VISTA CREAR CUENTA ── -->
+      <div *ngIf="modo === 'registro'" class="space-y-5 max-w-md mx-auto w-full">
+        <div>
+          <span class="text-[11px] font-extrabold text-brand-turquesa uppercase tracking-[0.2em] block mb-1">Únete a nosotros</span>
+          <h1 class="font-outfit text-3xl font-extrabold text-brand-petrol tracking-tight">Crea tu cuenta</h1>
+          <p class="text-xs text-slate-400 font-normal mt-1 leading-relaxed">
+            Regístrate hoy y recibe beneficios y descuentos en el mobiliario de tu mascota.
+          </p>
+        </div>
+
+        <form (submit)="registrar(); $event.preventDefault()" class="space-y-3.5 pt-1">
+          <!-- Nombre y Apellidos -->
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <label for="reg-nombre" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Nombre</label>
-              <input id="reg-nombre" name="nombre" type="text" required [(ngModel)]="nombre"
-                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Nombre">
+              <label class="block text-[10px] font-bold text-slate-700 mb-1">Nombre</label>
+              <input type="text" name="nombre" required [(ngModel)]="nombre"
+                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa" placeholder="Nombre">
             </div>
             <div>
-              <label for="reg-apellidos" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Apellidos</label>
-              <input id="reg-apellidos" name="apellidos" type="text" required [(ngModel)]="apellidos"
-                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Apellidos">
+              <label class="block text-[10px] font-bold text-slate-700 mb-1">Apellidos</label>
+              <input type="text" name="apellidos" required [(ngModel)]="apellidos"
+                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa" placeholder="Apellidos">
             </div>
           </div>
 
-          <!-- Fila 2: Correo y Contraseña -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label for="reg-correo" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Correo Electrónico</label>
-              <input id="reg-correo" name="correo" type="email" required [(ngModel)]="correo" autocomplete="email"
-                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="cliente@correo.com">
+          <!-- Correo electrónico -->
+          <div>
+            <label class="block text-[10px] font-bold text-slate-700 mb-1">Correo electrónico</label>
+            <div class="relative">
+              <input type="email" name="correo" required [(ngModel)]="correo" (ngModelChange)="onCorreoChange()"
+                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa" placeholder="correo@ejemplo.com">
+              <div *ngIf="verificandoCorreo" class="absolute right-3 top-1/2 -translate-y-1/2">
+                <div class="w-3.5 h-3.5 border-2 border-brand-turquesa border-t-transparent rounded-full animate-spin"></div>
+              </div>
             </div>
+
+            <!-- Badge de estado de existencia de correo -->
+            <div *ngIf="estadoCorreo && correo" class="mt-1 text-[10px] font-bold flex items-center gap-1.5 transition-all">
+              <span [ngClass]="{
+                'text-emerald-600': estadoCorreo.valido && !estadoCorreo.registrado,
+                'text-red-500': !estadoCorreo.valido || estadoCorreo.registrado
+              }">
+                {{ estadoCorreo.valido && !estadoCorreo.registrado ? '✓ ' + estadoCorreo.mensaje : '✕ ' + estadoCorreo.mensaje }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Contraseña y Confirmar Contraseña -->
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <label for="reg-password" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Contraseña</label>
+              <label class="block text-[10px] font-bold text-slate-700 mb-1">Contraseña</label>
               <div class="relative">
-                <input id="reg-password" name="password" [type]="showPassword ? 'text' : 'password'" required [(ngModel)]="password" autocomplete="new-password"
-                  class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50 pr-12" placeholder="Contraseña">
-                
-                <button type="button" (click)="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-300 hover:text-brand-turquesa transition-colors">
-                  <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                  <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125l3.125 3.125" />
-                  </svg>
+                <input [type]="showPassword ? 'text' : 'password'" name="password" required [(ngModel)]="password"
+                  class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa pr-10" placeholder="••••••••">
+                <button type="button" (click)="showPassword = !showPassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-turquesa transition-colors">
+                  <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125l3.125 3.125" /></svg>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-bold text-slate-700 mb-1">Confirmar Contraseña</label>
+              <div class="relative">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" name="confirmarPassword" required [(ngModel)]="confirmarPassword"
+                  class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa pr-10" placeholder="••••••••">
+                <button type="button" (click)="showConfirmPassword = !showConfirmPassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-turquesa transition-colors">
+                  <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.39.213 3.475.602m2.84 2.84A10.003 10.003 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.225 0-2.39-.213-3.475-.602m0 0L9 10.125m3.125l3.125 3.125" /></svg>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Fila 3: Edad, Ciudad y Dirección de Envío -->
-          <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-2">
-              <label for="reg-edad" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Edad</label>
-              <input id="reg-edad" name="edad" type="number" required [(ngModel)]="edad" min="1" max="120"
-                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Edad">
+          <!-- Barra de Progreso y Requisitos -->
+          <div *ngIf="password" class="space-y-1.5 pt-0.5">
+            <div class="flex items-center justify-between text-[10px] font-bold">
+              <span class="text-slate-400">Fortaleza:</span>
+              <span [ngClass]="{
+                'text-red-500': passwordFortaleza <= 34,
+                'text-amber-500': passwordFortaleza > 34 && passwordFortaleza <= 67,
+                'text-emerald-600': passwordFortaleza > 67
+              }">{{ passwordEtiquetaFortaleza }}</span>
             </div>
-            <div class="col-span-4">
-              <label for="reg-ciudad" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Ciudad</label>
-              <input id="reg-ciudad" name="ciudad" type="text" required [(ngModel)]="ciudad"
-                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Ej: Armenia">
-            </div>
-            <div class="col-span-6">
-              <label for="reg-direccion" class="block text-[9px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-1 px-1">Dirección de Envío</label>
-              <input id="reg-direccion" name="direccion" type="text" required [(ngModel)]="direccion"
-                class="appearance-none relative block w-full px-4 py-2.5 border border-gray-100 placeholder-gray-300 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/10 focus:border-brand-turquesa text-sm transition-all bg-gray-50/50" placeholder="Calle 10 # 15-20, Apto 101">
+            <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+              <div class="h-full transition-all duration-500 rounded-full"
+                [style.width.%]="passwordFortaleza"
+                [ngClass]="{
+                  'bg-red-500': passwordFortaleza <= 34,
+                  'bg-amber-500': passwordFortaleza > 34 && passwordFortaleza <= 67,
+                  'bg-emerald-500': passwordFortaleza > 67
+                }"></div>
             </div>
           </div>
 
-          <!-- Error message -->
-          <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-xs text-red-600 font-medium">{{ error }}</div>
+          <!-- Indicadores de Contraseña Segura & Coincidencia -->
+          <div class="flex flex-wrap items-center justify-between gap-2 text-[10px] pt-0.5">
+            <div class="flex items-center gap-2">
+              <span class="flex items-center gap-1 font-medium transition-colors" [ngClass]="passwordTieneLongitud ? 'text-emerald-600 font-bold' : 'text-slate-400'">
+                <span [ngClass]="passwordTieneLongitud ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'" class="w-3.5 h-3.5 rounded-full inline-flex items-center justify-center text-[8px] font-black">✓</span> 7+ letras
+              </span>
+              <span class="flex items-center gap-1 font-medium transition-colors" [ngClass]="passwordTieneMayuscula ? 'text-emerald-600 font-bold' : 'text-slate-400'">
+                <span [ngClass]="passwordTieneMayuscula ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'" class="w-3.5 h-3.5 rounded-full inline-flex items-center justify-center text-[8px] font-black">✓</span> 1 Mayúscula
+              </span>
+              <span class="flex items-center gap-1 font-medium transition-colors" [ngClass]="passwordTieneNumero ? 'text-emerald-600 font-bold' : 'text-slate-400'">
+                <span [ngClass]="passwordTieneNumero ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'" class="w-3.5 h-3.5 rounded-full inline-flex items-center justify-center text-[8px] font-black">✓</span> 1 Número
+              </span>
+            </div>
 
-          <!-- Checkbox para políticas y términos -->
-          <div class="flex items-start px-1 py-1">
-            <div class="flex items-center h-5">
-              <input id="accept-terms" name="aceptaTerminos" type="checkbox" required [(ngModel)]="aceptaTerminos"
-                class="h-4 w-4 text-brand-turquesa focus:ring-brand-turquesa border-gray-200 rounded transition-all">
+            <!-- Indicador de coincidencia -->
+            <div *ngIf="confirmarPassword" class="font-bold flex items-center gap-1" [ngClass]="passwordCoincide ? 'text-emerald-600' : 'text-red-500'">
+              <span>{{ passwordCoincide ? '✓ Coinciden' : '✕ No coinciden' }}</span>
             </div>
-            <div class="ml-3 text-[10px] leading-relaxed">
-              <label for="accept-terms" class="font-bold text-gray-400 uppercase tracking-wide cursor-pointer">
-                Acepto los <a href="/terminos" target="_blank" class="text-brand-turquesa font-black hover:underline">Términos y Condiciones</a> y la <a href="/politicas-envio" target="_blank" class="text-brand-turquesa font-black hover:underline">Política de Envío</a> de Camascotas.
-              </label>
+          </div>
+
+          <!-- Edad, Ciudad y Dirección -->
+          <div class="grid grid-cols-12 gap-3">
+            <div class="col-span-3">
+              <label class="block text-[10px] font-bold text-slate-700 mb-1">Edad</label>
+              <input type="number" name="edad" required [(ngModel)]="edad" min="1"
+                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa" placeholder="Edad">
             </div>
+            <div class="col-span-4">
+              <label class="block text-[10px] font-bold text-slate-700 mb-1">Ciudad</label>
+              <input type="text" name="ciudad" required [(ngModel)]="ciudad"
+                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa" placeholder="Ciudad">
+            </div>
+            <div class="col-span-5">
+              <label class="block text-[10px] font-bold text-slate-700 mb-1">Dirección</label>
+              <input type="text" name="direccion" required [(ngModel)]="direccion"
+                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-turquesa" placeholder="Dirección de envío">
+            </div>
+          </div>
+
+          <!-- Checkbox Términos -->
+          <div class="flex items-center gap-2 pt-1">
+            <input id="reg-terms" type="checkbox" required [(ngModel)]="aceptaTerminos" name="aceptaTerminos" class="h-4 w-4 text-brand-turquesa rounded">
+            <label for="reg-terms" class="text-[11px] text-slate-500 font-medium cursor-pointer">
+              Acepto los <a href="/terminos" target="_blank" class="text-brand-petrol font-bold underline">Términos</a> y <a href="/privacidad" target="_blank" class="text-brand-petrol font-bold underline">Políticas</a>.
+            </label>
+          </div>
+
+          <!-- Mensaje Error -->
+          <div *ngIf="error" class="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-600 font-medium">
+            {{ error }}
           </div>
 
           <div class="pt-2">
-            <button type="submit" [disabled]="cargando || !aceptaTerminos" class="btn-primary w-full py-3.5 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-60">
-              {{ cargando ? 'Registrando...' : 'Registrarse y Entrar' }}
+            <button 
+              type="submit" 
+              [disabled]="cargando || !aceptaTerminos || !passwordEsSegura || !passwordCoincide" 
+              class="w-full py-3.5 bg-[#002835] hover:bg-[#003c4f] text-white font-extrabold text-xs uppercase tracking-[0.15em] rounded-full transition-all shadow-lg shadow-[#002835]/20 active:scale-95 disabled:opacity-60">
+              {{ cargando ? 'Registrando...' : 'Crear mi cuenta' }}
             </button>
           </div>
         </form>
+
+        <div class="text-center pt-3 border-t border-slate-100">
+          <p class="text-xs text-slate-500 font-medium">
+            ¿Ya tienes una cuenta? 
+            <button (click)="cambiarModo('login')" class="font-extrabold text-brand-petrol hover:text-brand-turquesa underline ml-1">
+              Inicia sesión aquí
+            </button>
+          </p>
+        </div>
       </div>
 
-    </div>
-
-    <!-- ── VISTA VERIFICACIÓN (6 Dígitos) ── -->
-    <div *ngIf="modo === 'verificacion'" class="space-y-6 max-w-md mx-auto py-4 text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-brand-turquesa/10 rounded-3xl mb-1 border border-brand-turquesa/20 animate-bounce">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-brand-petrol" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      </div>
-
-      <div>
-        <h2 class="text-2xl font-black text-brand-petrol mb-2 tracking-tight">Verifica tu correo</h2>
-        
-        <div *ngIf="correoVerificacion && tiempoReenvio > 0">
-          <p class="text-xs text-gray-500 font-medium leading-relaxed max-w-sm mx-auto">
-            Hemos enviado un código de seguridad de <strong class="text-brand-petrol font-bold">6 dígitos</strong> al correo electrónico: <br>
-            <span class="inline-block mt-1 px-3 py-1.5 bg-brand-turquesa/10 rounded-xl font-bold text-brand-petrol text-sm break-all">{{ correoVerificacion }}</span>
+      <!-- ── VISTA VERIFICACIÓN CÓDIGO ── -->
+      <div *ngIf="modo === 'verificacion'" class="space-y-6 max-w-md mx-auto w-full text-center py-4">
+        <div>
+          <span class="text-[11px] font-extrabold text-emerald-600 uppercase tracking-[0.2em] block mb-1">Verificación de correo</span>
+          <h1 class="font-outfit text-3xl font-extrabold text-brand-petrol tracking-tight">Ingresa el código</h1>
+          <p class="text-xs text-slate-400 font-normal mt-1 leading-relaxed">
+            Hemos enviado un código de 6 dígitos a <strong class="text-slate-700">{{ correoVerificacion }}</strong>.
           </p>
         </div>
 
-        <div *ngIf="!correoVerificacion || tiempoReenvio === 0" class="max-w-sm mx-auto mt-4 text-left">
-          <label class="block text-[10px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-2">
-            Correo electrónico
-          </label>
-          <input type="email" name="correoVerificacion" required
-            [(ngModel)]="correoVerificacion"
-            class="block w-full px-4 py-3 border-2 border-brand-petrol/20 text-brand-petrol rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/20 focus:border-brand-turquesa text-sm transition-all shadow-sm" placeholder="Ingresa tu correo registrado">
-        </div>
-        
-        <p class="text-[11px] text-brand-petrol font-bold mt-4 bg-brand-petrol/10 py-2 px-4 rounded-lg inline-block">
-          ⚠️ ¡Por favor, revisa tu bandeja de Spam o Correo No Deseado!
-        </p>
-      </div>
-
-      <!-- Mensajes -->
-      <div *ngIf="mensajeVerificacion" class="bg-emerald-50 border border-emerald-200 rounded-2xl px-5 py-3 text-xs text-emerald-700 font-bold">
-        ✓ {{ mensajeVerificacion }}
-      </div>
-      <div *ngIf="errorVerificacion" class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 text-xs text-red-600 font-bold">
-        ✕ {{ errorVerificacion }}
-      </div>
-
-      <form class="space-y-6" (submit)="verificarMiCodigo(); $event.preventDefault()">
-        <div>
-          <label class="block text-[10px] font-black text-brand-petrol uppercase tracking-[0.2em] mb-3">
-            Ingresa el Código de 6 Dígitos
-          </label>
-          <input type="text" name="codigoVerificacion" required maxlength="6"
+        <form (submit)="verificarMiCodigo(); $event.preventDefault()" class="space-y-5">
+          <input 
+            type="text" 
+            name="codigoVerificacion" 
+            required 
+            maxlength="6" 
             [(ngModel)]="codigoVerificacion"
-            class="block w-full text-center px-4 py-4 border-2 border-brand-petrol/20 text-brand-petrol rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-turquesa/20 focus:border-brand-turquesa font-black text-3xl tracking-[0.4em] transition-all bg-gray-50/80 shadow-inner" placeholder="••••••">
+            class="w-full py-4 text-center text-3xl font-black tracking-[0.3em] bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-turquesa text-brand-petrol" 
+            placeholder="••••••">
+
+          <!-- Mensajes de estado -->
+          <div *ngIf="mensajeVerificacion" class="p-3 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-200">
+            {{ mensajeVerificacion }}
+          </div>
+          <div *ngIf="errorVerificacion" class="p-3 bg-red-50 text-red-600 text-xs font-bold rounded-xl border border-red-200">
+            {{ errorVerificacion }}
+          </div>
+
+          <button 
+            type="submit" 
+            [disabled]="cargandoVerificacion || codigoVerificacion.length !== 6" 
+            class="w-full py-4 bg-[#002835] hover:bg-[#003c4f] text-white font-extrabold text-xs uppercase tracking-[0.15em] rounded-full transition-all shadow-lg active:scale-95 disabled:opacity-50">
+            {{ cargandoVerificacion ? 'Validando...' : 'Activar mi cuenta' }}
+          </button>
+        </form>
+
+        <div class="pt-4 border-t border-slate-100 flex flex-col gap-2">
+          <button (click)="reenviarMiCodigo()" [disabled]="tiempoReenvio > 0" class="text-xs text-brand-turquesa font-bold hover:underline disabled:text-slate-400">
+            {{ tiempoReenvio > 0 ? 'Reenviar en ' + tiempoReenvioFormateado : 'Reenviar código' }}
+          </button>
+          <button (click)="cambiarModo('login')" class="text-xs text-slate-400 font-medium hover:underline">
+            Volver al inicio de sesión
+          </button>
         </div>
-
-        <button type="submit" [disabled]="cargandoVerificacion || codigoVerificacion.length !== 6"
-          class="btn-primary w-full py-4 text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-lima/30 active:scale-95 disabled:opacity-50 font-black">
-          {{ cargandoVerificacion ? 'Validando código...' : 'Activar mi Cuenta' }}
-        </button>
-      </form>
-
-      <!-- Reenviar o Volver -->
-      <div class="pt-4 border-t border-gray-100 flex flex-col gap-2">
-        <button type="button" (click)="reenviarMiCodigo()" [disabled]="tiempoReenvio > 0"
-          class="text-xs font-bold text-brand-turquesa hover:text-brand-petrol transition-colors uppercase tracking-wider disabled:text-gray-400 disabled:cursor-not-allowed">
-          {{ tiempoReenvio > 0 ? '¿No llegó? Reenviar en ' + tiempoReenvioFormateado : '🔄 ¿No recibiste el código? Reenviar' }}
-        </button>
-
-        <button type="button" (click)="cambiarModo('login')"
-          class="text-[11px] font-medium text-gray-400 hover:text-gray-600 transition-colors">
-          Volver al Inicio de Sesión
-        </button>
       </div>
+
     </div>
 
   </div>

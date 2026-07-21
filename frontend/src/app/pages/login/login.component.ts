@@ -1,9 +1,17 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoadingService } from '../../services/loading.service';
+import { ToastService } from '../../services/toast.service';
+
+interface CarouselSlide {
+  imagen: string;
+  badge: string;
+  titulo: string;
+  descripcion: string;
+}
 
 @Component({
   selector: 'app-login',
@@ -12,8 +20,8 @@ import { LoadingService } from '../../services/loading.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit {
-  modo: 'login' | 'registro' | 'verificacion' = 'login';
+export class LoginComponent implements OnInit, OnDestroy {
+  modo: 'login' | 'registro' | 'verificacion' | 'recuperacion' = 'login';
 
   // Campos comunes/Login
   correo   = '';
@@ -35,23 +43,132 @@ export class LoginComponent implements OnInit {
   tiempoReenvio = 0;
   intervaloReenvio: any = null;
 
+  // Campos de recuperación de contraseña
+  correoRecuperacion = '';
+  cargandoRecuperacion = false;
+  mensajeRecuperacion = '';
+  errorRecuperacion = '';
+
+  // Modal Alerta Recuperación
+  mostrarModalRecuperacion = false;
+  mensajeModalRecuperacion = '';
+
+  // Modal Éxito Inicio de Sesión
+  mostrarModalExito = false;
+  badgeModalExito = '';
+  tituloModalExito = '';
+  mensajeModalExito = '';
+  rolTemporalLogin = 'cliente';
+  esAdminLogin = false;
+
+  // Modal Sesión Cerrada Correctamente
+  mostrarModalLogout = false;
+
   cargando = false;
   error    = '';
   showPassword = false;
+  showConfirmPassword = false;
+  confirmarPassword = '';
   aceptaTerminos = false;
+
+  // Validación de Existencia de Correo en Tiempo Real
+  verificandoCorreo = false;
+  estadoCorreo: { valido: boolean; registrado: boolean; mensaje: string } | null = null;
+  private debounceTimeout: any = null;
+
+  onCorreoChange(): void {
+    if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+    
+    if (!this.correo || !this.correo.includes('@')) {
+      this.estadoCorreo = null;
+      return;
+    }
+
+    this.debounceTimeout = setTimeout(() => {
+      this.verificandoCorreo = true;
+      this.auth.validarCorreo(this.correo).subscribe({
+        next: (res) => {
+          this.verificandoCorreo = false;
+          this.estadoCorreo = res;
+        },
+        error: () => {
+          this.verificandoCorreo = false;
+        }
+      });
+    }, 450);
+  }
+
+  // Getters para validación de contraseña segura
+  get passwordTieneLongitud(): boolean { return this.password.length >= 7; }
+  get passwordTieneMayuscula(): boolean { return /[A-Z]/.test(this.password); }
+  get passwordTieneNumero(): boolean { return /[0-9]/.test(this.password); }
+  get passwordEsSegura(): boolean { return this.passwordTieneLongitud && this.passwordTieneMayuscula && this.passwordTieneNumero; }
+
+  get passwordFortaleza(): number {
+    if (!this.password) return 0;
+    let score = 0;
+    if (this.passwordTieneLongitud) score += 34;
+    if (this.passwordTieneMayuscula) score += 33;
+    if (this.passwordTieneNumero) score += 33;
+    return score;
+  }
+
+  get passwordEtiquetaFortaleza(): string {
+    const score = this.passwordFortaleza;
+    if (score === 0) return '';
+    if (score <= 34) return 'Débil';
+    if (score <= 67) return 'Media';
+    return 'Excelente / Segura';
+  }
+
+  get passwordCoincide(): boolean {
+    if (!this.password && !this.confirmarPassword) return true;
+    return !!this.confirmarPassword && this.password === this.confirmarPassword;
+  }
+
+  // Carrusel Izquierdo Exclusivo
+  activeSlideIndex = 0;
+  slideInterval: any = null;
+
+  carouselSlides: CarouselSlide[] = [
+    {
+      imagen: 'assets/images/bannerperrocopy.png',
+      badge: 'COMUNIDAD CAMASCOTAS',
+      titulo: 'Comunidad Camascotas',
+      descripcion: '"Regístrate para que obtengas los mejores descuentos exclusivos"'
+    },
+    {
+      imagen: 'assets/images/home1.jpeg',
+      badge: 'NOVEDADES & LANZAMIENTOS',
+      titulo: 'Novedades de Catálogo',
+      descripcion: '"Ingresa con nosotros para estar atento a todas las novedades de nuestros productos"'
+    },
+    {
+      imagen: 'assets/images/home4.jpeg',
+      badge: 'BENEFICIOS EXCLUSIVOS',
+      titulo: 'Experiencia Camascotas',
+      descripcion: '"Regístrate para que obtengas los mejores descuentos exclusivos en mobiliario premium"'
+    }
+  ];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private auth: AuthService,
     private loadingService: LoadingService,
+    private toast: ToastService,
     private ngZone: NgZone
   ) {
-    this.loadingService.show(800);
+    this.loadingService.show(600);
   }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
+      if (params['logout'] === 'success') {
+        this.mostrarModalLogout = true;
+        this.toast.show('¡Has cerrado sesión correctamente!', 'info', 5000);
+      }
+
       if (params['mode'] === 'registro') {
         this.modo = 'registro';
       } else if (params['mode'] === 'verificacion') {
@@ -64,23 +181,125 @@ export class LoginComponent implements OnInit {
         this.modo = 'login';
       }
     });
+
+    this.iniciarCarrusel();
     this.cargarGoogleSDK();
   }
 
-  cambiarModo(nuevoModo: 'login' | 'registro' | 'verificacion'): void {
+  cerrarModalLogout(): void {
+    this.mostrarModalLogout = false;
+  }
+
+  ngOnDestroy(): void {
+    this.detenerCarrusel();
+    if (this.intervaloReenvio) clearInterval(this.intervaloReenvio);
+  }
+
+  iniciarCarrusel(): void {
+    this.detenerCarrusel();
+    this.slideInterval = setInterval(() => {
+      this.siguienteSlide();
+    }, 4500);
+  }
+
+  detenerCarrusel(): void {
+    if (this.slideInterval) {
+      clearInterval(this.slideInterval);
+      this.slideInterval = null;
+    }
+  }
+
+  siguienteSlide(): void {
+    this.activeSlideIndex = (this.activeSlideIndex + 1) % this.carouselSlides.length;
+  }
+
+  anteriorSlide(): void {
+    this.activeSlideIndex = (this.activeSlideIndex - 1 + this.carouselSlides.length) % this.carouselSlides.length;
+  }
+
+  irASlide(index: number): void {
+    this.activeSlideIndex = index;
+    this.iniciarCarrusel(); // Reset timer on user interaction
+  }
+
+  cambiarModo(nuevoModo: 'login' | 'registro' | 'verificacion' | 'recuperacion'): void {
     this.modo = nuevoModo;
     this.error = '';
     this.errorVerificacion = '';
+    this.errorRecuperacion = '';
+    this.mensajeRecuperacion = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // Si cambiamos de modo a login, reiniciamos el botón de Google para asegurarnos de que se dibuje correctamente
     if (this.modo === 'login') {
       setTimeout(() => this.inicializarGoogle(), 100);
     }
   }
 
+  solicitarRecuperacionPassword(): void {
+    if (!this.correoRecuperacion) {
+      this.errorRecuperacion = 'Ingresa tu correo electrónico registrado';
+      return;
+    }
+    this.cargandoRecuperacion = true;
+    this.errorRecuperacion = '';
+    this.mensajeRecuperacion = '';
+
+    this.auth.solicitarRecuperacion(this.correoRecuperacion).subscribe({
+      next: (res) => {
+        this.cargandoRecuperacion = false;
+        this.mensajeModalRecuperacion = res.mensaje ?? 'Si el correo electrónico se encuentra registrado en nuestro sistema, hemos enviado un código de 6 dígitos que puedes utilizar como contraseña provisional.';
+        this.mostrarModalRecuperacion = true;
+        this.cambiarModo('login');
+      },
+      error: (err) => {
+        this.cargandoRecuperacion = false;
+        this.errorRecuperacion = err?.error?.error ?? 'Error al solicitar la recuperación de contraseña';
+      }
+    });
+  }
+
+  cerrarModalRecuperacion(): void {
+    this.mostrarModalRecuperacion = false;
+  }
+
+  mostrarModalLoginExito(usuario: any): void {
+    const rol = usuario?.rol ?? 'cliente';
+    const nombre = usuario?.nombre || 'Usuario';
+    const esAdmin = (rol === 'admin' || rol === 'superadmin');
+
+    this.rolTemporalLogin = rol;
+    this.esAdminLogin = esAdmin;
+
+    if (esAdmin) {
+      this.badgeModalExito = 'PANEL ADMINISTRATIVO';
+      this.tituloModalExito = `¡Bienvenido al Panel Admin, ${nombre}!`;
+      this.mensajeModalExito = 'Acceso concedido con perfil de Administrador. Preparando el dashboard de gestión...';
+    } else {
+      this.badgeModalExito = 'ACCESO CONCEDIDO';
+      this.tituloModalExito = `¡Bienvenido de nuevo, ${nombre}!`;
+      this.mensajeModalExito = 'Has iniciado sesión correctamente. Disfruta de la experiencia Camascotas.';
+    }
+
+    this.mostrarModalExito = true;
+
+    setTimeout(() => {
+      if (this.mostrarModalExito) {
+        this.continuarDespuesDeExito();
+      }
+    }, 1800);
+  }
+
+  continuarDespuesDeExito(): void {
+    this.mostrarModalExito = false;
+    const nombre = this.auth.getUsuario()?.nombre || 'Usuario';
+    this.toast.show(`¡Bienvenido de nuevo, ${nombre}!`, 'success', 4000);
+    this.redirigirUsuario(this.rolTemporalLogin);
+  }
+
   login(): void {
     if (!this.correo || !this.password) {
-      this.error = 'Ingresa tu correo y contraseña';
+      this.error = 'Por favor ingresa tu correo y contraseña para continuar';
+      this.toast.show('Completa los datos de inicio de sesión', 'warning');
       return;
     }
 
@@ -89,8 +308,9 @@ export class LoginComponent implements OnInit {
 
     this.auth.login({ correo: this.correo, password: this.password }).subscribe({
       next: (res) => {
-         this.auth.guardarSesion(res);
-         this.redirigirUsuario(res.usuario?.rol ?? 'cliente');
+        this.cargando = false;
+        this.auth.guardarSesion(res);
+        this.mostrarModalLoginExito(res.usuario);
       },
       error: (err) => {
         this.cargando = false;
@@ -100,16 +320,40 @@ export class LoginComponent implements OnInit {
           this.auth.setPendingVerification(this.correoVerificacion);
           this.errorVerificacion = resp.error ?? 'Ingresa el código enviado a tu correo.';
           this.cambiarModo('verificacion');
+          this.toast.show('Tu cuenta requiere verificación por código', 'warning');
         } else {
-          this.error = resp?.error ?? 'Credenciales incorrectas';
+          this.error = resp?.error ?? 'Correo o contraseña incorrectos. Verifica tus credenciales.';
+          this.toast.show('Credenciales incorrectas. Revisa tu contraseña o solicita un código provisional.', 'error');
         }
       }
     });
   }
 
   registrar(): void {
-    if (!this.nombre || !this.apellidos || !this.edad || !this.direccion || !this.ciudad || !this.correo || !this.password) {
+    if (!this.nombre || !this.apellidos || !this.edad || !this.direccion || !this.ciudad || !this.correo || !this.password || !this.confirmarPassword) {
       this.error = 'Completa todos los campos obligatorios';
+      return;
+    }
+
+    if (this.estadoCorreo && !this.estadoCorreo.valido) {
+      this.error = this.estadoCorreo.mensaje;
+      this.toast.show(this.estadoCorreo.mensaje, 'error');
+      return;
+    }
+
+    if (this.estadoCorreo && this.estadoCorreo.registrado) {
+      this.error = 'Este correo electrónico ya se encuentra registrado';
+      this.toast.show('El correo ya pertenece a una cuenta registrada', 'warning');
+      return;
+    }
+
+    if (!this.passwordEsSegura) {
+      this.error = 'La contraseña debe tener al menos 7 caracteres, 1 mayúscula y 1 número';
+      return;
+    }
+
+    if (!this.passwordCoincide) {
+      this.error = 'Las contraseñas no coinciden. Por favor verifícalas.';
       return;
     }
 
@@ -238,7 +482,6 @@ export class LoginComponent implements OnInit {
   }
 
   private inicializarGoogle(): void {
-    // Camascotas Google Client ID
     const clientId = '730825316498-um9r1rskqpt351d3b3eeccdc44bbdd.apps.googleusercontent.com';
 
     if ((window as any).google?.accounts?.id) {
@@ -270,7 +513,7 @@ export class LoginComponent implements OnInit {
         next: (res) => {
           if (res.token && res.usuario) {
             this.auth.guardarSesion(res);
-            this.redirigirUsuario(res.usuario.rol);
+            this.mostrarModalLoginExito(res.usuario);
           }
         },
         error: (err) => {
@@ -293,4 +536,3 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 }
-

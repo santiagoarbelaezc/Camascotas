@@ -27,6 +27,7 @@ export class CarruselDestacadosComponent {
   @Input() subtitulo: string = 'Los muebles más amados por peluditos y sus familias';
   @Input() todosLosItems: CarruselItem[] = [];
   @Input() itemsIniciales: number = 6;
+  @Input() cargando: boolean = false;
 
   tabs = ['Todos', 'Perros', 'Gatos'];
   tabActivo = 'Todos';

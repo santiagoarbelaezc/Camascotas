@@ -109,7 +109,11 @@ class usuarioscontroller {
 
             // Si envió nueva contraseña (opcional)
             if (!empty($data['password'])) {
-                $hash = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+                $pwd = $data['password'];
+                if (strlen($pwd) < 7 || !preg_match('/[A-Z]/', $pwd) || !preg_match('/[0-9]/', $pwd)) {
+                    response::error("La nueva contraseña debe tener al menos 7 caracteres, una letra mayúscula y un número.", 400);
+                }
+                $hash = password_hash($pwd, PASSWORD_BCRYPT, ['cost' => 12]);
                 $stmt = $db->prepare("UPDATE usuarios SET nombre = ?, apellidos = ?, ciudad = ?, direccion = ?, edad = ?, password = ? WHERE id = ?");
                 $stmt->execute([$nombre, $apellidos, $ciudad, $direccion, $edad, $hash, $userId]);
             } else {
