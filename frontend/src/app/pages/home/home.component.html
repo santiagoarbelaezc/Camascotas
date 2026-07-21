@@ -1,8 +1,20 @@
 <app-header-enlaces></app-header-enlaces>
 
+<!-- COLLECTIONS EXPLORER: CATEGORIAS (Diseño Hero Premium) -->
+<app-explorer-categorias></app-explorer-categorias>
+
 <!-- BRAND EXPERIENCE SECTION (Componentizado) -->
 <app-brand-experience></app-brand-experience>
 
+<!-- PRODUCTOS DESTACADOS: CARRUSEL DE PRODUCTOS -->
+<div class="py-6 bg-white overflow-hidden border-b border-gray-100">
+  <app-carrusel-destacados
+    [titulo]="'Colecciones Destacadas'"
+    [subtitulo]="'Explora nuestro mobiliario exclusivo diseñado para el confort y descanso de tu mascota'"
+    [todosLosItems]="recientesItems"
+    [itemsIniciales]="6">
+  </app-carrusel-destacados>
+</div>
 
 <!-- HUSKY PROMO: AI ASSISTANT BANNER -->
 <app-husky-banner></app-husky-banner>
@@ -160,9 +172,6 @@
 
   </div>
 </ng-container>
-
-<!-- COLLECTIONS EXPLORER: CATEGORIAS (Diseño Hero Premium) -->
-<app-explorer-categorias></app-explorer-categorias>
 
 <!-- NOSOTROS: BRAND SOUL -->
 <app-nosotros></app-nosotros>

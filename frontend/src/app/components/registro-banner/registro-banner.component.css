@@ -1,9 +1,148 @@
 .registration-banner {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--azul-oscuro, #003644);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
 }
 
-.registration-banner:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 40px rgba(177, 214, 22, 0.1);
+/* Botones */
+.btn-register-main {
+  background-color: white;
+  color: #002835;
+  padding: 18px 40px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 12px 35px rgba(255, 255, 255, 0.15);
+  width: 100%;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .btn-register-main {
+    width: auto;
+  }
+}
+
+.btn-register-main:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 45px rgba(255, 255, 255, 0.3);
+  background-color: #f1f5f9;
+}
+
+.btn-register-main svg {
+  transition: transform 0.3s ease;
+}
+
+.btn-register-main:hover svg {
+  transform: translateX(5px);
+}
+
+.btn-login-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  padding: 18px 34px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .btn-login-secondary {
+    width: auto;
+  }
+}
+
+.btn-login-secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: white;
+  transform: translateY(-3px);
+}
+
+/* Tarjeta de Imagen del Hero (bannerperro.png - Grande) */
+.banner-img-card {
+  position: relative;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  background: #001720;
+}
+
+.banner-img-card:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55);
+}
+
+.banner-hero-img {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.banner-img-card:hover .banner-hero-img {
+  transform: scale(1.04);
+}
+
+.img-badge-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 35, 48, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 10px 20px;
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 0 8px white;
+}
+
+/* Responsivo */
+@media (max-width: 1280px) {
+  .banner-hero-img {
+    height: 400px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .banner-hero-img {
+    height: 340px;
+  }
+}
+
+@media (max-width: 640px) {
+  .banner-hero-img {
+    height: 260px;
+  }
 }

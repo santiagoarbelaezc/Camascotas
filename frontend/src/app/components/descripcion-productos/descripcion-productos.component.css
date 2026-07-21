@@ -166,8 +166,8 @@
 
 .btn-cta-whatsapp:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    background: #1a1a1a;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    background: #047857;
 }
 
 .btn-cta-whatsapp:active {

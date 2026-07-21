@@ -12,6 +12,7 @@ export interface CarruselItem {
   imagenHover: string;
   categoria: string;
   colores: string[];
+  badge?: string;
 }
 
 @Component({
@@ -25,15 +26,27 @@ export class CarruselDestacadosComponent {
   @Input() titulo: string = 'Nuestros Favoritos';
   @Input() subtitulo: string = 'Los muebles más amados por peluditos y sus familias';
   @Input() todosLosItems: CarruselItem[] = [];
-
-  /** How many items to show initially before "Ver más" */
   @Input() itemsIniciales: number = 6;
 
   tabs = ['Todos', 'Perros', 'Gatos'];
   tabActivo = 'Todos';
-  expandido = false;
 
   mostrarPrecios$;
+
+  // Mouse Drag Scrolling State
+  private isMouseDown = false;
+  private startX = 0;
+  private scrollLeft = 0;
+
+  private availableBadges = [
+    'Nuevo',
+    'Más Vendido',
+    'Últimas Unidades',
+    'Exclusivo',
+    'A Medida',
+    'Recomendado',
+    'Tendencia'
+  ];
 
   constructor(private router: Router, private configuracionService: ConfiguracionService) {
     this.mostrarPrecios$ = this.configuracionService.mostrarPrecios$;
@@ -45,26 +58,59 @@ export class CarruselDestacadosComponent {
   }
 
   get itemsFiltrados(): CarruselItem[] {
-    const filtrados = this.itemsFiltradosPorTab;
-    if (this.expandido) return filtrados;
-    return filtrados.slice(0, this.itemsIniciales);
-  }
-
-  get hayMasItems(): boolean {
-    return this.itemsFiltradosPorTab.length > this.itemsIniciales && !this.expandido;
-  }
-
-  get itemsOcultos(): number {
-    return Math.max(0, this.itemsFiltradosPorTab.length - this.itemsIniciales);
+    return this.itemsFiltradosPorTab;
   }
 
   setTab(tab: string): void {
     this.tabActivo = tab;
-    this.expandido = false; // Reset on tab change
   }
 
-  toggleExpandir(): void {
-    this.expandido = !this.expandido;
+  getBadge(item: CarruselItem, index: number): string {
+    if (item.badge) return item.badge;
+    const idx = Math.abs(Number(index)) || 0;
+    return this.availableBadges[idx % this.availableBadges.length];
+  }
+
+  getBadgeClass(badge: string): string {
+    switch (badge) {
+      case 'Últimas Unidades':
+        return 'badge-ultimas';
+      case 'Más Vendido':
+        return 'badge-vendido';
+      case 'Exclusivo':
+        return 'badge-exclusivo';
+      case 'A Medida':
+        return 'badge-amedida';
+      case 'Recomendado':
+        return 'badge-recomendado';
+      case 'Tendencia':
+        return 'badge-tendencia';
+      default:
+        return 'badge-nuevo';
+    }
+  }
+
+  // Desplazamiento por Arrastre con Mouse
+  onMouseDown(e: MouseEvent, target: HTMLElement): void {
+    this.isMouseDown = true;
+    this.startX = e.pageX - target.offsetLeft;
+    this.scrollLeft = target.scrollLeft;
+  }
+
+  onMouseLeave(): void {
+    this.isMouseDown = false;
+  }
+
+  onMouseUp(): void {
+    this.isMouseDown = false;
+  }
+
+  onMouseMove(e: MouseEvent, target: HTMLElement): void {
+    if (!this.isMouseDown) return;
+    e.preventDefault();
+    const x = e.pageX - target.offsetLeft;
+    const walk = (x - this.startX) * 1.5;
+    target.scrollLeft = this.scrollLeft - walk;
   }
 
   formatPrecio(precio: number): string {
@@ -72,6 +118,7 @@ export class CarruselDestacadosComponent {
   }
 
   verProducto(item: CarruselItem): void {
+    if (this.isMouseDown) return;
     const slug = item.nombre.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
     this.router.navigateByUrl(`/compra/muebles-mascotas/${slug}-p${item.id}`);
   }

@@ -92,7 +92,7 @@
   max-width: 100rem;
   margin: 0 auto;
   overflow-x: auto;
-  padding: 20px 2rem 40px;
+  padding: 20px 2rem 10px;
   scrollbar-width: none; /* Hide scrollbar for cleaner look */
   cursor: grab;
 }
@@ -206,20 +206,54 @@
   pointer-events: none;
 }
 
-.card-badge-nuevo {
+.card-badge {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--lima);
-  color: var(--petrol);
-  padding: 6px 16px;
+  top: 18px;
+  right: 18px;
+  padding: 6px 14px;
   border-radius: 999px;
   font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(177, 214, 22, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.badge-nuevo {
+  background-color: var(--lima);
+  color: var(--petrol);
+}
+
+.badge-ultimas {
+  background-color: #f59e0b;
+  color: #ffffff;
+}
+
+.badge-vendido {
+  background-color: var(--petrol);
+  color: #ffffff;
+}
+
+.badge-exclusivo {
+  background-color: #8b5cf6;
+  color: #ffffff;
+}
+
+.badge-amedida {
+  background-color: var(--turquesa);
+  color: #ffffff;
+}
+
+.badge-recomendado {
+  background-color: #ec4899;
+  color: #ffffff;
+}
+
+.badge-tendencia {
+  background-color: #06b6d4;
+  color: #ffffff;
 }
 
 /* Card Hover States */
@@ -304,7 +338,7 @@
   justify-content: center;
   align-items: center;
   gap: 16px;
-  padding: 28px 2rem 0;
+  padding: 10px 2rem 0;
   flex-wrap: wrap;
 }
 
@@ -433,7 +467,7 @@
   }
 
   .carrusel-track-wrapper {
-    padding: 10px 1.5rem 40px;
+    padding: 10px 1.5rem 10px;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
@@ -480,7 +514,7 @@
   /* Footer Buttons on Mobile */
   .carrusel-footer {
     flex-direction: column;
-    padding: 20px 1.5rem 0;
+    padding: 10px 1.5rem 0;
     gap: 12px;
     width: 100%;
   }

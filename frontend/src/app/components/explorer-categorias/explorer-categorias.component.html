@@ -20,8 +20,8 @@
       </div>
 
       <!-- ACTIVE STATE CONTENT -->
-      <div class="active-category-content" *ngIf="categoriaActiva">
-        <div class="content-header" [style.animation]="'fade-in-up 0.8s ease-out'">
+      <div class="active-category-content" [class.fade-out]="isFadingOut" *ngIf="categoriaActiva">
+        <div class="content-header">
           <span class="badge">Explora la Colección</span>
           <h2 class="cat-title">{{ categoriaActiva.nombre }}</h2>
           <p class="cat-desc">
@@ -56,7 +56,7 @@
       <div class="visual-container" *ngIf="categoriaActiva">
         <div class="rotating-ring"></div>
         <div class="main-image-wrapper">
-          <img [src]="categoriaActiva.imagen" [alt]="categoriaActiva.nombre" class="main-cat-img">
+          <img [src]="categoriaActiva.imagen" [alt]="categoriaActiva.nombre" class="main-cat-img" [class.fade-out]="isFadingOut">
         </div>
       </div>
     </div>

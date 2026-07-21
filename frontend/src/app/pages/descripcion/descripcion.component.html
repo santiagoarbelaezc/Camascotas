@@ -3,13 +3,12 @@
     <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-brand-turquesa/[0.02] rounded-full"></div>
     <div class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-72 h-72 bg-brand-lima/[0.02] rounded-full"></div>
 
-
-    <div class="relative z-10 space-y-12 pt-0 pb-12 md:space-y-24 md:py-24">
+    <div class="relative z-10 space-y-8 pt-8 pb-12 md:space-y-12 md:pt-10 md:pb-20">
         <!-- Componente central de detalles -->
         <app-descripcion-productos></app-descripcion-productos>
 
         <!-- Sección de también te puede interesar -->
-        <div class="py-24 bg-white/80 border-y border-white/20">
+        <div class="py-20 bg-white/80 border-y border-white/20">
             <div class="max-w-[1800px] mx-auto px-6 lg:px-8">
                 <app-carrusel-destacados
                     [titulo]="'También te Puede Interesar'"

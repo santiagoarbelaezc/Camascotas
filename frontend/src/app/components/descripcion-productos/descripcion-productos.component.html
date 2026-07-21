@@ -1,4 +1,4 @@
-<div class="desc-page-wrap max-w-[1600px] mx-auto px-4 lg:px-8 py-6" *ngIf="producto">
+<div class="desc-page-wrap max-w-[1600px] mx-auto px-4 lg:px-8 pt-4 pb-6 md:pt-5" *ngIf="producto">
     <!-- Breadcrumbs full-width at the top -->
     <nav class="desc-breadcrumb mb-6">
         <span class="hover:text-brand-turquesa cursor-pointer transition-colors" routerLink="/productos">Productos</span>
@@ -81,19 +81,31 @@
                         </div>
                     </div>
 
-                    <!-- Precio Dinámico (Integrado a la derecha) -->
-                    <div class="mt-4 pb-4 border-b border-gray-100 flex flex-col gap-1">
-                        <div class="price-container">
+                    <!-- Precio Dinámico (Integrado a la derecha) con Botón de Cotización -->
+                    <div class="mt-4 pb-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-4">
+                        <div class="price-container flex flex-col">
                             <ng-container *ngIf="mostrarPrecios$ | async">
-                                <span class="price-currency text-xl font-light text-brand-petrol">$</span>
-                                <span class="price-amount text-3xl font-extrabold text-brand-petrol tracking-tight">{{ (producto.precio * cantidad) | currency:'USD':'':'1.0-0' }}</span>
-                                <span class="text-xs text-gray-400 ml-2">IVA Incluido</span>
+                                <div class="flex items-baseline">
+                                    <span class="price-currency text-xl font-light text-brand-petrol">$</span>
+                                    <span class="price-amount text-3xl font-extrabold text-brand-petrol tracking-tight">{{ (producto.precio * cantidad) | currency:'USD':'':'1.0-0' }}</span>
+                                    <span class="text-xs text-gray-400 ml-2">IVA Incluido</span>
+                                </div>
                             </ng-container>
                             <ng-container *ngIf="!(mostrarPrecios$ | async)">
                                 <span class="price-hidden text-2xl font-bold text-gray-400 italic">Consultar precio</span>
                             </ng-container>
+                            <span class="text-[10px] text-gray-400 mt-0.5" *ngIf="mostrarPrecios$ | async">Precio de fábrica con garantía y calidad Camascotas.</span>
                         </div>
-                        <span class="text-[10px] text-gray-400" *ngIf="mostrarPrecios$ | async">Precio de fábrica con garantía y calidad Camascotas.</span>
+
+                        <!-- Botón 1: Cotización directo al lado del precio -->
+                        <a [href]="generarEnlaceWhatsApp()" 
+                           target="_blank"
+                           class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all shadow-md shadow-emerald-600/20 hover:scale-[1.02] cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/>
+                            </svg>
+                            <span>Cotiza con nosotros tu cama</span>
+                        </a>
                     </div>
 
                     <!-- Variantes / Selección de opciones -->
@@ -177,7 +189,7 @@
                         </div>
                     </div>
 
-                    <!-- Logística: Cómo conseguirlo (Diseño más compacto a dos columnas en desktop) -->
+                    <!-- Logística: Cómo conseguirlo -->
                     <div class="flex flex-col gap-2 mt-4">
                         <span class="text-xs font-bold text-brand-petrol uppercase tracking-wider">Cómo conseguirlo</span>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -194,43 +206,36 @@
                                 </div>
                             </div>
 
-                            <!-- Tarjeta 2: Asesoría / Tienda -->
+                            <!-- Tarjeta 2: Botón de Cotización por WhatsApp -->
                             <a [href]="generarEnlaceWhatsApp()" target="_blank"
-                               class="logistics-card flex items-center justify-between gap-3 p-3 border border-gray-100 rounded-xl bg-white hover:border-brand-turquesa/30 hover:bg-gray-50/50 transition-all text-decoration-none">
+                               class="logistics-card flex items-center justify-between gap-3 p-3 border border-emerald-200/80 rounded-xl bg-emerald-50/50 hover:bg-emerald-100/60 transition-all text-decoration-none cursor-pointer">
                                 <div class="flex items-center gap-3">
-                                    <div class="logistics-icon text-brand-turquesa bg-brand-turquesa/5 p-2 rounded-lg flex-shrink-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                                    <div class="logistics-icon text-emerald-600 bg-emerald-100 p-2 rounded-lg flex-shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/>
                                         </svg>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-xs font-bold text-brand-petrol">Asesoría directa</span>
-                                        <span class="text-[10px] text-gray-400">Personaliza medidas.</span>
+                                        <span class="text-xs font-bold text-emerald-950">Cotiza con nosotros tu cama</span>
+                                        <span class="text-[10px] text-emerald-700 font-medium">Asesoría directa en WhatsApp</span>
                                     </div>
                                 </div>
-                                <span class="text-gray-400 font-bold self-center mr-1 text-xs">></span>
+                                <span class="text-emerald-600 font-bold self-center mr-1 text-xs">→</span>
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Barra de Acciones Desktop: Cantidad + Agregar -->
+                <!-- Barra de Acciones Desktop: Cotizar por WhatsApp -->
                 <div class="actions-container hidden md:flex items-center gap-4 mt-6 pt-4 border-t border-gray-100">
-                    <!-- Selector de cantidad -->
-                    <div class="qty-counter flex items-center border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
-                        <button (click)="decrementarCantidad()" class="qty-btn px-3 py-2 text-gray-500 hover:bg-gray-100 transition-colors font-bold">-</button>
-                        <span class="qty-value px-3 font-bold text-brand-petrol text-sm min-w-[32px] text-center">{{ cantidad }}</span>
-                        <button (click)="incrementarCantidad()" class="qty-btn px-3 py-2 text-gray-500 hover:bg-gray-100 transition-colors font-bold">+</button>
-                    </div>
-
-                    <!-- Botón de WhatsApp -->
+                    <!-- Botón Principal: Cotiza con nosotros tu cama -->
                     <a [href]="generarEnlaceWhatsApp()" 
                        target="_blank"
-                       class="btn-cta-whatsapp flex-1 bg-black text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-900 transition-all shadow-md shadow-gray-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
+                       class="btn-cta-whatsapp flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2.5 transition-all shadow-lg shadow-emerald-600/25 hover:scale-[1.01]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24">
                             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/>
                         </svg>
-                        <span>Solicitar por WhatsApp</span>
+                        <span>Cotiza con nosotros tu cama</span>
                     </a>
 
                     <!-- Botón de compartir -->
@@ -258,21 +263,14 @@
 
 <!-- STICKY BAR MOBILE: Fijo en la parte inferior para móviles -->
 <div class="desc-sticky-bar md:hidden flex items-center gap-3 p-3 bg-white border-t border-gray-100 shadow-lg" *ngIf="producto">
-    <!-- Cantidad selector mini -->
-    <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
-        <button (click)="decrementarCantidad()" class="px-3 py-2 text-gray-500 font-bold">-</button>
-        <span class="px-2 font-bold text-sm text-brand-petrol min-w-[24px] text-center">{{ cantidad }}</span>
-        <button (click)="incrementarCantidad()" class="px-3 py-2 text-gray-500 font-bold">+</button>
-    </div>
-
-    <!-- WhatsApp CTA -->
+    <!-- WhatsApp CTA Mobile -->
     <a [href]="generarEnlaceWhatsApp()"
        target="_blank"
-       class="flex-1 bg-black text-white font-bold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs uppercase tracking-wide">
+       class="flex-1 bg-emerald-600 text-white font-bold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs uppercase tracking-wide shadow-md">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-current" viewBox="0 0 24 24">
             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.402.831 2.946 1.275 4.542 1.276 5.003 0 9.07-4.065 9.073-9.07.001-2.427-.942-4.709-2.656-6.424-1.713-1.715-3.993-2.659-6.42-2.66-5.004 0-9.073 4.068-9.076 9.073-.001 1.543.402 3.051 1.168 4.383l-1.004 3.666 3.753-.984zm11.238-5.31c-.301-.151-1.782-.879-2.058-.979s-.477-.151-.677.151-.778.98-.954 1.181-.351.226-.651.076c-.3-.15-1.267-.467-2.414-1.49-.893-.795-1.495-1.777-1.671-2.078s-.019-.463.132-.613c.135-.134.301-.351.451-.527.15-.176.201-.301.301-.502s.05-.376-.025-.527c-.075-.151-.677-1.632-.927-2.235-.243-.587-.49-.508-.677-.517-.175-.008-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.029-1.053 2.51s1.079 2.912 1.229 3.113c.151.201 2.122 3.24 5.141 4.542.718.31 1.279.495 1.716.633.721.23 1.377.198 1.896.121.579-.085 1.737-.71 1.983-1.396.246-.686.246-1.275.171-1.397s-.271-.201-.572-.352z"/>
         </svg>
-        <span>Solicitar</span>
+        <span>Cotiza tu cama</span>
     </a>
 
     <!-- Share icon mini -->

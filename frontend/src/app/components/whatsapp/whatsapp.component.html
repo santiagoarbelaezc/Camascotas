@@ -44,8 +44,8 @@
             </div>
         </div>
 
-        <!-- Video circular (reemplaza imagen estática) -->
-        <div class="husky-video-btn">
+        <!-- Video circular (solo se reproduce al pasar el cursor) -->
+        <div class="husky-video-btn" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="toggleChat()">
             <video
                 #huskyVideo
                 [src]="currentVideoSrc"
@@ -53,9 +53,8 @@
                 volume="0"
                 playsinline
                 preload="auto"
-                (ended)="onVideoEnded()"
-                class="husky-video-circle"
-                [class.fade-out]="isFading">
+                loop
+                class="husky-video-circle">
             </video>
         </div>
     </div>
