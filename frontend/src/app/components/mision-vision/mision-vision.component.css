@@ -1,14 +1,15 @@
 .mision-vision-wrapper {
-  padding: 80px 0;
-  background-color: var(--cream);
+  padding: 40px 0 60px 0;
+  background-color: var(--cream, #FDFDFD);
   position: relative;
   overflow: hidden;
+  border-top: 1px solid rgba(0, 65, 83, 0.05);
 }
 
 .container-custom {
-  max-width: 1400px;
+  max-width: 1650px;
   margin: 0 auto;
-  padding: 0 6%;
+  padding: 0 30px;
 }
 
 .section-tag {
@@ -19,40 +20,40 @@
   text-transform: uppercase;
   letter-spacing: 0.3em;
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .section-title {
   font-family: 'Poppins', sans-serif;
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2rem, 4vw, 2.8rem);
   color: var(--azul-oscuro);
   font-weight: 800;
   line-height: 1.15;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .title-accent {
-  width: 60px;
+  width: 50px;
   height: 4px;
   background-color: var(--verde-principal);
-  border-radius: 2px;
+  border-radius: 99px;
 }
 
 .mvv-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  gap: 35px;
 }
 
 .mvv-card {
   background: white;
-  padding: 50px 35px;
-  border-radius: 32px;
-  box-shadow: 0 15px 35px rgba(0, 65, 83, 0.04);
+  padding: 40px 32px;
+  border-radius: 28px;
+  box-shadow: 0 15px 35px rgba(0, 65, 83, 0.05);
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  border: 1px solid rgba(0, 65, 83, 0.04);
+  border: 1px solid rgba(0, 65, 83, 0.06);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,58 +62,58 @@
 }
 
 .mvv-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 50px rgba(0, 65, 83, 0.1);
-  border-color: rgba(0, 179, 188, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0, 65, 83, 0.12);
+  border-color: rgba(0, 179, 188, 0.3);
 }
 
 .card-icon-box {
-  width: 76px;
-  height: 76px;
-  background-color: var(--cream);
-  border-radius: 20px;
+  width: 64px;
+  height: 64px;
+  background-color: rgba(0, 179, 188, 0.08);
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--turquesa);
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   transition: all 0.4s ease;
 }
 
 .mvv-card:hover .card-icon-box {
   background-color: var(--turquesa);
   color: white;
-  transform: scale(1.05) rotate(8deg);
+  transform: translateY(-2px) scale(1.03);
 }
 
 .mvv-card h3 {
   font-family: 'Poppins', sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   color: var(--azul-oscuro);
-  font-weight: 700;
-  margin-bottom: 18px;
+  font-weight: 800;
+  margin-bottom: 12px;
 }
 
 .mvv-card p {
   color: #64748b;
-  line-height: 1.7;
-  font-size: 0.92rem;
-  font-weight: 300;
+  line-height: 1.65;
+  font-size: 0.95rem;
+  font-weight: 400;
 }
 
 /* ===== VALUES CHIPS LAYOUT ===== */
 .values-chips {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  margin-top: 5px;
+  margin-top: 4px;
 }
 
 .value-chip {
-  background: var(--cream);
-  border: 1px solid rgba(0, 65, 83, 0.04);
-  border-radius: 16px;
+  background: var(--cream, #FDFDFD);
+  border: 1px solid rgba(0, 65, 83, 0.06);
+  border-radius: 14px;
   padding: 12px 16px;
   display: flex;
   align-items: center;
@@ -123,12 +124,12 @@
 
 .mvv-card:hover .value-chip {
   background: white;
-  border-color: rgba(0, 179, 188, 0.12);
+  border-color: rgba(0, 179, 188, 0.2);
 }
 
 .chip-bullet {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   background: var(--verde-principal);
   border-radius: 50%;
   flex-shrink: 0;
@@ -136,14 +137,14 @@
 }
 
 .chip-text {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: #475569;
   line-height: 1.4;
 }
 
 .chip-text strong {
   color: var(--azul-oscuro);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .card-bg-glow {
@@ -165,9 +166,9 @@
 
 /* ===== COMMITMENT BANNER ===== */
 .commitment-banner {
-  background: var(--azul-oscuro);
-  border-radius: 32px;
-  padding: 50px 30px;
+  background: var(--azul-oscuro, #002835);
+  border-radius: 28px;
+  padding: 38px 30px;
   color: white;
   position: relative;
   overflow: hidden;
@@ -190,38 +191,42 @@
 
 .badge {
   display: inline-block;
-  padding: 6px 16px;
-  background-color: var(--verde-principal);
-  color: var(--azul-oscuro);
+  padding: 6px 18px;
+  background-color: var(--verde-principal, #B1D616);
+  color: var(--azul-oscuro, #002835);
   border-radius: 99px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   box-shadow: 0 4px 15px rgba(177, 214, 22, 0.25);
 }
 
 .commitment-banner h4 {
   font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   letter-spacing: -0.5px;
 }
 
 .commitment-banner p {
   font-size: 1rem;
-  opacity: 0.8;
-  max-width: 600px;
+  opacity: 0.85;
+  max-width: 620px;
   margin: 0 auto;
   font-weight: 300;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
+  .container-custom {
+    padding: 0 20px;
+  }
+
   .mvv-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    gap: 20px;
   }
   
   .mvv-card:last-child {
@@ -231,16 +236,12 @@
 
 @media (max-width: 768px) {
   .mision-vision-wrapper {
-    padding: 60px 0;
-  }
-
-  .container-custom {
-    padding: 0 5%;
+    padding: 30px 0;
   }
 
   .mvv-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
   }
 
   .mvv-card:last-child {
@@ -248,22 +249,22 @@
   }
 
   .mvv-card {
-    padding: 35px 24px;
-    border-radius: 24px;
+    padding: 30px 20px;
+    border-radius: 20px;
   }
 
   .commitment-banner {
-    border-radius: 24px;
-    padding: 40px 20px;
-    margin-top: 40px;
+    border-radius: 20px;
+    padding: 30px 18px;
+    margin-top: 30px;
   }
 
   .commitment-banner h4 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .commitment-banner p {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
 }
 
@@ -273,22 +274,22 @@
 }
 
 .interactive-card:hover {
-  transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 30px 60px rgba(0, 179, 188, 0.15);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 25px 55px rgba(0, 179, 188, 0.14);
   border-color: rgba(0, 179, 188, 0.3);
 }
 
 .interactive-card:hover .value-chip {
-  transform: translateX(5px);
+  transform: translateX(4px);
   border-color: var(--verde-principal);
 }
 
 .click-hint {
-  font-size: 0.8rem !important;
+  font-size: 0.78rem !important;
   color: var(--turquesa) !important;
-  font-weight: 500 !important;
-  margin-bottom: 15px;
-  opacity: 0.8;
+  font-weight: 600 !important;
+  margin-bottom: 12px;
+  opacity: 0.85;
   transition: opacity 0.3s ease;
 }
 
@@ -439,4 +440,3 @@
     padding: 20px 15px;
   }
 }
-

@@ -6,11 +6,9 @@
   <!-- Header: Oculto en modo asistente, LOGIN y DASHBOARD -->
   <app-navbar *ngIf="!isAssistantMode && !isLoginPage && !isAdminPage"></app-navbar>
   
-  <main class="flex-grow" 
+  <main class="flex-grow pb-24 md:pb-0" 
         [class.pt-[72px]]="!isAssistantMode && !isLoginPage && !isAdminPage" 
-        [class.md:pt-[90px]]="!isAssistantMode && !isLoginPage && !isAdminPage"
-        [class.pb-24]="!isAssistantMode && !isLoginPage && !isAdminPage" 
-        [class.md:pb-0]="isAssistantMode || isLoginPage || isAdminPage">
+        [class.md:pt-[90px]]="!isAssistantMode && !isLoginPage && !isAdminPage">
     <router-outlet></router-outlet>
   </main>
 

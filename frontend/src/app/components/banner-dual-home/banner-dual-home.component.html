@@ -1,43 +1,53 @@
-<section class="banner-dual-section">
-  <div class="banner-container">
+<div class="sticky-scroll-wrapper" #stickyWrapper>
+  <section class="banner-container">
     
-    <!-- Banner Perros -->
-    <div class="banner-item perros-banner">
-      <div class="banner-overlay"></div>
-      <img src="assets/images/bannerperro.png" alt="Mobiliario para Perros" class="banner-img">
-      <div class="banner-content">
-        <div class="banner-tag-badge">
-          <span class="tag-dot"></span>
-          <span class="banner-tag">Mundo Canino</span>
-        </div>
-        <h2 class="banner-title">Confort para tu mejor amigo</h2>
-        <a routerLink="/productos" [queryParams]="{categoria: 'Perros'}" class="banner-link">
-          <span>Explorar Perros</span>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-          </svg>
-        </a>
+    <!-- Background Layers for Smooth Transitions -->
+    <div class="background-layers">
+      <div 
+        *ngFor="let slide of slides; let i = index"
+        class="bg-layer"
+        [class.active]="activeIndex === i"
+        [class.slide-0]="i === 0"
+        [class.slide-1]="i === 1"
+        [style.background-image]="'url(' + slide.image + ')'">
+        <!-- Oscurecido suave de la imagen -->
+        <div class="dark-overlay"></div>
       </div>
     </div>
 
-    <!-- Banner Gatos -->
-    <div class="banner-item gatos-banner">
-      <div class="banner-overlay"></div>
-      <img src="assets/images/bannergato.png" alt="Mobiliario para Gatos" class="banner-img">
-      <div class="banner-content">
-        <div class="banner-tag-badge">
-          <span class="tag-dot"></span>
-          <span class="banner-tag">Mundo Felino</span>
+    <!-- Center Content Overlay (Pinnable layout sin contenedor opaco) -->
+    <div class="content-wrapper-pin">
+      <div 
+        *ngFor="let slide of slides; let i = index"
+        class="slide-content-pin"
+        [class.active]="activeIndex === i">
+        
+        <div class="text-content">
+          <p class="subtitle">{{ slide.subtitle }}</p>
+          <h2 class="title">{{ slide.title }}</h2>
+          <p class="description">{{ slide.description }}</p>
+          
+          <div class="action-wrap" [class.show]="activeIndex === i">
+            <a routerLink="/productos" [queryParams]="{categoria: slide.categoriaParam}" class="btn-outline">
+              <span>{{ slide.btnText }}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+          </div>
         </div>
-        <h2 class="banner-title">Diseño para el máximo relax</h2>
-        <a routerLink="/productos" [queryParams]="{categoria: 'Gatos'}" class="banner-link">
-          <span>Explorar Gatos</span>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-          </svg>
-        </a>
       </div>
     </div>
 
-  </div>
-</section>
+    <!-- Scroll Indicators / Navigation Dots -->
+    <div class="scroll-dots">
+      <span 
+        *ngFor="let slide of slides; let i = index" 
+        class="dot" 
+        [class.active]="activeIndex === i"
+        (click)="scrollToIndex(i)">
+      </span>
+    </div>
+
+  </section>
+</div>

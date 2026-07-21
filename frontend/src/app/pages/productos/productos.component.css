@@ -5,10 +5,12 @@
 /* Sidebar Drawer behavior */
 .sidebar-container {
   position: sticky;
-  top: 120px;
-  height: fit-content;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
   z-index: 10;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  scrollbar-width: thin;
 }
 
 @media (max-width: 1024px) {

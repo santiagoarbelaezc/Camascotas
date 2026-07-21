@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 import { HeaderEnlacesComponent } from '../../components/header-enlaces/header-enlaces.component';
 import { MenuCategoriasComponent } from '../../components/menu-categorias/menu-categorias.component';
 import { GridProductosComponent } from '../../components/grid-productos/grid-productos.component';
@@ -22,11 +22,6 @@ import { RouterModule } from '@angular/router';
 
 const FALLBACK_IMG = 'assets/images/placeholder.jpg';
 
-/**
- * Map a ProductoAdmin to CarruselItem.
- * - imagen      = imagenes[1] (second image, as requested)
- * - imagenHover = imagenes[0] (principal, shown on hover)
- */
 function toCarruselItem(p: ProductoAdmin): CarruselItem {
   const imgs     = p.imagenes ?? [];
   const segunda  = imgs[1] ?? imgs[0] ?? FALLBACK_IMG;
@@ -44,7 +39,7 @@ function toCarruselItem(p: ProductoAdmin): CarruselItem {
     desde:       !!p.desde,
     imagen:      segunda,
     imagenHover: primera,
-    categoria,
+    categoria:   categoria,
     colores:     p.colores ?? []
   };
 }
@@ -75,52 +70,98 @@ function toCarruselItem(p: ProductoAdmin): CarruselItem {
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  /** Top carousel: most recently added products (ordered by id DESC) */
   recientesItems: CarruselItem[] = [];
-
-  /** Bottom carousel: random discovery products */
   novedadesItems: CarruselItem[] = [];
-
-  /** Dynamic customizable landing components */
   componentesDinamicos: ComponenteDinamico[] = [];
+
+  private scrollTimer: any;
+  private readonly SCROLL_KEY = 'home_scroll_position';
 
   constructor(
     private productosService: ProductoAdminService,
     private componentesService: ComponentesService
   ) {}
 
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    if (typeof window === 'undefined') return;
+    
+    // Guardar posición de scroll con debounce ligero
+    if (this.scrollTimer) clearTimeout(this.scrollTimer);
+    this.scrollTimer = setTimeout(() => {
+      sessionStorage.setItem(this.SCROLL_KEY, window.scrollY.toString());
+    }, 100);
+  }
+
+  @HostListener('window:beforeunload', [])
+  onBeforeUnload(): void {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(this.SCROLL_KEY, window.scrollY.toString());
+    }
+  }
+
   filtrarProductosPorCategoria(categoriaName: string): CarruselItem[] {
     if (!categoriaName) return this.recientesItems;
-    // Normalize string match
     const search = categoriaName.toLowerCase();
     return this.recientesItems.filter(item => (item.categoria ?? '').toLowerCase().includes(search));
   }
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
     // Cargar componentes dinámicos activos
     this.componentesService.getComponentes().subscribe({
       next: (res) => {
         this.componentesDinamicos = res.filter(c => c.activo == 1 || c.activo === true);
+        this.restaurarScrollGuardado();
       },
       error: (err) => console.warn('Error cargando componentes dinámicos:', err)
     });
 
-    // Top carousel: 20 most recent products (user can expand to see all)
+    // Top carrousel: 20 productos recientes
     this.productosService.getRecientes(20).subscribe({
       next: (productos) => {
         this.recientesItems = productos.map(toCarruselItem);
+        this.restaurarScrollGuardado();
       },
       error: (err) => console.warn('Error cargando recientes:', err)
     });
 
-    // Bottom carousel: 16 random products for discovery
+    // Bottom carrousel: 16 productos aleatorios
     this.productosService.getAleatorios(16).subscribe({
       next: (productos) => {
         this.novedadesItems = productos.map(toCarruselItem);
+        this.restaurarScrollGuardado();
       },
       error: (err) => console.warn('Error cargando novedades:', err)
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.restaurarScrollGuardado();
+  }
+
+  private restaurarScrollGuardado(): void {
+    if (typeof window === 'undefined') return;
+    const savedPos = sessionStorage.getItem(this.SCROLL_KEY);
+    if (savedPos) {
+      const targetY = parseInt(savedPos, 10);
+      if (!isNaN(targetY) && targetY > 0) {
+        setTimeout(() => {
+          window.scrollTo({ top: targetY, behavior: 'instant' as ScrollBehavior });
+        }, 150);
+        setTimeout(() => {
+          window.scrollTo({ top: targetY, behavior: 'instant' as ScrollBehavior });
+        }, 400);
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.scrollTimer) clearTimeout(this.scrollTimer);
   }
 }

@@ -1,195 +1,233 @@
-.banner-dual-section {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  background: #000000;
+.sticky-scroll-wrapper {
+  position: relative;
+  height: 175vh;
 }
 
 .banner-container {
-  display: flex;
-  flex-direction: row;
+  position: sticky;
+  top: 0;
   width: 100%;
-  max-width: 100%;
-  margin: 0;
-  gap: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  background: var(--azul-oscuro, #002835);
+  font-family: 'Poppins', sans-serif;
+  z-index: 10;
 }
 
-.banner-item {
+/* ===== BACKGROUND LAYERS ===== */
+.background-layers {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
+              transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: scale(1.06); 
+}
+
+/* Alineación de la primera imagen (Perros) más hacia arriba */
+.bg-layer.slide-0 {
+  background-position: center center;
+}
+
+.bg-layer.slide-1 {
+  background-position: center center;
+}
+
+.bg-layer.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+/* Oscurecido suave sobre la imagen */
+.dark-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, 
+    rgba(10, 22, 30, 0.42) 0%, 
+    rgba(5, 15, 22, 0.72) 100%);
+  z-index: 1;
+}
+
+/* ===== CENTER CONTENT PIN (SIN CONTENEDOR OPACO) ===== */
+.content-wrapper-pin {
   position: relative;
-  flex: 1 1 50%;
-  height: 62vh;
-  min-height: 520px;
-  overflow: hidden;
-  cursor: pointer;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.slide-content-pin {
+  position: absolute;
+  width: 100%;
+  padding: 0 30px 100px 30px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+              transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.slide-content-pin.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* ===== TEXT CONTENT LIMPIO Y FLOTANTE ===== */
+.text-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  padding: 0;
   border-radius: 0;
   box-shadow: none;
 }
 
-.banner-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
-}
-
-.banner-item:hover .banner-img {
-  transform: scale(1.06);
-  filter: brightness(1.05);
-}
-
-.banner-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 32, 43, 0.88) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 100%);
-  z-index: 1;
-  transition: background 0.5s ease;
-}
-
-.banner-item:hover .banner-overlay {
-  background: linear-gradient(to top, rgba(0, 48, 62, 0.92) 0%, rgba(0, 0, 0, 0.45) 55%, transparent 100%);
-}
-
-.banner-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 50px 60px;
-  z-index: 2;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  transition: transform 0.5s ease;
-}
-
-.banner-tag-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 6px 16px;
-  border-radius: 99px;
+.subtitle {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--verde-principal, #B1D616);
   margin-bottom: 16px;
-  backdrop-filter: blur(10px);
+  line-height: 1.4;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7);
 }
 
-.tag-dot {
-  width: 8px;
-  height: 8px;
-  background-color: #B1D616;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #B1D616;
-}
-
-.banner-tag {
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: #B1D616;
-}
-
-.banner-title {
+.title {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-size: clamp(2.5rem, 4vw, 3.8rem);
   font-weight: 800;
-  line-height: 1.12;
-  margin-bottom: 24px;
-  max-width: 85%;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin-bottom: 20px;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.85);
 }
 
-.banner-link {
+.description {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 680px;
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8);
+}
+
+/* ===== ACTION BUTTON ===== */
+.action-wrap {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.5s ease 0.2s;
+}
+
+.slide-content-pin.active .action-wrap {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn-outline {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 34px;
-  background: #B1D616;
-  color: #002835;
-  border-radius: 99px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  padding: 15px 44px;
+  background-color: var(--verde-principal, #B1D616);
+  color: var(--azul-oscuro, #002835);
   text-decoration: none;
-  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: 0 8px 25px rgba(177, 214, 22, 0.3);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  border-radius: 999px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(177, 214, 22, 0.35);
 }
 
-.banner-item:hover .banner-link {
-  background: #c7ef1a;
-  transform: translateY(-4px);
-  box-shadow: 0 14px 35px rgba(177, 214, 22, 0.45);
+.btn-outline:hover {
+  transform: scale(1.06);
+  background-color: #c7ef1a;
+  box-shadow: 0 15px 40px rgba(177, 214, 22, 0.55);
 }
 
-.banner-link svg {
-  transition: transform 0.3s ease;
-}
-
-.banner-item:hover .banner-link svg {
-  transform: translateX(5px);
-}
-
-/* Linea divissoria sutil entre las dos imágenes */
-.perros-banner::after {
-  content: '';
+/* ===== SCROLL DOTS INDICATOR ===== */
+.scroll-dots {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 1px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.15);
-  z-index: 3;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 15;
 }
 
-/* RESPONSIVE DESIGN */
-@media (max-width: 1024px) {
-  .banner-container {
-    flex-direction: column;
-  }
-
-  .banner-item {
-    flex: 1 1 100%;
-    height: 48vh;
-    min-height: 380px;
-  }
-
-  .perros-banner::after {
-    display: none;
-  }
-
-  .banner-content {
-    padding: 35px 30px;
-  }
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
-@media (max-width: 640px) {
-  .banner-item {
-    height: 42vh;
-    min-height: 320px;
+.dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.dot.active {
+  background: var(--verde-principal, #B1D616);
+  width: 32px;
+  border-radius: 6px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.1rem;
+    margin-bottom: 14px;
   }
 
-  .banner-content {
-    padding: 24px 20px;
+  .subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    margin-bottom: 12px;
   }
-  
-  .banner-title {
-    font-size: 1.75rem;
-    margin-bottom: 18px;
-    max-width: 100%;
+
+  .description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 22px;
   }
-  
-  .banner-link {
-    width: 100%;
-    justify-content: center;
-    padding: 14px;
-    font-size: 0.8rem;
+
+  .btn-outline {
+    padding: 12px 36px;
+    font-size: 0.75rem;
+  }
+
+  .scroll-dots {
+    bottom: 30px;
   }
 }

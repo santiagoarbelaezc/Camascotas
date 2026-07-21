@@ -5,6 +5,11 @@ import { ProductosService, Producto } from '../../services/productos.service';
 import { ProductoSeleccionadoService } from '../../services/producto-seleccionado.service';
 import { ConfiguracionService } from '../../services/configuracion.service';
 
+interface GadgetInfo {
+  texto: string;
+  tipo: string;
+}
+
 @Component({
   selector: 'app-productos-list',
   standalone: true,
@@ -18,9 +23,20 @@ export class ProductosListComponent implements OnInit {
   terminoBusqueda: string | null = null;
   mostrarPrecios$;
 
-  // Paginación
+  // Paginación: Limitado a 8 productos por página
   currentPage = 1;
-  itemsPerPage = 12;
+  itemsPerPage = 8;
+
+  private readonly GADGETS: GadgetInfo[] = [
+    { texto: 'Últimas Unidades', tipo: 'urgente' },
+    { texto: 'Nuevo', tipo: 'nuevo' },
+    { texto: 'Exclusivo', tipo: 'exclusivo' },
+    { texto: 'Recomendado', tipo: 'destacado' },
+    { texto: 'Edición Limitada', tipo: 'limitado' },
+    { texto: 'Diseño Premium', tipo: 'premium' },
+    { texto: 'Tendencia Pet', tipo: 'tendencia' },
+    { texto: 'Favorito', tipo: 'favorito' }
+  ];
 
   constructor(
     private productosService: ProductosService,
@@ -40,7 +56,6 @@ export class ProductosListComponent implements OnInit {
       const subCatId = params['subcategoria_id'] ? +params['subcategoria_id'] : undefined;
       this.terminoBusqueda = params['busqueda'] || null;
 
-      // Simulamos un retraso para mostrar elegancia en la carga
       setTimeout(() => {
         this.productosService.getProductos(catId, subCatId).subscribe((prods: Producto[]) => {
           if (this.terminoBusqueda) {
@@ -54,8 +69,13 @@ export class ProductosListComponent implements OnInit {
           }
           this.cargando = false;
         });
-      }, 300);
+      }, 250);
     });
+  }
+
+  obtenerGadget(index: number): GadgetInfo {
+    const gadgetIndex = Math.abs(index) % this.GADGETS.length;
+    return this.GADGETS[gadgetIndex];
   }
 
   get totalPages(): number {
@@ -74,7 +94,7 @@ export class ProductosListComponent implements OnInit {
   setPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 120, behavior: 'smooth' });
   }
 
   normalizarTexto(str: string): string {
