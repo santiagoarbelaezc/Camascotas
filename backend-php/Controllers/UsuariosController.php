@@ -26,6 +26,7 @@ class usuarioscontroller {
                         ciudad,
                         edad,
                         rol,
+                        activo,
                         CASE WHEN google_id IS NOT NULL THEN 'google' ELSE 'formulario' END AS auth_method,
                         created_at
                     FROM usuarios
@@ -38,6 +39,7 @@ class usuarioscontroller {
             foreach ($clientes as &$c) {
                 $c['id']   = (int)$c['id'];
                 $c['edad'] = $c['edad'] !== null ? (int)$c['edad'] : null;
+                $c['activo'] = (bool)$c['activo'];
             }
 
             response::success($clientes);
@@ -129,6 +131,58 @@ class usuarioscontroller {
 
         } catch (\Exception $e) {
             response::error("Error al actualizar perfil", 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * DELETE /usuarios/:id
+     * Elimina físicamente a un usuario.
+     */
+    public function eliminar($id): void {
+        try {
+            $db = database::getConnection();
+            $stmt = $db->prepare("DELETE FROM usuarios WHERE id = ?");
+            $stmt->execute([$id]);
+
+            if ($stmt->rowCount() === 0) {
+                response::error("Usuario no encontrado", 404);
+            }
+
+            response::success(['mensaje' => 'Usuario eliminado correctamente.']);
+        } catch (\Exception $e) {
+            response::error("Error al eliminar usuario", 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * PATCH /usuarios/:id/estado
+     * Alterna el estado activo/inactivo del usuario.
+     */
+    public function cambiarEstado($id): void {
+        try {
+            $data = \App\utils\request::all();
+            if (!isset($data['activo'])) {
+                response::error("Se requiere el nuevo estado 'activo'", 400);
+            }
+
+            $activo = $data['activo'] ? 1 : 0;
+
+            $db = database::getConnection();
+            $stmt = $db->prepare("UPDATE usuarios SET activo = ? WHERE id = ?");
+            $stmt->execute([$activo, $id]);
+
+            if ($stmt->rowCount() === 0) {
+                // Verificar si el usuario existe y su estado ya era ese, o si no existe
+                $stmtCheck = $db->prepare("SELECT id FROM usuarios WHERE id = ?");
+                $stmtCheck->execute([$id]);
+                if ($stmtCheck->rowCount() === 0) {
+                    response::error("Usuario no encontrado", 404);
+                }
+            }
+
+            response::success(['mensaje' => 'Estado actualizado correctamente.']);
+        } catch (\Exception $e) {
+            response::error("Error al cambiar estado de usuario", 500, $e->getMessage());
         }
     }
 }

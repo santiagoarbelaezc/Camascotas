@@ -16,3 +16,13 @@ logs/
 .DS_Store
 .idea/
 .vscode/
+
+# Compressed & Archive files
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+*.tgz
+*.iso
+*.cab

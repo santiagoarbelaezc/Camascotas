@@ -36,6 +36,11 @@ class authcontroller {
             response::error('Credenciales incorrectas', 401);
         }
 
+        if (isset($usuario['activo']) && (int)$usuario['activo'] === 0) {
+            logger::warning("Login bloqueado (cuenta desactivada): $correo");
+            response::error('Tu cuenta ha sido desactivada. Contacta al soporte.', 403);
+        }
+
         if ((int)$usuario['verificado'] === 0 && $usuario['rol'] === 'cliente') {
             logger::warning("Login bloqueado (cuenta no verificada): $correo");
             response::error('Tu cuenta aún no está verificada. Por favor ingresa el código de 6 dígitos enviado a tu correo para activarla.', 403, [
@@ -190,6 +195,11 @@ class authcontroller {
             }
         }
 
+        if (isset($usuario['activo']) && (int)$usuario['activo'] === 0) {
+            logger::warning("Login con Google bloqueado (cuenta desactivada): $correo");
+            response::error('Tu cuenta ha sido desactivada. Contacta al soporte.', 403);
+        }
+
         // Generar JWT
         $payload = [
             'id'     => $usuario['id'],
@@ -311,6 +321,11 @@ class authcontroller {
 
         if ((int)$usuario['verificado'] === 1) {
             response::error('Esta cuenta ya se encuentra verificada', 400);
+        }
+
+        if ($usuario['codigo_verificacion_expira'] && strtotime($usuario['codigo_verificacion_expira']) > time()) {
+            $faltan = ceil((strtotime($usuario['codigo_verificacion_expira']) - time()) / 60);
+            response::error("El código actual sigue vigente. Debes esperar $faltan minuto(s) para poder solicitar otro.", 429);
         }
 
         $codigo = sprintf("%06d", random_int(0, 999999));

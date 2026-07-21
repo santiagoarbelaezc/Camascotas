@@ -8,6 +8,8 @@ return function($router) {
 
     // Listar clientes registrados (protegido — solo admin)
     $router->add('GET', '/usuarios', [$controller, 'listar'], [authmiddleware::class, 'handleAdmin']);
+    $router->add('DELETE', '/usuarios/{id}', [$controller, 'eliminar'], [authmiddleware::class, 'handleAdmin']);
+    $router->add('PATCH', '/usuarios/{id}/estado', [$controller, 'cambiarEstado'], [authmiddleware::class, 'handleAdmin']);
 
     // Perfil del usuario autenticado
     $router->add('GET', '/usuarios/perfil', [$controller, 'obtenerPerfil'], [authmiddleware::class, 'handle']);
