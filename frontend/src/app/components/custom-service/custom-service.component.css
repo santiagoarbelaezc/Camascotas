@@ -1,76 +1,112 @@
 .custom-service-section {
-  padding: 100px 0;
-  background-color: var(--cream);
+  padding: 45px 0;
+  background-color: var(--cream, #FDFDFD);
+  border-top: 1px solid rgba(0, 65, 83, 0.05);
+  border-bottom: 1px solid rgba(0, 65, 83, 0.05);
 }
 
 .custom-container {
-  max-width: 1800px;
+  max-width: 1750px;
   margin: 0 auto;
-  padding: 0 4%;
+  padding: 0 30px;
 }
 
 .custom-grid {
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
-  gap: 100px;
+  grid-template-columns: 1.38fr 0.62fr;
+  gap: 45px;
   align-items: center;
 }
 
 .custom-image {
   position: relative;
+  width: 100%;
 }
 
 .image-inner {
   position: relative;
-  border-radius: 50px;
+  border-radius: 36px;
   overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0, 65, 83, 0.1);
-  aspect-ratio: 1774 / 887;
+  box-shadow: 0 25px 60px rgba(0, 65, 83, 0.12);
+  border: 1px solid rgba(0, 65, 83, 0.08);
+  aspect-ratio: 18 / 9.5;
+  background: #f8f9fa;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
+.image-inner:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 35px 75px rgba(0, 65, 83, 0.18);
+}
+
+.image-inner picture img,
 .image-inner img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
+  transition: transform 0.6s ease;
+}
+
+.image-inner:hover img {
+  transform: scale(1.03);
 }
 
 .glow-effect {
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at center, var(--turquesa) 0%, transparent 70%);
-  opacity: 0.1;
+  opacity: 0.08;
   pointer-events: none;
 }
 
-.custom-label {
+.custom-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 179, 188, 0.08);
+  border: 1px solid rgba(0, 179, 188, 0.2);
+  padding: 6px 16px;
+  border-radius: 99px;
+  margin-bottom: 18px;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--turquesa);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--turquesa);
+}
+
+.custom-badge span {
   font-family: 'Poppins', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: 0.78rem;
+  font-weight: 700;
   color: var(--turquesa);
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  display: block;
-  margin-bottom: 20px;
+  letter-spacing: 0.2em;
 }
 
 .custom-title {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  color: var(--azul-oscuro);
+  font-size: clamp(2rem, 3.5vw, 3.1rem);
+  color: var(--azul-oscuro, #002835);
   font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 30px;
+  line-height: 1.15;
+  margin-bottom: 18px;
+  letter-spacing: -0.02em;
 }
 
 .green-text {
-  color: var(--verde-principal);
+  color: var(--turquesa);
 }
 
 .custom-p {
-  font-size: 1.1rem;
-  color: #666;
-  line-height: 1.8;
-  margin-bottom: 40px;
+  font-size: 1.05rem;
+  color: #4a5568;
+  line-height: 1.7;
+  margin-bottom: 28px;
   max-width: 600px;
 }
 
@@ -78,33 +114,28 @@
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-}
-
-@media (max-width: 1024px) {
-  .custom-actions {
-    width: 100%;
-    justify-content: center;
-  }
+  align-items: center;
 }
 
 .personalize-online-btn {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  background-color: #00B3BC;
+  gap: 10px;
+  background-color: var(--turquesa);
   color: white;
-  padding: 16px 32px;
-  border-radius: 30px;
+  padding: 15px 32px;
+  border-radius: 99px;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 10px 20px rgba(0, 179, 188, 0.2);
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px rgba(0, 179, 188, 0.25);
 }
 
 .personalize-online-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(0, 179, 188, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0, 179, 188, 0.4);
+  background-color: #0099a1;
 }
 
 .whatsapp-cta-sec {
@@ -115,53 +146,77 @@
   color: #25D366;
   border: 2px solid #25D366;
   padding: 14px 28px;
-  border-radius: 30px;
+  border-radius: 99px;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.4s;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
 }
 
 .whatsapp-cta-sec:hover {
   background-color: #25D366;
   color: white;
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(37, 211, 102, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(37, 211, 102, 0.25);
 }
 
+/* RESPONSIVE DESIGN */
 @media (max-width: 1024px) {
-  .personalize-online-btn,
-  .whatsapp-cta-sec {
-    width: 100%;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-  
   .custom-service-section {
-    padding: 60px 0;
+    padding: 40px 0;
+  }
+
+  .custom-container {
+    padding: 0 20px;
   }
 
   .custom-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
     text-align: center;
   }
 
+  .custom-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .custom-title {
-    font-size: 2.2rem;
+    font-size: 2.1rem;
   }
 
   .custom-p {
-    margin: 0 auto 30px auto;
+    margin: 0 auto 24px auto;
+  }
+
+  .custom-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .personalize-online-btn,
+  .whatsapp-cta-sec {
+    width: 100%;
+    justify-content: center;
   }
 
   .image-inner {
-    aspect-ratio: auto;
+    border-radius: 28px;
+    aspect-ratio: 16 / 9;
   }
 }
 
-.image-inner picture img {
-  width: 100%;
-  height: auto;
-  display: block;
+@media (max-width: 640px) {
+  .custom-service-section {
+    padding: 30px 0;
+  }
+
+  .custom-title {
+    font-size: 1.8rem;
+  }
+
+  .image-inner {
+    border-radius: 20px;
+  }
 }

@@ -8,11 +8,9 @@
 
 <!-- PRODUCTOS DESTACADOS: CARRUSEL DE PRODUCTOS -->
 <div class="py-6 bg-white overflow-hidden border-b border-gray-100">
-  <app-carrusel-destacados
-    [titulo]="'Colecciones Destacadas'"
+  <app-carrusel-destacados [titulo]="'Colecciones Destacadas'"
     [subtitulo]="'Explora nuestro mobiliario exclusivo diseñado para el confort y descanso de tu mascota'"
-    [todosLosItems]="recientesItems"
-    [itemsIniciales]="6">
+    [todosLosItems]="recientesItems" [itemsIniciales]="6">
   </app-carrusel-destacados>
 </div>
 
@@ -22,23 +20,16 @@
 <!-- REGISTRATION ANNOUNCEMENT BANNER -->
 <app-registro-banner></app-registro-banner>
 
-<!-- BANNER DE AVISO: HABLA CON NOSOTROS, CONTÁCTANOS -->
-<app-banner-contacto-aviso></app-banner-contacto-aviso>
 
 <!-- VALORES: INTERACTIVE BANNER -->
 <app-banner-valores></app-banner-valores>
 
+<!-- BANNER DE AVISO: HABLA CON NOSOTROS, CONTÁCTANOS -->
+<app-banner-contacto-aviso></app-banner-contacto-aviso>
+
 <!-- CUSTOM SERVICE: PERSONALIZACIÓN -->
 <app-custom-service></app-custom-service>
 
-
-<!-- HIGHLIGHTS SECTION: LO MÁS NUEVO -->
-<div class="py-12 bg-white overflow-hidden">
-  <app-carrusel-destacados [titulo]="'Lo Más Reciente'"
-    [subtitulo]="'Los últimos muebles incorporados a nuestro catálogo'" [todosLosItems]="recientesItems"
-    [itemsIniciales]="6">
-  </app-carrusel-destacados>
-</div>
 
 <!-- ─── ZONA SUPERIOR DE COMPONENTES DINÁMICOS ─── -->
 <ng-container *ngFor="let comp of componentesDinamicos">
@@ -176,17 +167,6 @@
 <!-- NOSOTROS: BRAND SOUL -->
 <app-nosotros></app-nosotros>
 
-
-
-
-
-<!-- NEW RELEASES: DESCUBRIMIENTO -->
-<div class="py-12 bg-white overflow-hidden">
-  <app-carrusel-destacados [titulo]="'Descubre el Catálogo'"
-    [subtitulo]="'Explora nuestra selección completa de muebles para mascotas'" [todosLosItems]="novedadesItems"
-    [itemsIniciales]="6">
-  </app-carrusel-destacados>
-</div>
 
 <!-- DUAL BANNER: PERROS & GATOS -->
 <app-banner-dual-home></app-banner-dual-home>
