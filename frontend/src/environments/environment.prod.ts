@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://camascotas.com/api'
+  apiUrl: 'https://camascotas.com/api',
+  personalizacionActiva: false
 };
