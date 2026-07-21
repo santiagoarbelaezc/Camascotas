@@ -4,6 +4,7 @@
        [routerLink]="item.link" 
        routerLinkActive="active" 
        [routerLinkActiveOptions]="{ exact: item.link === '/' }"
+       [class.is-special]="item.icon === 'sparkles'"
        class="nav-item">
       
       <!-- Icon Wrapper -->
@@ -39,8 +40,8 @@
       <!-- Label -->
       <span class="nav-label">{{ item.label }}</span>
       
-      <!-- Active Dot -->
-      <div class="active-dot"></div>
+      <!-- Active Indicator Bar -->
+      <div class="active-indicator"></div>
     </a>
   </div>
 </nav>

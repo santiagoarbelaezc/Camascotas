@@ -11,7 +11,7 @@
 
   <div class="carousel-track-container" #scrollContainer (scroll)="onScroll($event)">
     <div class="carousel-track">
-      <div class="carousel-slide" *ngFor="let item of items; let i = index" [id]="'slide-' + i">
+      <div class="carousel-slide" *ngFor="let item of mobileItems; let i = index" [id]="'slide-' + i">
         <img [src]="item.img" [alt]="item.title" class="slide-img">
         <div class="slide-overlay">
           <div class="slide-content">
@@ -26,7 +26,7 @@
   
   <!-- Indicadores (Dots) -->
   <div class="carousel-dots">
-    <button *ngFor="let dot of items; let i = index" 
+    <button *ngFor="let dot of mobileItems; let i = index" 
             (click)="scrollToSlide(i)" 
             [class.active]="i === currentSlide"
             class="dot-btn"></button>

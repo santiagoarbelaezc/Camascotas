@@ -10,8 +10,10 @@ import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component
 import { LoadingComponent } from './components/loading/loading.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { PwaInstallModalComponent } from './components/pwa-install-modal/pwa-install-modal.component';
 import { LoadingService } from './services/loading.service';
 import { StatsService } from './services/stats.service';
+import { PwaService } from './services/pwa.service';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +27,8 @@ import { StatsService } from './services/stats.service';
     SplashScreenComponent,
     BottomNavComponent,
     LoadingComponent,
-    ToastComponent
+    ToastComponent,
+    PwaInstallModalComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -40,8 +43,19 @@ export class AppComponent {
   constructor(
     private router: Router,
     private loadingService: LoadingService,
-    private statsService: StatsService
+    private statsService: StatsService,
+    private pwaService: PwaService
   ) {
+    // Sugerir instalación de PWA tras 5 segundos en dispositivos móviles si no se ha instalado
+    if (typeof window !== 'undefined' && (this.pwaService.isIos || this.pwaService.isAndroid) && !this.pwaService.isInstalled) {
+      setTimeout(() => {
+        const dismissed = localStorage.getItem('pwa_prompt_dismissed');
+        if (!dismissed) {
+          this.pwaService.abrirModal();
+          localStorage.setItem('pwa_prompt_dismissed', '1');
+        }
+      }, 5000);
+    }
     // Suscribirse al estado de carga manual
     this.loadingService.loading$.subscribe(state => {
       this.isPageLoading = state;

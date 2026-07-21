@@ -1,0 +1,170 @@
+<div *ngIf="mostrarModal" class="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md transition-all duration-300 animate-in fade-in">
+  
+  <div class="bg-white rounded-[32px] max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col relative animate-in zoom-in-95 duration-300">
+    
+    <!-- Botón Cerrar X -->
+    <button (click)="cerrarModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-all active:scale-95">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Header & Tab Selector (iOS vs Android) -->
+    <div class="bg-gradient-to-br from-[#002835] via-[#003848] to-[#00485c] text-white p-6 pt-7 text-center space-y-4 relative overflow-hidden">
+      <!-- Decoración fondo -->
+      <div class="absolute -top-12 -right-12 w-40 h-40 bg-brand-turquesa/15 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-brand-lima/15 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/15 text-[10px] font-extrabold uppercase tracking-[0.2em] text-brand-turquesa">
+        <span class="w-2 h-2 rounded-full bg-brand-turquesa animate-pulse"></span>
+        Instalar Aplicación Camascotas
+      </div>
+
+      <h3 class="font-outfit text-xl sm:text-2xl font-extrabold tracking-tight text-white leading-tight">
+        Lleva Camascotas en tu Pantalla
+      </h3>
+
+      <!-- Selector de Sistema Operativo -->
+      <div class="inline-flex p-1 bg-slate-900/50 backdrop-blur-md rounded-full border border-white/10 max-w-xs mx-auto w-full">
+        <button 
+          (click)="setPlataforma('android')" 
+          [class.bg-brand-turquesa]="plataforma === 'android'"
+          [class.text-white]="plataforma === 'android'"
+          [class.text-slate-300]="plataforma !== 'android'"
+          class="flex-1 py-2 px-4 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-2">
+          <span>🤖</span> Android
+        </button>
+        <button 
+          (click)="setPlataforma('ios')" 
+          [class.bg-brand-turquesa]="plataforma === 'ios'"
+          [class.text-white]="plataforma === 'ios'"
+          [class.text-slate-300]="plataforma !== 'ios'"
+          class="flex-1 py-2 px-4 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-2">
+          <span>🍏</span> iPhone / iPad
+        </button>
+      </div>
+    </div>
+
+    <!-- Carrusel Body / Slide Actual -->
+    <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
+      
+      <!-- Slide Content -->
+      <div class="space-y-4 text-center min-h-[220px] flex flex-col justify-center items-center">
+        
+        <!-- Badge de Paso -->
+        <span class="inline-block px-3 py-1 rounded-full bg-slate-100 text-brand-petrol text-[11px] font-extrabold tracking-wider uppercase">
+          {{ currentSlide.paso }}
+        </span>
+
+        <!-- Visual Graphic / Mockup según la diapositiva -->
+        <div class="my-2 flex items-center justify-center">
+          
+          <!-- Slide 0: Bienvenida Sparkles -->
+          <div *ngIf="currentSlide.icono === 'sparkles'" class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-brand-petrol to-brand-turquesa text-white flex items-center justify-center shadow-xl shadow-brand-turquesa/20 animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-brand-lima" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18l-3.5 2 1-4-3-3 4-.5L12 9l1.5 3.5 4 .5-3 3 1 4z" />
+            </svg>
+          </div>
+
+          <!-- iOS Share Icon -->
+          <div *ngIf="currentSlide.icono === 'share-ios'" class="w-20 h-20 rounded-3xl bg-sky-50 border-2 border-sky-200 text-sky-600 flex items-center justify-center shadow-md animate-pulse">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+          </div>
+
+          <!-- iOS Add Icon -->
+          <div *ngIf="currentSlide.icono === 'add-ios'" class="w-20 h-20 rounded-3xl bg-emerald-50 border-2 border-emerald-200 text-emerald-600 flex items-center justify-center shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+
+          <!-- Android 3 Dots -->
+          <div *ngIf="currentSlide.icono === 'dots-android'" class="w-20 h-20 rounded-3xl bg-amber-50 border-2 border-amber-200 text-amber-600 flex items-center justify-center shadow-md animate-pulse">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+            </svg>
+          </div>
+
+          <!-- Android Download Icon -->
+          <div *ngIf="currentSlide.icono === 'download-android'" class="w-20 h-20 rounded-3xl bg-indigo-50 border-2 border-indigo-200 text-indigo-600 flex items-center justify-center shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          </div>
+
+          <!-- Check Success -->
+          <div *ngIf="currentSlide.icono.startsWith('check')" class="w-20 h-20 rounded-3xl bg-emerald-500 text-white flex items-center justify-center shadow-xl shadow-emerald-500/30 animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+
+        </div>
+
+        <h4 class="text-xl font-bold text-[#002835] font-outfit">{{ currentSlide.titulo }}</h4>
+        
+        <p class="text-xs sm:text-sm text-slate-600 font-medium max-w-sm leading-relaxed">
+          {{ currentSlide.descripcion }}
+        </p>
+
+        <p *ngIf="currentSlide.subtexto" class="text-[11px] text-slate-400 font-normal max-w-sm italic">
+          {{ currentSlide.subtexto }}
+        </p>
+
+        <!-- Destacado Visual Badge -->
+        <div *ngIf="currentSlide.destacado" class="mt-1 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-bold">
+          💡 {{ currentSlide.destacado }}
+        </div>
+      </div>
+
+      <!-- Controls & Dots -->
+      <div class="space-y-4 pt-2">
+        
+        <!-- Indicator Dots -->
+        <div class="flex items-center justify-center gap-2">
+          <button 
+            *ngFor="let s of currentSlides; let i = index" 
+            (click)="irASlide(i)"
+            [class.w-7]="activeSlideIndex === i"
+            [class.bg-brand-turquesa]="activeSlideIndex === i"
+            [class.w-2]="activeSlideIndex !== i"
+            [class.bg-slate-200]="activeSlideIndex !== i"
+            class="h-2 rounded-full transition-all duration-300">
+          </button>
+        </div>
+
+        <!-- Buttons Row -->
+        <div class="flex gap-3">
+          <button 
+            *ngIf="activeSlideIndex > 0"
+            (click)="anteriorSlide()" 
+            class="px-5 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-full transition-all active:scale-95">
+            Anterior
+          </button>
+
+          <!-- Botón de Instalación Directa en Android si está listo -->
+          <button 
+            *ngIf="plataforma === 'android' && pwaService.puedesInstalarDirecto()"
+            (click)="instalarDirecto()"
+            class="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs uppercase tracking-wider rounded-full transition-all shadow-lg shadow-emerald-600/30 active:scale-95 flex items-center justify-center gap-2">
+            <span>⚡</span> Instalar con Un Clic
+          </button>
+
+          <button 
+            (click)="siguienteSlide()" 
+            class="flex-1 py-3.5 bg-[#002835] hover:bg-[#003c4f] text-white font-extrabold text-xs uppercase tracking-wider rounded-full transition-all shadow-lg shadow-[#002835]/20 active:scale-95 flex items-center justify-center gap-2">
+            <span>{{ activeSlideIndex === currentSlides.length - 1 ? '¡Entendido!' : 'Siguiente Paso' }}</span>
+            <svg *ngIf="activeSlideIndex < currentSlides.length - 1" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

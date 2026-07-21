@@ -1,8 +1,3 @@
-/* ===================================================
-   BOTTOM NAVBAR — Camascotas (PWA Style)
-   Glassmorphism, subtle animations, and mobile-first.
-=================================================== */
-
 :host {
   display: block;
   z-index: 9999;
@@ -10,29 +5,31 @@
 
 .bottom-nav {
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  height: 70px;
-  background: var(--azul-oscuro);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 30px;
-  box-shadow: 0 10px 40px rgba(0, 65, 83, 0.4);
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  height: 68px;
+  background: rgba(0, 40, 53, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  box-shadow: 0 20px 50px rgba(0, 40, 53, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-container {
   display: flex;
   width: 100%;
-  max-width: 500px;
+  max-width: 520px;
   height: 100%;
   justify-content: space-around;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 8px;
 }
 
 .nav-item {
@@ -41,29 +38,43 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.4);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: rgba(255, 255, 255, 0.55);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   flex: 1;
+  height: 100%;
+  padding: 6px 0;
+  border-radius: 20px;
 }
 
-/* Icon */
+.nav-item:active {
+  transform: scale(0.92);
+}
+
+/* Icon Container */
 .icon-wrapper {
-  margin-bottom: 4px;
-  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 30px;
+  border-radius: 999px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 2px;
 }
 
 .nav-icon {
-  width: 1.4rem;
-  height: 1.4rem;
-  stroke-width: 1.5;
+  width: 1.35rem;
+  height: 1.35rem;
+  stroke-width: 1.8;
+  transition: all 0.3s ease;
 }
 
 /* Label */
 .nav-label {
   font-family: 'Poppins', sans-serif;
-  font-size: 0.52rem;
-  font-weight: 700;
+  font-size: 0.55rem;
+  font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -71,76 +82,93 @@
   overflow: hidden;
   max-width: 100%;
   text-align: center;
-  padding: 0 2px;
+  transition: all 0.3s ease;
 }
 
-@media (max-width: 375px) {
-  .nav-label {
-    font-size: 0.48rem;
-    letter-spacing: 0.01em;
-  }
-  .bottom-nav {
-    left: 10px;
-    right: 10px;
-    height: 65px;
-  }
-}
-
-/* Active State */
+/* Active State - Clean & Flat */
 .nav-item.active {
-  color: var(--verde-principal);
+  color: #00B3BC;
 }
 
 .nav-item.active .icon-wrapper {
-  transform: translateY(-4px);
+  background: transparent;
+  color: #00B3BC;
+  transform: translateY(-2px);
+  box-shadow: none;
 }
 
 .nav-item.active .nav-icon {
   stroke-width: 2.5;
+  color: #00B3BC;
 }
 
-/* Active Dot indicator */
-.active-dot {
+.nav-item.active .nav-label {
+  color: #00B3BC;
+  font-weight: 800;
+}
+
+/* Special Button (Asistente AI Sparkles) - Distinct Gradient Pill */
+.nav-item.is-special .icon-wrapper {
+  background: linear-gradient(135deg, #00B3BC 0%, #B1D616 100%);
+  color: #002835;
+  width: 42px;
+  height: 32px;
+  box-shadow: 0 4px 15px rgba(0, 179, 188, 0.4);
+}
+
+.nav-item.is-special .nav-icon {
+  color: #002835;
+  stroke-width: 2.2;
+}
+
+.nav-item.is-special.active .icon-wrapper {
+  background: linear-gradient(135deg, #00B3BC 0%, #B1D616 100%);
+  color: #002835;
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 8px 25px rgba(177, 214, 22, 0.6);
+}
+
+.nav-item.is-special.active .nav-icon {
+  color: #002835;
+  stroke-width: 2.5;
+}
+
+.nav-item.is-special.active .nav-label {
+  color: #B1D616;
+  font-weight: 800;
+}
+
+/* Top Active Bar Indicator */
+.active-indicator {
   position: absolute;
-  bottom: -8px;
-  width: 5px;
-  height: 5px;
-  background: var(--verde-principal);
-  border-radius: 50%;
+  top: 0;
+  width: 20px;
+  height: 3px;
+  background: #00B3BC;
+  border-radius: 999px;
   opacity: 0;
-  transform: scale(0);
-  transition: all 0.3s ease;
-  box-shadow: 0 0 10px var(--verde-principal);
+  transform: scaleX(0);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px #00B3BC;
 }
 
-/* ===================================================
-   ASSISTANT MODE (Husky Theme)
-   Pure black/dark glassmorphism for immersive AI mode.
-=================================================== */
+.nav-item.active .active-indicator {
+  opacity: 1;
+  transform: scaleX(1);
+}
 
+.nav-item.is-special.active .active-indicator {
+  background: #B1D616;
+  box-shadow: 0 2px 8px #B1D616;
+}
+
+/* Assistant Mode Theme */
 .bottom-nav.assistant-mode {
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.6);
+  background: rgba(10, 15, 25, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
 }
 
-.bottom-nav.assistant-mode .nav-item {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.bottom-nav.assistant-mode .nav-item.active {
-  color: #FFFFFF;
-}
-
-.bottom-nav.assistant-mode .active-dot {
-  background: #FFFFFF;
-  box-shadow: 0 0 15px #FFFFFF;
-}
-
-/* Responsive Hidden (Treated in HTML with md:hidden too) */
-/* Responsive Hidden (Treated in HTML with md:hidden too) */
 @media (min-width: 768px) {
   .bottom-nav {
     display: none !important;

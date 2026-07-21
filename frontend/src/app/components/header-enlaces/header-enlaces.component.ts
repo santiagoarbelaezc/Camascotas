@@ -15,13 +15,36 @@ export class HeaderEnlacesComponent implements OnInit, OnDestroy {
   currentSlide = 0;
   private slideInterval: any;
 
+  // Items para escritorio
   items = [
+    {
+      title: 'Mundo Gaturro',
+      subtitle: 'Explora rascadores y camas diseñadas para su instinto',
+      img: 'assets/images/home1.jpeg',
+      link: '/productos'
+    },
     {
       title: 'Línea para perros',
       subtitle: 'Todo en un solo lugar: descanso, viaje y diversión',
       img: 'assets/images/home2.jpeg',
       link: '/productos'
     },
+    {
+      title: 'Sofás de Lujo',
+      subtitle: 'Confort de otro nivel para los que más quieres',
+      img: 'assets/images/home3.jpeg',
+      link: '/productos'
+    },
+    {
+      title: 'Novedades 2024',
+      subtitle: 'Descubre las tendencias en descanso para mascotas',
+      img: 'assets/images/home4.jpeg',
+      link: '/productos'
+    }
+  ];
+
+  // Items exclusivos para el carrusel de Móvil (Solo home1, home3 y home4)
+  mobileItems = [
     {
       title: 'Mundo Gaturro',
       subtitle: 'Explora rascadores y camas diseñadas para su instinto',
@@ -52,8 +75,6 @@ export class HeaderEnlacesComponent implements OnInit, OnDestroy {
 
   startAutoSlide() {
     this.slideInterval = setInterval(() => {
-      // Solo auto-slide si no es móvil o si queremos forzarlo (opcional)
-      // En este caso lo mantendremos pero para móvil usaremos scrollToSlide
       this.nextSlide();
     }, 6000);
   }
@@ -65,7 +86,7 @@ export class HeaderEnlacesComponent implements OnInit, OnDestroy {
   }
 
   nextSlide() {
-    const next = (this.currentSlide + 1) % this.items.length;
+    const next = (this.currentSlide + 1) % this.mobileItems.length;
     this.scrollToSlide(next);
   }
 

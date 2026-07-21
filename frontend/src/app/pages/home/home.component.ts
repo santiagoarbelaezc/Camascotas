@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderEnlacesComponent } from '../../components/header-enlaces/header-enlaces.component';
 import { MenuCategoriasComponent } from '../../components/menu-categorias/menu-categorias.component';
 import { GridProductosComponent } from '../../components/grid-productos/grid-productos.component';
@@ -70,7 +70,7 @@ function toCarruselItem(p: ProductoAdmin): CarruselItem {
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
   recientesItems: CarruselItem[] = [];
   novedadesItems: CarruselItem[] = [];
@@ -78,31 +78,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   cargandoNovedades = true;
   componentesDinamicos: ComponenteDinamico[] = [];
 
-  private scrollTimer: any;
-  private readonly SCROLL_KEY = 'home_scroll_position';
-
   constructor(
     private productosService: ProductoAdminService,
     private componentesService: ComponentesService
   ) {}
-
-  @HostListener('window:scroll', [])
-  onWindowScroll(): void {
-    if (typeof window === 'undefined') return;
-    
-    // Guardar posición de scroll con debounce ligero
-    if (this.scrollTimer) clearTimeout(this.scrollTimer);
-    this.scrollTimer = setTimeout(() => {
-      sessionStorage.setItem(this.SCROLL_KEY, window.scrollY.toString());
-    }, 100);
-  }
-
-  @HostListener('window:beforeunload', [])
-  onBeforeUnload(): void {
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem(this.SCROLL_KEY, window.scrollY.toString());
-    }
-  }
 
   filtrarProductosPorCategoria(categoriaName: string): CarruselItem[] {
     if (!categoriaName) return this.recientesItems;
@@ -111,15 +90,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (typeof window !== 'undefined' && 'scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('home_scroll_position');
+      window.scrollTo(0, 0);
     }
 
     // Cargar componentes dinámicos activos
     this.componentesService.getComponentes().subscribe({
       next: (res) => {
         this.componentesDinamicos = res.filter(c => c.activo == 1 || c.activo === true);
-        this.restaurarScrollGuardado();
       },
       error: (err) => console.warn('Error cargando componentes dinámicos:', err)
     });
@@ -129,7 +108,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (productos) => {
         this.recientesItems = productos.map(toCarruselItem);
         this.cargandoRecientes = false;
-        this.restaurarScrollGuardado();
       },
       error: (err) => {
         console.warn('Error cargando recientes:', err);
@@ -142,36 +120,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (productos) => {
         this.novedadesItems = productos.map(toCarruselItem);
         this.cargandoNovedades = false;
-        this.restaurarScrollGuardado();
       },
       error: (err) => {
         console.warn('Error cargando novedades:', err);
         this.cargandoNovedades = false;
       }
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.restaurarScrollGuardado();
-  }
-
-  private restaurarScrollGuardado(): void {
-    if (typeof window === 'undefined') return;
-    const savedPos = sessionStorage.getItem(this.SCROLL_KEY);
-    if (savedPos) {
-      const targetY = parseInt(savedPos, 10);
-      if (!isNaN(targetY) && targetY > 0) {
-        setTimeout(() => {
-          window.scrollTo({ top: targetY, behavior: 'instant' as ScrollBehavior });
-        }, 150);
-        setTimeout(() => {
-          window.scrollTo({ top: targetY, behavior: 'instant' as ScrollBehavior });
-        }, 400);
-      }
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.scrollTimer) clearTimeout(this.scrollTimer);
   }
 }
